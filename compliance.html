@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compliance & Contracts | Supplier Cyber Risk</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="tooltips.js" defer></script>
+  <script src="compliance.js" defer></script>
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="brand-block">
+        <h1>Compliance & Contracts</h1>
+        <p>Q1 2026 | Security clauses, evidence, frameworks, audit rights, and contractual assurance</p>
+      </div>
+
+      <nav class="top-nav">
+        <a href="executive-overview.html">Summary</a>
+        <a href="supplier-portfolio.html">Portfolio</a>
+        <a href="assessments.html">Assessments</a>
+        <a href="monitoring.html">Monitoring</a>
+        <a href="remediation.html">Remediation</a>
+        <a href="dependencies.html">Dependencies</a>
+        <a href="compliance.html" class="active">Compliance</a>
+        <a href="risk-quantification.html">Risk Quantification</a>
+      </nav>
+    </header>
+
+    <section class="card">
+      <h3>Filters</h3>
+      <div class="filter-grid">
+        <label class="filter-field">
+          <span>Framework</span>
+          <select id="filterFramework"></select>
+        </label>
+        <label class="filter-field">
+          <span>Contract Status</span>
+          <select id="filterContractStatus"></select>
+        </label>
+        <label class="filter-field">
+          <span>Missing Clause Type</span>
+          <select id="filterClauseType"></select>
+        </label>
+        <label class="filter-field">
+          <span>Renewal Window</span>
+          <select id="filterRenewalWindow"></select>
+        </label>
+        <div class="filter-actions">
+          <button id="clearFilters" type="button">Clear Filters</button>
+        </div>
+      </div>
+      <p class="filter-summary" id="filterSummary">Showing all suppliers</p>
+    </section>
+
+    <section class="kpi-grid">
+      <article class="kpi-card">
+        <div class="kpi-label">Security Clause Coverage</div>
+        <div class="kpi-value" id="securityClauseCoverage"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Breach Notification SLA</div>
+        <div class="kpi-value" id="breachSlaCoverage"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Audit Rights Coverage</div>
+        <div class="kpi-value" id="auditRightsCoverage"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">MFA Requirement</div>
+        <div class="kpi-value" id="mfaCoverage"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Encryption Requirement</div>
+        <div class="kpi-value" id="encryptionCoverage"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">SOC 2 / ISO Coverage</div>
+        <div class="kpi-value" id="frameworkCoverage"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Renewal Reviews</div>
+        <div class="kpi-value" id="renewalReviews"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Non-Compliant Suppliers</div>
+        <div class="kpi-value" id="nonCompliantSuppliers"></div>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <div class="card">
+        <h3>Contract Control Coverage</h3>
+        <div class="chart-wrap"><canvas id="contractCoverageChart"></canvas></div>
+      </div>
+
+      <div class="card">
+        <h3>Framework Alignment</h3>
+        <div class="chart-wrap"><canvas id="frameworkAlignmentChart"></canvas></div>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <div class="card">
+        <h3>Compliance Gaps</h3>
+        <div class="table-wrap">
+          <table id="complianceGapTable">
+            <thead>
+              <tr>
+                <th>Supplier</th>
+                <th>Tier</th>
+                <th>Gap</th>
+                <th>Risk</th>
+                <th>Contract Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Framework Evidence</h3>
+        <div class="table-wrap">
+          <table id="frameworkEvidenceTable">
+            <thead>
+              <tr>
+                <th>Supplier</th>
+                <th>Framework</th>
+                <th>Evidence</th>
+                <th>Validity</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Renewal Risk Queue</h3>
+      <div class="table-wrap">
+        <table id="renewalRiskTable">
+          <thead>
+            <tr>
+              <th>Supplier</th>
+              <th>Renewal In</th>
+              <th>Missing Clauses</th>
+              <th>Risk</th>
+              <th>Decision</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="ai-panel">
+      <h3>AI Alerts</h3>
+      <div class="ai-grid" id="complianceAiAlerts"></div>
+    </section>
+  </div>
+</body>
+</html>

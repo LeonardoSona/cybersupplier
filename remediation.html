@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Remediation | Supplier Cyber Risk</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="extended-kpis.js" defer></script>
+  <script src="tooltips.js" defer></script>
+  <script src="remediation.js" defer></script>
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="brand-block">
+        <h1>Remediation & Assurance Actions</h1>
+        <p>Q1 2026 | Findings, SLA, ownership, closure, and accepted risk</p>
+      </div>
+
+      <nav class="top-nav">
+        <a href="executive-overview.html">Summary</a>
+        <a href="supplier-portfolio.html">Portfolio</a>
+        <a href="assessments.html">Assessments</a>
+        <a href="monitoring.html">Monitoring</a>
+        <a href="remediation.html" class="active">Remediation</a>
+        <a href="dependencies.html">Dependencies</a>
+        <a href="compliance.html">Compliance</a>
+        <a href="risk-quantification.html">Risk Quantification</a>
+      </nav>
+    </header>
+
+    <section class="card">
+      <h3>Filters</h3>
+      <div class="filter-grid">
+        <label class="filter-field">
+          <span>Severity</span>
+          <select id="filterSeverity"></select>
+        </label>
+        <label class="filter-field">
+          <span>SLA Status</span>
+          <select id="filterSlaStatus"></select>
+        </label>
+        <label class="filter-field">
+          <span>Owner</span>
+          <select id="filterOwner"></select>
+        </label>
+        <label class="filter-field">
+          <span>Supplier</span>
+          <select id="filterSupplier"></select>
+        </label>
+        <label class="filter-field">
+          <span>Age Bucket</span>
+          <select id="filterAgeBucket"></select>
+        </label>
+        <div class="filter-actions">
+          <button id="clearFilters" type="button">Clear Filters</button>
+        </div>
+      </div>
+      <p class="filter-summary" id="filterSummary">Showing all findings</p>
+    </section>
+
+    <section class="kpi-grid">
+      <article class="kpi-card">
+        <div class="kpi-label">Open Findings</div>
+        <div class="kpi-value" id="openFindings"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Critical Findings</div>
+        <div class="kpi-value" id="criticalFindings"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">SLA Breaches</div>
+        <div class="kpi-value" id="slaBreaches"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">MTTA</div>
+        <div class="kpi-value" id="mtta"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">MTTR</div>
+        <div class="kpi-value" id="mttr"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Closure Rate</div>
+        <div class="kpi-value" id="closureRate"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Reopened Findings</div>
+        <div class="kpi-value" id="reopenedFindings"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Accepted Risks</div>
+        <div class="kpi-value" id="acceptedRisks"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Backlog Growth</div>
+        <div class="kpi-value" id="backlogGrowthPercent"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Findings per Analyst</div>
+        <div class="kpi-value" id="findingsPerAnalyst"></div>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <div class="card">
+        <h3>Remediation Trend</h3>
+        <div class="chart-wrap"><canvas id="remediationTrendChart"></canvas></div>
+      </div>
+
+      <div class="card">
+        <h3>Findings by Severity</h3>
+        <div class="chart-wrap"><canvas id="findingsSeverityChart"></canvas></div>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <div class="card">
+        <h3>Open Remediation Backlog</h3>
+        <div class="table-wrap">
+          <table id="remediationBacklogTable">
+            <thead>
+              <tr>
+                <th>Finding</th>
+                <th>Supplier</th>
+                <th>Severity</th>
+                <th>Age</th>
+                <th>SLA</th>
+                <th>Owner</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Owner Workload</h3>
+        <div class="table-wrap">
+          <table id="ownerWorkloadTable">
+            <thead>
+              <tr>
+                <th>Owner</th>
+                <th>Open</th>
+                <th>Breached</th>
+                <th>Critical</th>
+                <th>Oldest</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Decision Queue</h3>
+      <div class="table-wrap">
+        <table id="decisionQueueTable">
+          <thead>
+            <tr>
+              <th>Supplier</th>
+              <th>Decision Type</th>
+              <th>Risk</th>
+              <th>Exposure</th>
+              <th>Due</th>
+              <th>Recommended Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="ai-panel">
+      <h3>AI Alerts</h3>
+      <div class="ai-grid" id="remediationAiAlerts"></div>
+    </section>
+  </div>
+</body>
+</html>

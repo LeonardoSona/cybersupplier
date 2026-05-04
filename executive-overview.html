@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Executive Overview | Supplier Cyber Risk & Assurance</title>
+	<link rel="stylesheet" href="style.css" />
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="extended-kpis.js" defer></script>
+	<script src="tooltips.js" defer></script>
+	<script src="script.js" defer></script>
+</head>
+<body>
+	<div class="app-shell">
+		<header class="top-header">
+			<div class="brand-block">
+				<h1>Supplier Cyber Risk & Assurance</h1>
+				<p>Summary overview for supplier cyber exposure, assurance progress, and modeled loss</p>
+			</div>
+
+			<nav class="top-nav">
+				<a href="executive-overview.html" class="active">Summary</a>
+				<a href="supplier-portfolio.html">Portfolio</a>
+				<a href="assessments.html">Assessments</a>
+				<a href="monitoring.html">Monitoring</a>
+				<a href="remediation.html">Remediation</a>
+				<a href="dependencies.html">Dependencies</a>
+				<a href="compliance.html">Compliance</a>
+				<a href="risk-quantification.html">Risk Quantification</a>
+			</nav>
+		</header>
+
+		
+		<section class="card">
+			<h3>Filters</h3>
+			<div class="filter-grid">
+				<label class="filter-field">
+					<span>Time Period</span>
+					<select id="filterPeriod"></select>
+				</label>
+				<label class="filter-field">
+					<span>Business Unit</span>
+					<select id="filterBusinessUnit"></select>
+				</label>
+				<label class="filter-field">
+					<span>Supplier Tier</span>
+					<select id="filterTier"></select>
+				</label>
+				<div class="filter-actions">
+					<button id="clearFilters" type="button">Clear Filters</button>
+				</div>
+			</div>
+			<p class="filter-summary" id="filterSummary">Showing all suppliers</p>
+		</section>
+
+		<section class="kpi-grid">
+			<article class="kpi-card">
+				<div class="kpi-label">Average Supplier Risk Score</div>
+				<div class="kpi-value" id="riskScore"></div>
+			</article>
+
+			<article class="kpi-card">
+				<div class="kpi-label">High-Risk Suppliers</div>
+				<div class="kpi-value" id="highRiskSuppliers"></div>
+			</article>
+
+			<article class="kpi-card">
+				<div class="kpi-label">Annual Loss Exposure</div>
+				<div class="kpi-value" id="lossExposure"></div>
+			</article>
+
+			<article class="kpi-card">
+				<div class="kpi-label">Suppliers Assessed</div>
+				<div class="kpi-value" id="assessedPercent"></div>
+			</article>
+
+			<article class="kpi-card">
+				<div class="kpi-label">Continuously Monitored</div>
+				<div class="kpi-value" id="monitoredPercent"></div>
+			</article>
+
+			<article class="kpi-card">
+				<div class="kpi-label">Critical Findings</div>
+				<div class="kpi-value" id="criticalFindings"></div>
+			</article>
+
+			<article class="kpi-card">
+				<div class="kpi-label">Critical Suppliers at Risk</div>
+				<div class="kpi-value" id="criticalSuppliersAtRisk"></div>
+			</article>
+
+			<article class="kpi-card">
+				<div class="kpi-label">Exposure Trend</div>
+				<div class="kpi-value" id="exposureTrendPercent"></div>
+			</article>
+
+			<article class="kpi-card">
+				<div class="kpi-label">Top Business Impact Area</div>
+				<div class="kpi-value" id="topBusinessImpactArea"></div>
+			</article>
+
+			<article class="kpi-card">
+				<div class="kpi-label">Predicted Risk Breaches</div>
+				<div class="kpi-value" id="predictedRiskBreaches"></div>
+			</article>
+
+			<article class="kpi-card">
+				<div class="kpi-label">Forecasted Exposure</div>
+				<div class="kpi-value" id="forecastedExposure"></div>
+			</article>
+		</section>
+
+		<section class="content-grid">
+			<article class="card">
+				<h3>Top Suppliers by Risk</h3>
+				<div class="table-wrap">
+					<table id="topSuppliers">
+						<thead>
+							<tr>
+								<th>Supplier</th>
+								<th>Tier</th>
+								<th>Risk Score</th>
+								<th>Cyber Rating</th>
+								<th>Exposure</th>
+								<th>Business Unit</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</article>
+
+			<article class="card">
+				<h3>Critical Findings Requiring Attention</h3>
+				<div class="table-wrap">
+					<table id="criticalFindingsTable">
+						<thead>
+							<tr>
+								<th>Finding</th>
+								<th>Supplier</th>
+								<th>Severity</th>
+								<th>Age</th>
+								<th>SLA</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</article>
+		</section>
+
+		<section class="content-grid">
+			<article class="card">
+				<h3>Quarterly Risk Trend</h3>
+				<div class="chart-wrap"><canvas id="riskTrend"></canvas></div>
+			</article>
+
+			<article class="card">
+				<h3>Residual Risk Distribution</h3>
+				<div class="chart-wrap"><canvas id="riskDistribution"></canvas></div>
+			</article>
+		</section>
+
+		<section class="ai-panel">
+			<h3>AI Alerts</h3>
+			<div class="ai-grid" id="aiAlerts"></div>
+		</section>
+	</div>
+</body>
+</html>

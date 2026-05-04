@@ -1,0 +1,552 @@
+{
+  "dashboard_kpis": [
+    {
+      "page": "Executive",
+      "kpis": [
+        {
+          "name": "Overall Supplier Cyber Risk Score",
+          "tooltip": "Aggregated view of supplier cyber exposure across the portfolio. Indicates if overall risk is within appetite.",
+          "formula": "AVG(supplier_risk_score)",
+          "filters": ["Period", "Business Unit", "Supplier Tier", "Region"],
+          "sources": ["SAFE", "BitSight", "UpGuard", "SecurityScorecard", "ServiceNow IRM", "Archer", "OneTrust"]
+        },
+        {
+          "name": "High Risk Suppliers",
+          "tooltip": "Number of suppliers exceeding defined risk thresholds. Indicates where immediate action is required.",
+          "formula": "COUNT suppliers WHERE residual_risk = High",
+          "filters": ["Period", "Tier", "Business Unit", "Risk Level"],
+          "sources": ["TPRM Platform", "GRC/IRM", "Vendor Master", "Supplier Risk Model"]
+        },
+        {
+          "name": "Critical Suppliers at Risk",
+          "tooltip": "Tier 1 suppliers above risk appetite. Highlights potential business disruption risks.",
+          "formula": "COUNT suppliers WHERE tier = Tier 1 AND residual_risk = High",
+          "filters": ["Period", "Business Unit", "Region", "Supplier Tier"],
+          "sources": ["TPRM Platform", "SAFE", "BitSight", "UpGuard", "ServiceNow IRM"]
+        },
+        {
+          "name": "Loss Exposure",
+          "tooltip": "Estimated financial impact of supplier cyber risk. Used to prioritize investments.",
+          "formula": "SUM(annual_loss_exposure_m)",
+          "filters": ["Period", "Business Unit", "Scenario Type", "Supplier Tier"],
+          "sources": ["SAFE CRQ", "FAIR Model", "Finance Data", "Procurement Spend", "Risk Register"]
+        },
+        {
+          "name": "Exposure Trend %",
+          "tooltip": "Shows whether supplier risk exposure is increasing or decreasing over time.",
+          "formula": "(current_ALE - previous_ALE) / previous_ALE * 100",
+          "filters": ["Period", "Business Unit", "Scenario", "Supplier Tier"],
+          "sources": ["SAFE CRQ", "FAIR Model", "GRC Risk Register", "Finance Data"]
+        },
+        {
+          "name": "Forecasted Exposure",
+          "tooltip": "Predicted future exposure based on trends. Supports proactive planning.",
+          "formula": "model_prediction(next_period_ALE)",
+          "filters": ["Period", "Business Unit", "Scenario", "Supplier Tier"],
+          "sources": ["Historical CRQ Snapshots", "SAFE", "Monitoring Data", "Finance Data"]
+        },
+        {
+          "name": "Predicted Risk Breaches",
+          "tooltip": "Suppliers likely to exceed risk thresholds soon. Enables early intervention.",
+          "formula": "COUNT suppliers WHERE predicted_risk_score > appetite_threshold",
+          "filters": ["Period", "Tier", "Business Unit", "Risk Driver"],
+          "sources": ["SAFE", "BitSight", "UpGuard", "ML Model", "ServiceNow IRM"]
+        },
+        {
+          "name": "Top Business Impact Area",
+          "tooltip": "Business unit with highest supplier exposure. Helps prioritize risk reduction.",
+          "formula": "MAX(SUM exposure_m GROUP BY business_unit)",
+          "filters": ["Business Unit", "Process", "Supplier Tier", "Scenario"],
+          "sources": ["Procurement", "BIA", "Finance", "ServiceNow IRM", "SAFE"]
+        },
+        {
+          "name": "Suppliers Assessed",
+          "tooltip": "Percentage of suppliers that completed formal cyber assessment. Indicates assurance coverage.",
+          "formula": "assessed_suppliers / total_suppliers * 100",
+          "filters": ["Period", "Business Unit", "Supplier Tier", "Region"],
+          "sources": ["TPRM Platform", "Assessment Workflow", "Vendor Master"]
+        },
+        {
+          "name": "Continuously Monitored",
+          "tooltip": "Share of suppliers with active monitoring enabled. Measures ongoing risk visibility.",
+          "formula": "monitored_suppliers / total_suppliers * 100",
+          "filters": ["Period", "Supplier Tier", "Business Unit", "Region"],
+          "sources": ["Monitoring Platform", "TPRM Platform", "Vendor Master"]
+        },
+        {
+          "name": "Critical Findings",
+          "tooltip": "Number of unresolved critical issues across suppliers. Highlights immediate remediation priority.",
+          "formula": "COUNT findings WHERE severity = Critical AND status != Closed",
+          "filters": ["Period", "Business Unit", "Supplier", "Status"],
+          "sources": ["ServiceNow IRM", "GRC Findings", "Assessment Results"]
+        }
+      ]
+    },
+    {
+      "page": "Portfolio",
+      "kpis": [
+        {
+          "name": "Inventory Completeness",
+          "tooltip": "Measures how complete the supplier inventory is. Gaps indicate unmanaged risks.",
+          "formula": "known_suppliers / expected_suppliers * 100",
+          "filters": ["Business Unit", "Region", "Supplier Status", "Category"],
+          "sources": ["ERP", "Vendor Master", "SAP", "Ariba", "Coupa", "MDM"]
+        },
+        {
+          "name": "High-Risk Vendor %",
+          "tooltip": "Share of suppliers classified as high risk. Indicates overall portfolio risk distribution.",
+          "formula": "high_risk_suppliers / total_suppliers * 100",
+          "filters": ["Tier", "Region", "Service Category", "Business Unit"],
+          "sources": ["SAFE", "BitSight", "UpGuard", "GRC Risk Register"]
+        },
+        {
+          "name": "Average Cyber Rating",
+          "tooltip": "Average external security posture score across suppliers.",
+          "formula": "AVG(cyber_rating)",
+          "filters": ["Tier", "Region", "Supplier Category", "Business Owner"],
+          "sources": ["BitSight", "UpGuard", "SecurityScorecard"]
+        },
+        {
+          "name": "Top Vendor Concentration Ratio",
+          "tooltip": "Percentage of exposure concentrated in the riskiest supplier.",
+          "formula": "MAX(supplier_exposure) / SUM(total_exposure) * 100",
+          "filters": ["Business Unit", "Service Category", "Region"],
+          "sources": ["SAFE CRQ", "Procurement Spend", "BIA", "Finance"]
+        },
+        {
+          "name": "Classified Vendors",
+          "tooltip": "Percentage of suppliers with completed risk classification. Indicates portfolio profiling maturity.",
+          "formula": "classified_vendors / total_suppliers * 100",
+          "filters": ["Business Unit", "Tier", "Region", "Supplier Category"],
+          "sources": ["Vendor Master", "TPRM Platform", "GRC Risk Register"]
+        },
+        {
+          "name": "Tier 1 Vendors",
+          "tooltip": "Count of highest criticality suppliers. Tracks concentration of business-critical dependencies.",
+          "formula": "COUNT suppliers WHERE tier = Tier 1",
+          "filters": ["Business Unit", "Region", "Service Category"],
+          "sources": ["Vendor Master", "Procurement", "TPRM Platform"]
+        },
+        {
+          "name": "Concentration Index",
+          "tooltip": "Composite measure of exposure concentration across key suppliers. Higher values indicate less diversification.",
+          "formula": "portfolio_concentration_index(top_supplier_exposure_distribution)",
+          "filters": ["Business Unit", "Service Category", "Region"],
+          "sources": ["SAFE CRQ", "Procurement Spend", "Finance"]
+        },
+        {
+          "name": "Fourth Parties",
+          "tooltip": "Number of identified downstream providers linked to direct suppliers. Indicates extended ecosystem complexity.",
+          "formula": "COUNT DISTINCT fourth_parties",
+          "filters": ["Business Unit", "Region", "Service Category"],
+          "sources": ["Dependency Mapping", "TPRM Platform", "Supplier Declarations"]
+        },
+        {
+          "name": "Single-Supplier Services",
+          "tooltip": "Services supported by only one supplier. Highlights resilience and substitution risk.",
+          "formula": "COUNT services WHERE supplier_count = 1",
+          "filters": ["Business Unit", "Service Category", "Region"],
+          "sources": ["Service Inventory", "Procurement", "Architecture Records"]
+        },
+        {
+          "name": "High Criticality / High Risk",
+          "tooltip": "Suppliers that are both business critical and high risk. Priority segment for mitigation and contingency planning.",
+          "formula": "COUNT suppliers WHERE criticality = High AND residual_risk = High",
+          "filters": ["Business Unit", "Region", "Tier"],
+          "sources": ["TPRM Platform", "BIA", "SAFE", "GRC Risk Register"]
+        },
+        {
+          "name": "Top Vendor Concentration",
+          "tooltip": "Exposure share concentrated in the single highest-impact supplier.",
+          "formula": "MAX(supplier_exposure) / SUM(total_exposure) * 100",
+          "filters": ["Business Unit", "Service Category", "Region"],
+          "sources": ["SAFE CRQ", "Procurement Spend", "Finance"]
+        }
+      ]
+    },
+    {
+      "page": "Monitoring",
+      "kpis": [
+        {
+          "name": "Score Drops",
+          "tooltip": "Suppliers with declining security ratings. Early warning signal.",
+          "formula": "COUNT suppliers WHERE current_rating < previous_rating",
+          "filters": ["Time Window", "Rating Change", "Tier", "Region"],
+          "sources": ["Security Rating Platforms", "CTEM Tools"]
+        },
+        {
+          "name": "Critical Vulnerabilities",
+          "tooltip": "Number of severe technical exposures detected. Indicates immediate risk.",
+          "formula": "COUNT signals WHERE type = Vulnerability AND severity = Critical",
+          "filters": ["Severity", "CVE", "Supplier", "Asset Type"],
+          "sources": ["CTEM", "Vulnerability Intelligence", "UpGuard", "BitSight"]
+        },
+        {
+          "name": "Leaked Credentials",
+          "tooltip": "Instances of exposed credentials. Indicates potential unauthorized access risk.",
+          "formula": "COUNT signals WHERE type = Credential Leak",
+          "filters": ["Supplier", "Domain", "Severity", "Time Window"],
+          "sources": ["Dark Web Monitoring", "CTEM", "Threat Intel Feeds"]
+        },
+        {
+          "name": "Monitored Vendors",
+          "tooltip": "Number of suppliers currently under continuous external monitoring.",
+          "formula": "COUNT suppliers WHERE monitoring_status = Active",
+          "filters": ["Time Window", "Tier", "Region", "Business Unit"],
+          "sources": ["Monitoring Platform", "Vendor Master", "TPRM Platform"]
+        },
+        {
+          "name": "New Exposed Assets",
+          "tooltip": "Newly discovered internet-facing assets associated with suppliers. Indicates expanding attack surface.",
+          "formula": "COUNT assets WHERE first_seen_within_period = true",
+          "filters": ["Time Window", "Supplier", "Asset Type", "Region"],
+          "sources": ["Attack Surface Management", "CTEM Tools", "Threat Intelligence"]
+        },
+        {
+          "name": "Cloud Exposure",
+          "tooltip": "Suppliers with detected cloud security exposure signals. Tracks cloud-related risk concentration.",
+          "formula": "COUNT signals WHERE domain = Cloud AND status = Open",
+          "filters": ["Cloud Provider", "Severity", "Supplier", "Time Window"],
+          "sources": ["Cloud Security Feeds", "CTEM", "Monitoring Platform"]
+        },
+        {
+          "name": "DNS / Email Issues",
+          "tooltip": "Suppliers with DNS or email-security misconfiguration indicators. Includes SPF, DKIM, and DMARC-related issues.",
+          "formula": "COUNT signals WHERE type IN (DNS, Email) AND status = Open",
+          "filters": ["Signal Type", "Supplier", "Severity", "Time Window"],
+          "sources": ["External Monitoring", "Domain Intelligence", "CTEM"]
+        },
+        {
+          "name": "Critical Alerts",
+          "tooltip": "Number of active critical-priority monitoring alerts requiring immediate action.",
+          "formula": "COUNT alerts WHERE severity = Critical AND status = Open",
+          "filters": ["Supplier", "Signal Type", "Time Window", "Owner"],
+          "sources": ["Monitoring Platform", "CTEM", "Incident Management"]
+        },
+        {
+          "name": "New Vulnerability Trend",
+          "tooltip": "Trend in newly identified supplier vulnerabilities over time.",
+          "formula": "(current_new_vuln_count - previous_new_vuln_count) / previous_new_vuln_count * 100",
+          "filters": ["Time Window", "Severity", "Supplier", "Asset Type"],
+          "sources": ["CTEM", "Vulnerability Intelligence", "Monitoring Data"]
+        },
+        {
+          "name": "Breach Signal Count",
+          "tooltip": "Count of breach-related indicators detected across monitored suppliers.",
+          "formula": "COUNT signals WHERE category = Breach",
+          "filters": ["Time Window", "Supplier", "Severity", "Signal Source"],
+          "sources": ["Threat Intel Feeds", "Dark Web Monitoring", "CTEM"]
+        }
+      ]
+    },
+    {
+      "page": "Remediation",
+      "kpis": [
+        {
+          "name": "Open Findings",
+          "tooltip": "Total unresolved security issues. Represents remediation backlog.",
+          "formula": "COUNT findings WHERE status = Open",
+          "filters": ["Status", "Severity", "Owner", "Supplier"],
+          "sources": ["ServiceNow IRM", "Archer", "GRC Findings"]
+        },
+        {
+          "name": "MTTR",
+          "tooltip": "Average time to resolve a risk. Key indicator of remediation effectiveness.",
+          "formula": "AVG(remediation_days)",
+          "filters": ["Severity", "Issue Type", "Owner", "Supplier"],
+          "sources": ["ServiceNow", "Jira", "GRC Workflow"]
+        },
+        {
+          "name": "SLA Breaches",
+          "tooltip": "Issues not resolved within agreed timelines. Indicates process inefficiencies.",
+          "formula": "COUNT findings WHERE sla_status = Breached",
+          "filters": ["SLA Status", "Age Bucket", "Owner"],
+          "sources": ["ServiceNow", "GRC Tracking"]
+        },
+        {
+          "name": "Critical Findings",
+          "tooltip": "Open remediation items with critical severity. Represents highest-priority backlog.",
+          "formula": "COUNT findings WHERE severity = Critical AND status != Closed",
+          "filters": ["Owner", "Supplier", "Age Bucket", "Status"],
+          "sources": ["ServiceNow IRM", "GRC Findings", "Assessment Results"]
+        },
+        {
+          "name": "MTTA",
+          "tooltip": "Mean time to acknowledge findings after detection. Indicates triage responsiveness.",
+          "formula": "AVG(acknowledgement_time_days)",
+          "filters": ["Severity", "Owner", "Supplier", "Issue Type"],
+          "sources": ["ServiceNow", "Jira", "GRC Workflow"]
+        },
+        {
+          "name": "Closure Rate",
+          "tooltip": "Percentage of findings closed within the reporting period.",
+          "formula": "closed_findings_in_period / total_findings_in_period * 100",
+          "filters": ["Severity", "Owner", "Supplier", "Issue Type"],
+          "sources": ["ServiceNow", "GRC Findings"]
+        },
+        {
+          "name": "Reopened Findings",
+          "tooltip": "Findings reopened after closure, indicating ineffective or incomplete remediation.",
+          "formula": "COUNT findings WHERE status = Reopened",
+          "filters": ["Severity", "Owner", "Supplier", "Issue Type"],
+          "sources": ["ServiceNow", "Jira", "GRC Tracking"]
+        },
+        {
+          "name": "Accepted Risks",
+          "tooltip": "Findings formally accepted instead of remediated. Tracks risk acceptance volume.",
+          "formula": "COUNT findings WHERE treatment = Risk Accepted",
+          "filters": ["Business Unit", "Owner", "Severity", "Supplier"],
+          "sources": ["GRC Risk Register", "ServiceNow IRM", "Risk Committee Records"]
+        },
+        {
+          "name": "Backlog Growth",
+          "tooltip": "Change in open finding backlog compared to previous period.",
+          "formula": "(current_open_backlog - previous_open_backlog) / previous_open_backlog * 100",
+          "filters": ["Severity", "Owner", "Business Unit", "Supplier"],
+          "sources": ["ServiceNow", "GRC Findings", "Operational Metrics"]
+        },
+        {
+          "name": "Findings per Analyst",
+          "tooltip": "Average open findings assigned per remediation analyst. Indicates workload balance.",
+          "formula": "open_findings / active_analysts",
+          "filters": ["Team", "Severity", "Business Unit"],
+          "sources": ["ServiceNow", "Workforce Roster", "GRC Tracking"]
+        }
+      ]
+    },
+    {
+      "page": "Risk Quantification",
+      "kpis": [
+        {
+          "name": "Total Exposure / ALE",
+          "tooltip": "Total estimated financial risk from suppliers. Core metric for decision making.",
+          "formula": "SUM supplier_exposure_m",
+          "filters": ["Scenario", "Business Unit", "Tier", "Risk Driver"],
+          "sources": ["SAFE CRQ", "FAIR Model", "Finance", "Procurement", "BIA"]
+        },
+        {
+          "name": "Top Risk Drivers",
+          "tooltip": "Main causes contributing to exposure. Helps target root causes.",
+          "formula": "RANK BY SUM exposure BY driver",
+          "filters": ["Driver", "Supplier", "Business Unit"],
+          "sources": ["CTEM", "Findings", "Risk Taxonomy", "CRQ Model"]
+        },
+        {
+          "name": "Residual Risk Trend",
+          "tooltip": "Change in remaining risk after controls. Indicates effectiveness of mitigation.",
+          "formula": "(current_residual - previous_residual) / previous_residual * 100",
+          "filters": ["Period", "Supplier", "Business Unit", "Tier"],
+          "sources": ["CRQ Snapshots", "GRC Risk Register", "SAFE"]
+        },
+        {
+          "name": "Top Supplier Exposure",
+          "tooltip": "Estimated financial exposure attributed to the highest-risk supplier.",
+          "formula": "MAX(supplier_exposure_m)",
+          "filters": ["Scenario", "Business Unit", "Tier", "Region"],
+          "sources": ["SAFE CRQ", "Finance", "Procurement"]
+        },
+        {
+          "name": "High-Risk Exposure",
+          "tooltip": "Total exposure associated with suppliers classified as high risk.",
+          "formula": "SUM(exposure_m WHERE residual_risk = High)",
+          "filters": ["Scenario", "Business Unit", "Tier", "Risk Level"],
+          "sources": ["SAFE CRQ", "GRC Risk Register", "Vendor Master"]
+        },
+        {
+          "name": "Risk Reduction Opportunity",
+          "tooltip": "Estimated exposure that could be reduced through prioritized mitigations.",
+          "formula": "SUM(potential_reduction_m FROM prioritized_controls)",
+          "filters": ["Scenario", "Business Unit", "Control Domain", "Tier"],
+          "sources": ["SAFE", "FAIR Model", "Control Library", "Finance"]
+        },
+        {
+          "name": "Concentration Exposure",
+          "tooltip": "Exposure tied to concentration in key suppliers, services, or geographies.",
+          "formula": "SUM(exposure_m FROM concentration_scenarios)",
+          "filters": ["Business Unit", "Service Category", "Region", "Supplier Tier"],
+          "sources": ["SAFE CRQ", "Procurement", "BIA", "Finance"]
+        },
+        {
+          "name": "Accepted Risk Value",
+          "tooltip": "Monetary value of supplier-related risks currently accepted by the business.",
+          "formula": "SUM(exposure_m WHERE risk_treatment = Accepted)",
+          "filters": ["Business Unit", "Risk Owner", "Scenario", "Supplier Tier"],
+          "sources": ["GRC Risk Register", "SAFE", "Risk Committee Records"]
+        },
+        {
+          "name": "Forecasted Exposure",
+          "tooltip": "Projected supplier exposure for upcoming periods based on trend and scenario models.",
+          "formula": "model_prediction(next_period_exposure_m)",
+          "filters": ["Scenario", "Business Unit", "Tier", "Risk Driver"],
+          "sources": ["SAFE CRQ", "Historical Snapshots", "Finance"]
+        },
+        {
+          "name": "Top Vendor Concentration",
+          "tooltip": "Exposure concentration percentage for the highest-impact supplier.",
+          "formula": "MAX(supplier_exposure_m) / SUM(total_exposure_m) * 100",
+          "filters": ["Business Unit", "Service Category", "Region"],
+          "sources": ["SAFE CRQ", "Procurement", "Finance"]
+        },
+        {
+          "name": "Cloud Concentration Ratio",
+          "tooltip": "Share of total exposure concentrated in the dominant cloud provider.",
+          "formula": "MAX(exposure_by_cloud_provider) / SUM(total_cloud_exposure) * 100",
+          "filters": ["Cloud Provider", "Business Unit", "Scenario"],
+          "sources": ["SAFE CRQ", "Dependency Mapping", "Procurement"]
+        },
+        {
+          "name": "Fourth-Party Concentration",
+          "tooltip": "Exposure concentration tied to the most significant downstream provider.",
+          "formula": "MAX(exposure_by_fourth_party) / SUM(total_fourth_party_exposure) * 100",
+          "filters": ["Business Unit", "Service Category", "Region"],
+          "sources": ["Dependency Mapping", "SAFE CRQ", "Finance"]
+        }
+      ]
+    },
+    {
+      "page": "Assessments",
+      "kpis": [
+        {
+          "name": "Assessment Completion",
+          "tooltip": "Percentage of completed supplier risk assessments. Tracks overall review progress.",
+          "formula": "completed_assessments / total_assessments * 100"
+        },
+        {
+          "name": "Tier 1 Completion",
+          "tooltip": "Coverage of assessments for critical suppliers. Ensures highest-priority vendors are reviewed first.",
+          "formula": "completed_tier1_assessments / total_tier1_assessments * 100"
+        },
+        {
+          "name": "Avg Onboarding Cycle",
+          "tooltip": "Average time to assess and onboard suppliers. Indicates efficiency of the supplier risk review process.",
+          "formula": "AVG(onboarding_cycle_days)"
+        },
+        {
+          "name": "Overdue Assessments",
+          "tooltip": "Number of assessments past due date. Highlights backlog and potential unmanaged supplier risk.",
+          "formula": "COUNT assessments WHERE status = Overdue"
+        },
+        {
+          "name": "Evidence Completion",
+          "tooltip": "Percentage of assessments with complete supporting evidence. Reflects audit readiness and assessment quality.",
+          "formula": "assessments_with_complete_evidence / total_assessments * 100"
+        },
+        {
+          "name": "Control Pass Rate",
+          "tooltip": "Percentage of assessed controls that passed. Indicates supplier control effectiveness.",
+          "formula": "passed_controls / total_assessed_controls * 100"
+        },
+        {
+          "name": "Conditional Approvals",
+          "tooltip": "Suppliers approved with known risks. Tracks risk acceptance during onboarding.",
+          "formula": "COUNT assessments WHERE conditional_approval = true"
+        },
+        {
+          "name": "Reassessments Due",
+          "tooltip": "Suppliers requiring reassessment soon. Helps manage upcoming workload and risk refresh cycles.",
+          "formula": "COUNT assessments WHERE reassessment_due_days <= 90"
+        }
+      ]
+    },
+    {
+      "page": "Dependencies",
+      "kpis": [
+        {
+          "name": "Fourth Parties Identified",
+          "tooltip": "Number of downstream dependencies identified. Reflects visibility into extended supply chain risk.",
+          "formula": "COUNT DISTINCT fourth_parties"
+        },
+        {
+          "name": "Tier 1 Dependencies Mapped",
+          "tooltip": "Percentage of critical suppliers with mapped downstream dependencies. Indicates depth of dependency visibility.",
+          "formula": "tier1_suppliers_with_mapped_dependencies / total_tier1_suppliers * 100"
+        },
+        {
+          "name": "High-Risk Dependencies",
+          "tooltip": "Downstream providers classified as high risk. Highlights hidden exposure beyond direct suppliers.",
+          "formula": "COUNT dependencies WHERE risk = High"
+        },
+        {
+          "name": "Cloud Concentration",
+          "tooltip": "Measures dependency concentration across cloud providers. High concentration may increase systemic outage risk.",
+          "formula": "rule_based_score_from_suppliers_per_cloud_provider"
+        },
+        {
+          "name": "Cloud Concentration Ratio",
+          "tooltip": "Share of supplier exposure tied to one cloud provider. Highlights cloud-related single points of failure.",
+          "formula": "MAX(exposure_by_cloud_provider) / SUM(total_cloud_exposure) * 100"
+        },
+        {
+          "name": "Fourth-Party Concentration Ratio",
+          "tooltip": "Share of dependency exposure concentrated in one downstream provider. Indicates cascading risk potential.",
+          "formula": "MAX(exposure_by_fourth_party) / SUM(total_dependency_exposure) * 100"
+        },
+        {
+          "name": "Single Points of Failure",
+          "tooltip": "Services dependent on only one supplier or dependency. Indicates resilience weakness.",
+          "formula": "COUNT services WHERE only_one_supplier_or_dependency_supports_service"
+        },
+        {
+          "name": "Country Concentration",
+          "tooltip": "Measures supplier and dependency exposure by geography. Highlights regional or geopolitical concentration risk.",
+          "formula": "rule_based_score_from_suppliers_or_dependencies_per_country"
+        },
+        {
+          "name": "Cascading Exposure",
+          "tooltip": "Estimated financial impact from failures across dependency chains. Shows systemic risk amplification.",
+          "formula": "SUM exposure_m across cascading scenarios"
+        },
+        {
+          "name": "Dependency Change Events",
+          "tooltip": "Number of changes in the supplier dependency ecosystem. Indicates evolving exposure that may require review.",
+          "formula": "COUNT dependency_changes_in_period"
+        }
+      ]
+    },
+    {
+      "page": "Compliance",
+      "kpis": [
+        {
+          "name": "Security Clause Coverage",
+          "tooltip": "Percentage of suppliers with contractual security requirements. Indicates baseline control enforcement.",
+          "formula": "suppliers_with_security_clauses / total_suppliers * 100"
+        },
+        {
+          "name": "Breach Notification SLA",
+          "tooltip": "Percentage of suppliers with contractual incident notification timelines. Ensures timely awareness of supplier incidents.",
+          "formula": "suppliers_with_breach_sla / total_suppliers * 100"
+        },
+        {
+          "name": "Audit Rights Coverage",
+          "tooltip": "Percentage of suppliers where audit rights are contractually defined. Indicates ability to verify supplier controls.",
+          "formula": "suppliers_with_audit_rights / total_suppliers * 100"
+        },
+        {
+          "name": "MFA Requirement Coverage",
+          "tooltip": "Percentage of suppliers contractually required to use MFA. Reflects access control expectations.",
+          "formula": "suppliers_with_mfa_clause / total_suppliers * 100"
+        },
+        {
+          "name": "Encryption Requirement Coverage",
+          "tooltip": "Percentage of suppliers with encryption obligations. Indicates contractual data protection coverage.",
+          "formula": "suppliers_with_encryption_clause / total_suppliers * 100"
+        },
+        {
+          "name": "SOC 2 / ISO Coverage",
+          "tooltip": "Percentage of suppliers with valid SOC 2 or ISO evidence. Provides assurance of supplier control maturity.",
+          "formula": "suppliers_with_valid_soc2_or_iso_evidence / total_suppliers * 100"
+        },
+        {
+          "name": "Renewal Reviews",
+          "tooltip": "Contracts requiring cyber review soon. Helps ensure security terms are refreshed before renewal.",
+          "formula": "COUNT suppliers WHERE renewal_days <= 90"
+        },
+        {
+          "name": "Non-Compliant Suppliers",
+          "tooltip": "Suppliers failing contractual or control requirements. Highlights compliance gaps requiring remediation or escalation.",
+          "formula": "COUNT suppliers WHERE status = Non-Compliant"
+        }
+      ]
+    }
+  ]
+}

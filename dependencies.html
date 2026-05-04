@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dependencies | Supplier Cyber Risk</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="extended-kpis.js" defer></script>
+  <script src="tooltips.js" defer></script>
+  <script src="dependencies.js" defer></script>
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="brand-block">
+        <h1>Fourth-Party & Dependency Risk</h1>
+        <p>Q1 2026 | Downstream dependencies, concentration, resilience, and cascading exposure</p>
+      </div>
+
+      <nav class="top-nav">
+        <a href="executive-overview.html">Summary</a>
+        <a href="supplier-portfolio.html">Portfolio</a>
+        <a href="assessments.html">Assessments</a>
+        <a href="monitoring.html">Monitoring</a>
+        <a href="remediation.html">Remediation</a>
+        <a href="dependencies.html" class="active">Dependencies</a>
+        <a href="compliance.html">Compliance</a>
+        <a href="risk-quantification.html">Risk Quantification</a>
+      </nav>
+    </header>
+
+    <section class="card">
+      <h3>Filters</h3>
+      <div class="filter-grid">
+        <label class="filter-field">
+          <span>Dependency Type</span>
+          <select id="filterDependencyType"></select>
+        </label>
+        <label class="filter-field">
+          <span>Tier</span>
+          <select id="filterTier"></select>
+        </label>
+        <label class="filter-field">
+          <span>Risk Level</span>
+          <select id="filterRisk"></select>
+        </label>
+        <label class="filter-field">
+          <span>Critical Suppliers Only</span>
+          <select id="filterCriticalOnly">
+            <option value="All">All</option>
+            <option value="Critical Only">Critical Only</option>
+          </select>
+        </label>
+        <div class="filter-actions">
+          <button id="clearFilters" type="button">Clear Filters</button>
+        </div>
+      </div>
+      <p class="filter-summary" id="filterSummary">Showing all dependencies</p>
+    </section>
+
+    <section class="kpi-grid">
+      <article class="kpi-card">
+        <div class="kpi-label">Fourth Parties Identified</div>
+        <div class="kpi-value" id="fourthPartiesIdentified"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Tier 1 Dependencies Mapped</div>
+        <div class="kpi-value" id="tierOneMapped"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">High-Risk Dependencies</div>
+        <div class="kpi-value" id="highRiskDependencies"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Cloud Concentration</div>
+        <div class="kpi-value" id="cloudConcentration"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Single Points of Failure</div>
+        <div class="kpi-value" id="singlePointsFailure"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Country Concentration</div>
+        <div class="kpi-value" id="countryConcentration"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Cascading Exposure</div>
+        <div class="kpi-value" id="cascadingExposure"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Dependency Change Events</div>
+        <div class="kpi-value" id="dependencyChanges"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Cloud Concentration Ratio</div>
+        <div class="kpi-value" id="cloudConcentrationRatio"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Fourth-Party Concentration Ratio</div>
+        <div class="kpi-value" id="fourthPartyConcentrationRatio"></div>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <div class="card">
+        <h3>Dependency Concentration</h3>
+        <div class="chart-wrap"><canvas id="dependencyConcentrationChart"></canvas></div>
+      </div>
+
+      <div class="card">
+        <h3>Fourth-Party Risk Mix</h3>
+        <div class="chart-wrap"><canvas id="fourthPartyRiskChart"></canvas></div>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <div class="card">
+        <h3>Top Dependency Concentrations</h3>
+        <div class="table-wrap">
+          <table id="dependencyConcentrationTable">
+            <thead>
+              <tr>
+                <th>Dependency</th>
+                <th>Type</th>
+                <th>Critical Suppliers</th>
+                <th>Risk</th>
+                <th>Exposure</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Critical Supplier Dependency Map</h3>
+        <div class="table-wrap">
+          <table id="supplierDependencyTable">
+            <thead>
+              <tr>
+                <th>Supplier</th>
+                <th>Tier</th>
+                <th>Dependency</th>
+                <th>Dependency Risk</th>
+                <th>Service Impact</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Cascading Risk Scenarios</h3>
+      <div class="table-wrap">
+        <table id="cascadingScenarioTable">
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>Affected Suppliers</th>
+              <th>Business Area</th>
+              <th>Estimated Exposure</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="ai-panel">
+      <h3>AI Alerts</h3>
+      <div class="ai-grid" id="dependencyAiAlerts"></div>
+    </section>
+  </div>
+</body>
+</html>

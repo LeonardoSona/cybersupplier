@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assessments | Supplier Cyber Risk</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="tooltips.js" defer></script>
+  <script src="assessments.js" defer></script>
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="brand-block">
+        <h1>Supplier Assessments</h1>
+        <p>Q1 2026 | Onboarding, reassessment, evidence, and control assurance</p>
+      </div>
+
+      <nav class="top-nav">
+        <a href="executive-overview.html">Summary</a>
+        <a href="supplier-portfolio.html">Portfolio</a>
+        <a href="assessments.html" class="active">Assessments</a>
+        <a href="monitoring.html">Monitoring</a>
+        <a href="remediation.html">Remediation</a>
+        <a href="dependencies.html">Dependencies</a>
+        <a href="compliance.html">Compliance</a>
+        <a href="risk-quantification.html">Risk Quantification</a>
+      </nav>
+    </header>
+
+    <section class="card">
+      <h3>Filters</h3>
+      <div class="filter-grid">
+        <label class="filter-field">
+          <span>Assessment Status</span>
+          <select id="filterStatus"></select>
+        </label>
+        <label class="filter-field">
+          <span>Assessment Type</span>
+          <select id="filterType"></select>
+        </label>
+        <label class="filter-field">
+          <span>Tier</span>
+          <select id="filterTier"></select>
+        </label>
+        <label class="filter-field">
+          <span>Owner</span>
+          <select id="filterOwner"></select>
+        </label>
+        <div class="filter-actions">
+          <button id="clearFilters" type="button">Clear Filters</button>
+        </div>
+      </div>
+      <p class="filter-summary" id="filterSummary">Showing all assessments</p>
+    </section>
+
+    <section class="kpi-grid">
+      <article class="kpi-card">
+        <div class="kpi-label">Assessment Completion</div>
+        <div class="kpi-value" id="assessmentCompletion"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Tier 1 Completion</div>
+        <div class="kpi-value" id="tierOneCompletion"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Avg Onboarding Cycle</div>
+        <div class="kpi-value" id="avgOnboardingCycle"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Overdue Assessments</div>
+        <div class="kpi-value" id="overdueAssessments"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Evidence Completion</div>
+        <div class="kpi-value" id="evidenceCompletion"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Control Pass Rate</div>
+        <div class="kpi-value" id="controlPassRate"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Conditional Approvals</div>
+        <div class="kpi-value" id="conditionalApprovals"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Reassessments Due</div>
+        <div class="kpi-value" id="reassessmentsDue"></div>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <div class="card">
+        <h3>Assessment Status</h3>
+        <div class="chart-wrap"><canvas id="assessmentStatusChart"></canvas></div>
+      </div>
+
+      <div class="card">
+        <h3>Completion by Tier</h3>
+        <div class="chart-wrap"><canvas id="completionByTierChart"></canvas></div>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <div class="card">
+        <h3>Assessment Backlog</h3>
+        <div class="table-wrap">
+          <table id="assessmentBacklogTable">
+            <thead>
+              <tr>
+                <th>Supplier</th>
+                <th>Tier</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Age</th>
+                <th>Owner</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Evidence Gaps</h3>
+        <div class="table-wrap">
+          <table id="evidenceGapTable">
+            <thead>
+              <tr>
+                <th>Supplier</th>
+                <th>Missing Evidence</th>
+                <th>Risk</th>
+                <th>Due</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Control Assurance Summary</h3>
+      <div class="table-wrap">
+        <table id="controlSummaryTable">
+          <thead>
+            <tr>
+              <th>Control Area</th>
+              <th>Pass</th>
+              <th>Partial</th>
+              <th>Fail</th>
+              <th>Priority Gap</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="ai-panel">
+      <h3>AI Alerts</h3>
+      <div class="ai-grid" id="assessmentAiAlerts"></div>
+    </section>
+  </div>
+</body>
+</html>
