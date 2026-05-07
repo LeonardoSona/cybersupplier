@@ -1,413 +1,593 @@
-const remediationFindings = [
+const TODAY = new Date("2026-05-07T00:00:00Z");
+
+const remediationActions = [
   {
-    finding: "Exposed admin portal",
-    supplier: "CloudOps Partner A",
+    action_id: "ACT-001",
+    supplier_id: "SUP-001",
+    supplier_name: "CloudOps Partner A",
+    tier: "Tier 1",
+    business_area: "Technology",
+    finding_name: "Exposed admin portal",
     severity: "Critical",
-    age_days: 41,
-    sla_status: "Breached",
+    status: "Open",
+    opened_date: "2026-03-27",
+    due_date: "2026-04-20",
+    closed_date: "",
     owner: "Cyber Assurance",
-    status: "Open",
-    acknowledged_days: 3,
-    remediation_days: 41,
+    owner_type: "Risk Owner",
+    remediation_type: "Control Hardening",
+    current_period: true,
+    previous_period: false,
+    sla_met: false,
+    exposure_reduction_m: 1.1,
     reopened: false,
-    accepted_risk: false
+    validation_result: "Pending",
+    reopen_reason: "",
+    required_action: "Escalate to supplier CTO and close exposure"
   },
   {
-    finding: "Leaked credentials detected",
-    supplier: "Clinical Data Vendor B",
+    action_id: "ACT-002",
+    supplier_id: "SUP-002",
+    supplier_name: "Clinical Data Vendor B",
+    tier: "Tier 1",
+    business_area: "R&D",
+    finding_name: "Leaked credentials detected",
     severity: "Critical",
-    age_days: 19,
-    sla_status: "At Risk",
-    owner: "Supplier Owner",
-    status: "Open",
-    acknowledged_days: 2,
-    remediation_days: 19,
+    status: "In Progress",
+    opened_date: "2026-04-12",
+    due_date: "2026-05-10",
+    closed_date: "",
+    owner: "Supplier Security Owner",
+    owner_type: "Supplier Owner",
+    remediation_type: "Credential Reset",
+    current_period: true,
+    previous_period: false,
+    sla_met: false,
+    exposure_reduction_m: 0.9,
     reopened: false,
-    accepted_risk: false
+    validation_result: "Pending",
+    reopen_reason: "",
+    required_action: "Force reset and enforce MFA across privileged users"
   },
   {
-    finding: "Critical vulnerability on identity endpoint",
-    supplier: "Identity Services F",
+    action_id: "ACT-003",
+    supplier_id: "SUP-006",
+    supplier_name: "Identity Services F",
+    tier: "Tier 1",
+    business_area: "Technology",
+    finding_name: "Critical vulnerability on identity endpoint",
     severity: "Critical",
-    age_days: 28,
-    sla_status: "Breached",
-    owner: "Technology Owner",
     status: "Open",
-    acknowledged_days: 4,
-    remediation_days: 28,
+    opened_date: "2026-03-30",
+    due_date: "2026-04-25",
+    closed_date: "",
+    owner: "Technology Risk Owner",
+    owner_type: "Risk Owner",
+    remediation_type: "Patching",
+    current_period: true,
+    previous_period: false,
+    sla_met: false,
+    exposure_reduction_m: 1.3,
     reopened: true,
-    accepted_risk: false
+    validation_result: "Failed",
+    reopen_reason: "Patch rollback due to service outage",
+    required_action: "Escalate emergency patch window"
   },
   {
-    finding: "Missing SOC 2 evidence",
-    supplier: "Logistics Provider C",
+    action_id: "ACT-004",
+    supplier_id: "SUP-003",
+    supplier_name: "Logistics Provider C",
+    tier: "Tier 2",
+    business_area: "Supply Chain",
+    finding_name: "Missing SOC 2 evidence",
     severity: "High",
-    age_days: 58,
-    sla_status: "Breached",
-    owner: "TPRM Analyst",
     status: "Open",
-    acknowledged_days: 7,
-    remediation_days: 58,
+    opened_date: "2026-03-10",
+    due_date: "2026-04-15",
+    closed_date: "",
+    owner: "TPRM Remediation Lead",
+    owner_type: "TPRM",
+    remediation_type: "Evidence Submission",
+    current_period: true,
+    previous_period: false,
+    sla_met: false,
+    exposure_reduction_m: 0.6,
     reopened: false,
-    accepted_risk: true
+    validation_result: "Pending",
+    reopen_reason: "",
+    required_action: "Issue formal notice and set escalation checkpoint"
   },
   {
-    finding: "Incomplete MFA attestation",
-    supplier: "Manufacturing SaaS D",
+    action_id: "ACT-005",
+    supplier_id: "SUP-004",
+    supplier_name: "Manufacturing SaaS D",
+    tier: "Tier 1",
+    business_area: "Manufacturing",
+    finding_name: "Incomplete MFA attestation",
     severity: "High",
-    age_days: 27,
-    sla_status: "At Risk",
-    owner: "Supplier Owner",
-    status: "Open",
-    acknowledged_days: 5,
-    remediation_days: 27,
+    status: "In Progress",
+    opened_date: "2026-04-02",
+    due_date: "2026-05-18",
+    closed_date: "",
+    owner: "Supplier Security Owner",
+    owner_type: "Supplier Owner",
+    remediation_type: "Access Control",
+    current_period: true,
+    previous_period: false,
+    sla_met: true,
+    exposure_reduction_m: 0.5,
     reopened: false,
-    accepted_risk: false
+    validation_result: "Pending",
+    reopen_reason: "",
+    required_action: "Complete attestation package and validate"
   },
   {
-    finding: "Weak DMARC policy",
-    supplier: "Procurement Platform E",
+    action_id: "ACT-006",
+    supplier_id: "SUP-005",
+    supplier_name: "Procurement Platform E",
+    tier: "Tier 2",
+    business_area: "Procurement",
+    finding_name: "Weak DMARC policy",
     severity: "Medium",
-    age_days: 14,
-    sla_status: "On Track",
+    status: "Closed",
+    opened_date: "2026-03-25",
+    due_date: "2026-04-28",
+    closed_date: "2026-04-23",
     owner: "Procurement Owner",
-    status: "Closed",
-    acknowledged_days: 2,
-    remediation_days: 14,
+    owner_type: "Supplier Owner",
+    remediation_type: "Configuration",
+    current_period: true,
+    previous_period: false,
+    sla_met: true,
+    exposure_reduction_m: 0.2,
     reopened: false,
-    accepted_risk: false
+    validation_result: "Passed",
+    reopen_reason: "",
+    required_action: "Maintain quarterly email control review"
   },
   {
-    finding: "Expired TLS certificate",
-    supplier: "CloudOps Partner A",
+    action_id: "ACT-007",
+    supplier_id: "SUP-001",
+    supplier_name: "CloudOps Partner A",
+    tier: "Tier 1",
+    business_area: "Technology",
+    finding_name: "Expired TLS certificate",
     severity: "Medium",
-    age_days: 10,
-    sla_status: "On Track",
-    owner: "Cyber Assurance",
     status: "Closed",
-    acknowledged_days: 1,
-    remediation_days: 10,
+    opened_date: "2026-03-18",
+    due_date: "2026-04-09",
+    closed_date: "2026-04-04",
+    owner: "Cyber Assurance",
+    owner_type: "Risk Owner",
+    remediation_type: "Configuration",
+    current_period: false,
+    previous_period: true,
+    sla_met: true,
+    exposure_reduction_m: 0.15,
     reopened: false,
-    accepted_risk: false
+    validation_result: "Passed",
+    reopen_reason: "",
+    required_action: "Continue certificate rotation control"
   },
   {
-    finding: "Cloud storage misconfiguration",
-    supplier: "Manufacturing SaaS D",
+    action_id: "ACT-008",
+    supplier_id: "SUP-004",
+    supplier_name: "Manufacturing SaaS D",
+    tier: "Tier 1",
+    business_area: "Manufacturing",
+    finding_name: "Cloud storage misconfiguration",
     severity: "High",
-    age_days: 33,
-    sla_status: "Breached",
-    owner: "Manufacturing IT",
     status: "Open",
-    acknowledged_days: 6,
-    remediation_days: 33,
+    opened_date: "2026-03-28",
+    due_date: "2026-04-30",
+    closed_date: "",
+    owner: "Manufacturing IT Risk",
+    owner_type: "Risk Owner",
+    remediation_type: "Cloud Hardening",
+    current_period: true,
+    previous_period: false,
+    sla_met: false,
+    exposure_reduction_m: 0.7,
     reopened: true,
-    accepted_risk: false
+    validation_result: "Failed",
+    reopen_reason: "Access policy drift detected",
+    required_action: "Escalate cloud policy remediation in governance forum"
+  },
+  {
+    action_id: "ACT-009",
+    supplier_id: "SUP-008",
+    supplier_name: "Data Processing H",
+    tier: "Tier 1",
+    business_area: "R&D",
+    finding_name: "Unresolved threat indicator triage",
+    severity: "High",
+    status: "Open",
+    opened_date: "2026-04-08",
+    due_date: "2026-05-12",
+    closed_date: "",
+    owner: "Cyber Governance Lead",
+    owner_type: "Governance",
+    remediation_type: "Threat Response",
+    current_period: true,
+    previous_period: false,
+    sla_met: true,
+    exposure_reduction_m: 0.4,
+    reopened: false,
+    validation_result: "Pending",
+    reopen_reason: "",
+    required_action: "Complete triage and close action owners"
+  },
+  {
+    action_id: "ACT-010",
+    supplier_id: "SUP-006",
+    supplier_name: "Identity Services F",
+    tier: "Tier 1",
+    business_area: "Technology",
+    finding_name: "Identity endpoint legacy protocol enabled",
+    severity: "High",
+    status: "Closed",
+    opened_date: "2026-03-14",
+    due_date: "2026-04-10",
+    closed_date: "2026-04-26",
+    owner: "Technology Risk Owner",
+    owner_type: "Risk Owner",
+    remediation_type: "Protocol Hardening",
+    current_period: false,
+    previous_period: true,
+    sla_met: false,
+    exposure_reduction_m: 0.5,
+    reopened: true,
+    validation_result: "Reopened",
+    reopen_reason: "Control regression after release",
+    required_action: "Re-test control and enforce release gate"
   }
 ];
 
-const remediationTrend = [
-  { month: "Jan", opened: 21, closed: 14, breached: 5 },
-  { month: "Feb", opened: 25, closed: 18, breached: 7 },
-  { month: "Mar", opened: 19, closed: 22, breached: 4 }
-];
-
-const decisionQueue = [
-  {
-    supplier: "CloudOps Partner A",
-    decision_type: "Executive Escalation",
-    risk: "Critical",
-    exposure_m: 3.4,
-    due_days: -11,
-    action: "Escalate remediation plan"
-  },
-  {
-    supplier: "Identity Services F",
-    decision_type: "Remediation Funding",
-    risk: "Critical",
-    exposure_m: 2.1,
-    due_days: -3,
-    action: "Accelerate identity endpoint fix"
-  },
-  {
-    supplier: "Logistics Provider C",
-    decision_type: "Risk Acceptance Review",
-    risk: "High",
-    exposure_m: 1.6,
-    due_days: -20,
-    action: "Review accepted risk expiry"
-  },
-  {
-    supplier: "Manufacturing SaaS D",
-    decision_type: "Supplier Owner Action",
-    risk: "High",
-    exposure_m: 1.2,
-    due_days: 5,
-    action: "Confirm MFA and cloud remediation evidence"
-  }
-];
-
-const remediationAiAlerts = [
-  {
-    value: "Vendor F",
-    detail: "Highest likelihood of missing critical remediation SLA"
-  },
-  {
-    value: "18 days",
-    detail: "Predicted delay for breached findings without escalation"
-  },
-  {
-    value: "$2.9M",
-    detail: "Estimated exposure reduction from closing top 3 findings"
-  }
-];
-
-const remediationTierBySupplier = {
-  "CloudOps Partner A": "Tier 1",
-  "Clinical Data Vendor B": "Tier 1",
-  "Identity Services F": "Tier 1",
-  "Logistics Provider C": "Tier 2",
-  "Manufacturing SaaS D": "Tier 1",
-  "Procurement Platform E": "Tier 2"
-};
-
-let remediationTrendChart = null;
-let findingsSeverityChart = null;
+let statusBySeverityChart = null;
+let slaTrendChart = null;
 
 function setSelectOptions(select, values) {
   const options = ["All", ...new Set(values)].filter(Boolean);
-  select.innerHTML = options.map(value => `<option value="${value}">${value}</option>`).join("");
+  select.innerHTML = options.map((value) => `<option value="${value}">${value}</option>`).join("");
 }
 
-function inAgeBucket(ageDays, bucket) {
-  if (bucket === "0-30") return ageDays >= 0 && ageDays < 30;
-  if (bucket === "30-60") return ageDays >= 30 && ageDays < 60;
-  if (bucket === "60+") return ageDays >= 60;
-  return true;
+function parseDate(value) {
+  if (!value) return null;
+  return new Date(`${value}T00:00:00Z`);
+}
+
+function daysSince(dateValue) {
+  const date = parseDate(dateValue);
+  if (!date) return 0;
+  return Math.max(0, Math.round((TODAY - date) / 86400000));
+}
+
+function daysToDue(dateValue) {
+  const date = parseDate(dateValue);
+  if (!date) return 9999;
+  return Math.round((date - TODAY) / 86400000);
+}
+
+function dueDateWindowFor(action) {
+  const days = daysToDue(action.due_date);
+  if (days < 0) return "Overdue";
+  if (days <= 15) return "0-15 Days";
+  if (days <= 30) return "16-30 Days";
+  return "31+ Days";
 }
 
 function getPillClass(value) {
-  if (["Critical", "High", "Breached"].includes(value)) return "pill pill-red";
-  if (["Medium", "At Risk"].includes(value)) return "pill pill-amber";
+  if (["Critical", "High", "Open", "Overdue", "Breached", "Failed", "Reopened"].includes(value)) {
+    return "pill pill-red";
+  }
+  if (["Medium", "In Progress", "At Risk", "Pending"].includes(value)) {
+    return "pill pill-amber";
+  }
   return "pill pill-green";
 }
 
-function groupBy(items, key) {
-  return items.reduce((acc, item) => {
-    const group = item[key];
-    if (!acc[group]) acc[group] = [];
-    acc[group].push(item);
-    return acc;
-  }, {});
-}
-
-function filterRemediationData(state) {
-  const filteredFindings = remediationFindings.filter(item => {
-    const severityMatch = state.severity === "All" || item.severity === state.severity;
-    const slaMatch = state.slaStatus === "All" || item.sla_status === state.slaStatus;
-    const ownerMatch = state.owner === "All" || item.owner === state.owner;
-    const supplierMatch = state.supplier === "All" || item.supplier === state.supplier;
-    const ageBucketMatch = state.ageBucket === "All" || inAgeBucket(item.age_days, state.ageBucket);
-    return severityMatch && slaMatch && ownerMatch && supplierMatch && ageBucketMatch;
-  });
-
-  const suppliers = new Set(filteredFindings.map(item => item.supplier));
-  const filteredDecisionQueue = decisionQueue.filter(item => suppliers.has(item.supplier));
-
-  return { filteredFindings, filteredDecisionQueue };
-}
-
-function renderRemediationKpis(filteredFindings) {
-  const total = filteredFindings.length;
-
-  if (!total) {
-    document.getElementById("openFindings").textContent = "0";
-    document.getElementById("criticalFindings").textContent = "0";
-    document.getElementById("slaBreaches").textContent = "0";
-    document.getElementById("mtta").textContent = "0d";
-    document.getElementById("mttr").textContent = "0d";
-    document.getElementById("closureRate").textContent = "0%";
-    document.getElementById("reopenedFindings").textContent = "0";
-    document.getElementById("acceptedRisks").textContent = "0";
+function setTrend(id, currentValue, previousValue, preferredDirection, valueSuffix = "") {
+  const node = document.getElementById(id);
+  if (!node || previousValue == null || Number.isNaN(previousValue)) {
     return;
   }
 
-  const open = filteredFindings.filter(f => f.status === "Open");
-  const closed = filteredFindings.filter(f => f.status === "Closed");
+  const delta = currentValue - previousValue;
 
-  const critical = open.filter(f => f.severity === "Critical").length;
-  const breached = open.filter(f => f.sla_status === "Breached").length;
+  if (preferredDirection === "contextual") {
+    const arrow = delta > 0 ? "▲" : delta < 0 ? "▼" : "→";
+    node.className = "kpi-trend trend-warn";
+    node.textContent = `${arrow} ${Math.abs(delta).toFixed(1)}${valueSuffix} trend`;
+    return;
+  }
 
-  const mtta = Math.round(
-    open.length ? open.reduce((sum, f) => sum + f.acknowledged_days, 0) / open.length : 0
-  );
+  if (delta === 0) {
+    node.className = "kpi-trend trend-warn";
+    node.textContent = `→ 0${valueSuffix} vs prior period`;
+    return;
+  }
 
-  const mttr = Math.round(
-    filteredFindings.reduce((sum, f) => sum + f.remediation_days, 0) / total
-  );
+  const isIncrease = delta > 0;
+  const arrow = isIncrease ? "▲" : "▼";
+  const isGood = preferredDirection === "higher" ? isIncrease : !isIncrease;
 
-  const closureRate = Math.round((closed.length / total) * 100);
-
-  const reopened = filteredFindings.filter(f => f.reopened).length;
-  const accepted = filteredFindings.filter(f => f.accepted_risk).length;
-
-  document.getElementById("openFindings").textContent = open.length;
-  document.getElementById("criticalFindings").textContent = critical;
-  document.getElementById("slaBreaches").textContent = breached;
-  document.getElementById("mtta").textContent = `${mtta}d`;
-  document.getElementById("mttr").textContent = `${mttr}d`;
-  document.getElementById("closureRate").textContent = `${closureRate}%`;
-  document.getElementById("reopenedFindings").textContent = reopened;
-  document.getElementById("acceptedRisks").textContent = accepted;
+  node.className = `kpi-trend ${isGood ? "trend-good" : "trend-bad"}`;
+  node.textContent = `${arrow} ${Math.abs(delta).toFixed(1)}${valueSuffix} vs prior period`;
 }
 
-function renderRemediationBacklog(filteredFindings) {
-  const tbody = document.querySelector("#remediationBacklogTable tbody");
+function filterRemediationData(state) {
+  return remediationActions.filter((action) => {
+    const severityMatch = state.severity === "All" || action.severity === state.severity;
+    const statusMatch = state.status === "All" || action.status === state.status;
+    const tierMatch = state.tier === "All" || action.tier === state.tier;
+    const ownerMatch = state.owner === "All" || action.owner === state.owner;
+    const ownerTypeMatch = state.ownerType === "All" || action.owner_type === state.ownerType;
+    const slaStatus = action.sla_met ? "Met" : (daysToDue(action.due_date) < 0 && action.status !== "Closed" ? "Breached" : "At Risk");
+    const slaMatch = state.slaStatus === "All" || slaStatus === state.slaStatus;
+    const dueWindowMatch = state.dueDateWindow === "All" || dueDateWindowFor(action) === state.dueDateWindow;
+    const remediationTypeMatch = state.remediationType === "All" || action.remediation_type === state.remediationType;
+
+    return severityMatch && statusMatch && tierMatch && ownerMatch && ownerTypeMatch && slaMatch && dueWindowMatch && remediationTypeMatch;
+  });
+}
+
+function calculateKpis(filteredActions) {
+  const openActions = filteredActions.filter((a) => a.status !== "Closed");
+  const prevActions = remediationActions.filter((a) => a.previous_period);
+  const prevOpenActions = prevActions.filter((a) => a.status !== "Closed");
+
+  const openRemediationActions = openActions.length;
+  const prevOpenRemediationActions = prevOpenActions.length;
+
+  const criticalActionsOverdue = openActions.filter(
+    (a) => a.severity === "Critical" && daysToDue(a.due_date) < 0
+  ).length;
+  const prevCriticalActionsOverdue = prevActions.filter(
+    (a) => a.severity === "Critical" && a.status !== "Closed" && daysToDue(a.due_date) < 0
+  ).length;
+
+  const slaCompliance = filteredActions.length
+    ? Math.round((filteredActions.filter((a) => a.sla_met).length / filteredActions.length) * 100)
+    : 0;
+  const prevSlaCompliance = prevActions.length
+    ? Math.round((prevActions.filter((a) => a.sla_met).length / prevActions.length) * 100)
+    : 0;
+
+  const mttr = filteredActions.length
+    ? Math.round(
+        filteredActions.reduce((sum, a) => {
+          const endDate = a.closed_date || TODAY.toISOString().slice(0, 10);
+          return sum + Math.max(1, Math.round((parseDate(endDate) - parseDate(a.opened_date)) / 86400000));
+        }, 0) / filteredActions.length
+      )
+    : 0;
+  const prevMttr = prevActions.length
+    ? Math.round(
+        prevActions.reduce((sum, a) => {
+          const endDate = a.closed_date || TODAY.toISOString().slice(0, 10);
+          return sum + Math.max(1, Math.round((parseDate(endDate) - parseDate(a.opened_date)) / 86400000));
+        }, 0) / prevActions.length
+      )
+    : 0;
+
+  const riskReductionDelivered = Number(
+    filteredActions.reduce((sum, a) => sum + (a.status === "Closed" ? a.exposure_reduction_m : 0), 0).toFixed(1)
+  );
+  const prevRiskReductionDelivered = Number(
+    prevActions.reduce((sum, a) => sum + (a.status === "Closed" ? a.exposure_reduction_m : 0), 0).toFixed(1)
+  );
+
+  const backlogGrowth = prevOpenActions.length
+    ? Number((((openActions.length - prevOpenActions.length) / prevOpenActions.length) * 100).toFixed(1))
+    : 0;
+
+  const reopenedFindings = filteredActions.filter((a) => a.reopened).length;
+  const prevReopenedFindings = prevActions.filter((a) => a.reopened).length;
+
+  const supplierOwnerOverdueActions = openActions.filter(
+    (a) => a.owner_type === "Supplier Owner" && daysToDue(a.due_date) < 0
+  ).length;
+  const prevSupplierOwnerOverdueActions = prevActions.filter(
+    (a) => a.owner_type === "Supplier Owner" && a.status !== "Closed" && daysToDue(a.due_date) < 0
+  ).length;
+
+  return {
+    openRemediationActions,
+    prevOpenRemediationActions,
+    criticalActionsOverdue,
+    prevCriticalActionsOverdue,
+    slaCompliance,
+    prevSlaCompliance,
+    mttr,
+    prevMttr,
+    riskReductionDelivered,
+    prevRiskReductionDelivered,
+    backlogGrowth,
+    reopenedFindings,
+    prevReopenedFindings,
+    supplierOwnerOverdueActions,
+    prevSupplierOwnerOverdueActions
+  };
+}
+
+function renderKpis(filteredActions) {
+  const kpis = calculateKpis(filteredActions);
+
+  document.getElementById("openRemediationActions").textContent = kpis.openRemediationActions;
+  document.getElementById("criticalActionsOverdue").textContent = kpis.criticalActionsOverdue;
+  document.getElementById("slaCompliance").textContent = `${kpis.slaCompliance}%`;
+  document.getElementById("mttr").textContent = `${kpis.mttr}d`;
+  document.getElementById("riskReductionDelivered").textContent = `$${kpis.riskReductionDelivered}M`;
+  document.getElementById("backlogGrowth").textContent = `${kpis.backlogGrowth}%`;
+  document.getElementById("reopenedFindings").textContent = kpis.reopenedFindings;
+  document.getElementById("supplierOwnerOverdueActions").textContent = kpis.supplierOwnerOverdueActions;
+
+  setTrend("openRemediationActionsTrend", kpis.openRemediationActions, kpis.prevOpenRemediationActions, "contextual");
+  setTrend("criticalActionsOverdueTrend", kpis.criticalActionsOverdue, kpis.prevCriticalActionsOverdue, "lower");
+  setTrend("slaComplianceTrend", kpis.slaCompliance, kpis.prevSlaCompliance, "higher", "%");
+  setTrend("mttrTrend", kpis.mttr, kpis.prevMttr, "lower", "d");
+  setTrend("riskReductionDeliveredTrend", kpis.riskReductionDelivered, kpis.prevRiskReductionDelivered, "higher", "M");
+  setTrend("backlogGrowthTrend", kpis.backlogGrowth, 0, "lower", "%");
+  setTrend("reopenedFindingsTrend", kpis.reopenedFindings, kpis.prevReopenedFindings, "lower");
+  setTrend("supplierOwnerOverdueActionsTrend", kpis.supplierOwnerOverdueActions, kpis.prevSupplierOwnerOverdueActions, "lower");
+}
+
+function activeRequiredAction(action) {
+  if (action.severity === "Critical" && daysToDue(action.due_date) < 0) return "Escalate now in governance forum";
+  if (daysToDue(action.due_date) < 0) return "Execute expedited remediation plan";
+  if (action.status === "In Progress") return "Track weekly and confirm closure evidence";
+  return action.required_action;
+}
+
+function renderActiveQueue(filteredActions) {
+  const tbody = document.querySelector("#activeRemediationQueueTable tbody");
   tbody.innerHTML = "";
 
-  filteredFindings
-    .filter(f => f.status === "Open")
-    .sort((a, b) => b.age_days - a.age_days)
-    .forEach(f => {
+  filteredActions
+    .filter((a) => a.status !== "Closed")
+    .sort((a, b) => daysToDue(a.due_date) - daysToDue(b.due_date))
+    .forEach((a) => {
       tbody.innerHTML += `
         <tr>
-          <td>${f.finding}</td>
-          <td>${f.supplier}</td>
-          <td><span class="${getPillClass(f.severity)}">${f.severity}</span></td>
-          <td>${f.age_days}d</td>
-          <td><span class="${getPillClass(f.sla_status)}">${f.sla_status}</span></td>
-          <td>${f.owner}</td>
+          <td>${a.supplier_name}</td>
+          <td>${a.tier}</td>
+          <td>${a.finding_name}</td>
+          <td><span class="${getPillClass(a.severity)}">${a.severity}</span></td>
+          <td><span class="${getPillClass(a.status)}">${a.status}</span></td>
+          <td>${daysSince(a.opened_date)}d</td>
+          <td>${a.due_date}</td>
+          <td>${a.owner}</td>
+          <td>${activeRequiredAction(a)}</td>
         </tr>
       `;
     });
 }
 
-function renderOwnerWorkload(filteredFindings) {
-  const tbody = document.querySelector("#ownerWorkloadTable tbody");
+function renderOverdueCriticalActions(filteredActions) {
+  const tbody = document.querySelector("#overdueCriticalActionsTable tbody");
   tbody.innerHTML = "";
 
-  const openFindings = filteredFindings.filter(f => f.status === "Open");
-  const grouped = groupBy(openFindings, "owner");
+  filteredActions
+    .filter((a) => a.status !== "Closed" && a.severity === "Critical" && daysToDue(a.due_date) < 0)
+    .sort((a, b) => daysToDue(a.due_date) - daysToDue(b.due_date))
+    .forEach((a) => {
+      const daysOverdue = Math.abs(daysToDue(a.due_date));
+      const escalationOwner = a.owner_type === "Supplier Owner" ? "Supplier Risk Owner" : "Cyber Governance Lead";
 
-  Object.entries(grouped).forEach(([owner, findings]) => {
-    const breached = findings.filter(f => f.sla_status === "Breached").length;
-    const critical = findings.filter(f => f.severity === "Critical").length;
-    const oldest = Math.max(...findings.map(f => f.age_days));
-
-    tbody.innerHTML += `
-      <tr>
-        <td>${owner}</td>
-        <td>${findings.length}</td>
-        <td>${breached}</td>
-        <td>${critical}</td>
-        <td>${oldest}d</td>
-      </tr>
-    `;
-  });
-}
-
-function renderDecisionQueue(filteredDecisionQueue) {
-  const tbody = document.querySelector("#decisionQueueTable tbody");
-  tbody.innerHTML = "";
-
-  filteredDecisionQueue.forEach(item => {
-    const dueLabel =
-      item.due_days < 0
-        ? `${Math.abs(item.due_days)}d overdue`
-        : `${item.due_days}d`;
-
-    tbody.innerHTML += `
-      <tr>
-        <td>${item.supplier}</td>
-        <td>${item.decision_type}</td>
-        <td><span class="${getPillClass(item.risk)}">${item.risk}</span></td>
-        <td>$${item.exposure_m.toFixed(1)}M</td>
-        <td>${dueLabel}</td>
-        <td>${item.action}</td>
-      </tr>
-    `;
-  });
-}
-
-function renderRemediationAiAlerts() {
-  const container = document.getElementById("remediationAiAlerts");
-  container.innerHTML = "";
-
-  remediationAiAlerts.forEach(alert => {
-    container.innerHTML += `
-      <div class="ai-item">
-        <strong>${alert.value}</strong>
-        <span>${alert.detail}</span>
-      </div>
-    `;
-  });
-}
-
-function renderRemediationCharts(filteredFindings) {
-  if (remediationTrendChart) remediationTrendChart.destroy();
-  if (findingsSeverityChart) findingsSeverityChart.destroy();
-
-  const ratio = remediationFindings.length ? filteredFindings.length / remediationFindings.length : 0;
-
-  remediationTrendChart = new Chart(document.getElementById("remediationTrendChart"), {
-    type: "line",
-    data: {
-      labels: remediationTrend.map(r => r.month),
-      datasets: [
-        {
-          label: "Opened",
-          data: remediationTrend.map(r => Math.round(r.opened * ratio)),
-          tension: 0.35
-        },
-        {
-          label: "Closed",
-          data: remediationTrend.map(r => Math.round(r.closed * ratio)),
-          tension: 0.35
-        },
-        {
-          label: "Breached",
-          data: remediationTrend.map(r => Math.round(r.breached * ratio)),
-          tension: 0.35
-        }
-      ]
-    },
-    options: { maintainAspectRatio: false }
+      tbody.innerHTML += `
+        <tr>
+          <td>${a.supplier_name}</td>
+          <td>${a.business_area}</td>
+          <td>${a.finding_name}</td>
+          <td>${daysOverdue}</td>
+          <td>$${a.exposure_reduction_m.toFixed(1)}M</td>
+          <td>${escalationOwner}</td>
+          <td>Escalate and close within 7 days</td>
+        </tr>
+      `;
     });
+}
+
+function renderValidationReopened(filteredActions) {
+  const tbody = document.querySelector("#validationReopenedTable tbody");
+  tbody.innerHTML = "";
+
+  filteredActions
+    .filter((a) => a.status === "Closed" || a.reopened)
+    .sort((a, b) => {
+      const aDate = parseDate(a.closed_date || a.opened_date);
+      const bDate = parseDate(b.closed_date || b.opened_date);
+      return bDate - aDate;
+    })
+    .forEach((a) => {
+      const requiredAction = a.reopened
+        ? "Re-open remediation plan and governance review"
+        : a.validation_result === "Passed"
+          ? "Maintain control validation cadence"
+          : "Complete validation evidence";
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${a.supplier_name}</td>
+          <td>${a.finding_name}</td>
+          <td>${a.closed_date || "-"}</td>
+          <td><span class="${getPillClass(a.validation_result)}">${a.validation_result}</span></td>
+          <td>${a.reopen_reason || "-"}</td>
+          <td>${requiredAction}</td>
+        </tr>
+      `;
+    });
+}
+
+function renderCharts(filteredActions) {
+  if (statusBySeverityChart) statusBySeverityChart.destroy();
+  if (slaTrendChart) slaTrendChart.destroy();
 
   const severities = ["Critical", "High", "Medium"];
+  const statuses = ["Open", "In Progress", "Closed"];
 
-  findingsSeverityChart = new Chart(document.getElementById("findingsSeverityChart"), {
-    type: "doughnut",
+  statusBySeverityChart = new Chart(document.getElementById("statusBySeverityChart"), {
+    type: "bar",
     data: {
       labels: severities,
+      datasets: statuses.map((status) => ({
+        label: status,
+        data: severities.map(
+          (severity) => filteredActions.filter((a) => a.severity === severity && a.status === status).length
+        )
+      }))
+    },
+    options: { maintainAspectRatio: false }
+  });
+
+  const periods = ["Previous", "Current"];
+  const previous = remediationActions.filter((a) => a.previous_period);
+  const current = remediationActions.filter((a) => a.current_period);
+
+  slaTrendChart = new Chart(document.getElementById("slaTrendChart"), {
+    type: "line",
+    data: {
+      labels: periods,
       datasets: [
         {
-          data: severities.map(severity =>
-            filteredFindings.filter(f => f.severity === severity).length
-          )
+          label: "SLA Met",
+          data: [
+            previous.filter((a) => a.sla_met).length,
+            current.filter((a) => a.sla_met).length
+          ],
+          tension: 0.3
+        },
+        {
+          label: "SLA Breached",
+          data: [
+            previous.filter((a) => !a.sla_met && a.status !== "Closed").length,
+            current.filter((a) => !a.sla_met && a.status !== "Closed").length
+          ],
+          tension: 0.3
         }
       ]
     },
     options: { maintainAspectRatio: false }
-    });
+  });
 }
 
 function applyFilters(state) {
-  const { filteredFindings, filteredDecisionQueue } = filterRemediationData(state);
+  const filteredActions = filterRemediationData(state);
 
-  renderRemediationKpis(filteredFindings);
-  renderRemediationBacklog(filteredFindings);
-  renderOwnerWorkload(filteredFindings);
-  renderDecisionQueue(filteredDecisionQueue);
-  renderRemediationCharts(filteredFindings);
+  renderKpis(filteredActions);
+  renderActiveQueue(filteredActions);
+  renderOverdueCriticalActions(filteredActions);
+  renderValidationReopened(filteredActions);
+  renderCharts(filteredActions);
 
   document.getElementById("filterSummary").textContent =
-    `Showing ${filteredFindings.length} of ${remediationFindings.length} findings`;
+    `Showing ${filteredActions.length} of ${remediationActions.length} remediation actions`;
 }
 
 function addCardHoverEffect() {
-  const cards = document.querySelectorAll(".kpi-card, .card, .ai-item");
+  const cards = document.querySelectorAll(".kpi-card, .card");
 
-  cards.forEach(card => {
+  cards.forEach((card) => {
     card.addEventListener("mouseenter", () => {
       card.style.transform = "translateY(-3px)";
       card.style.transition = "0.2s ease";
@@ -419,57 +599,62 @@ function addCardHoverEffect() {
   });
 }
 
-renderRemediationAiAlerts();
-addCardHoverEffect();
-
-function renderExtendedRemediationKpis() {
-  const ext = calculateMissingKpis();
-  document.getElementById("backlogGrowthPercent").textContent = ext.backlogGrowthPercent;
-  document.getElementById("findingsPerAnalyst").textContent = ext.findingsPerAnalyst;
-}
-
-renderExtendedRemediationKpis();
-
 function initRemediationFilters() {
   const severitySelect = document.getElementById("filterSeverity");
-  const slaStatusSelect = document.getElementById("filterSlaStatus");
+  const statusSelect = document.getElementById("filterStatus");
+  const tierSelect = document.getElementById("filterTier");
   const ownerSelect = document.getElementById("filterOwner");
-  const supplierSelect = document.getElementById("filterSupplier");
-  const ageBucketSelect = document.getElementById("filterAgeBucket");
+  const ownerTypeSelect = document.getElementById("filterOwnerType");
+  const slaStatusSelect = document.getElementById("filterSlaStatus");
+  const dueDateWindowSelect = document.getElementById("filterDueDateWindow");
+  const remediationTypeSelect = document.getElementById("filterRemediationType");
   const clearButton = document.getElementById("clearFilters");
 
-  setSelectOptions(severitySelect, remediationFindings.map(item => item.severity));
-  setSelectOptions(slaStatusSelect, ["Breached", "At Risk"]);
-  setSelectOptions(ownerSelect, remediationFindings.map(item => item.owner));
-  setSelectOptions(supplierSelect, remediationFindings.map(item => item.supplier));
-  ageBucketSelect.innerHTML = ["All", "0-30", "30-60", "60+"].map(value => `<option value="${value}">${value}</option>`).join("");
+  setSelectOptions(severitySelect, remediationActions.map((a) => a.severity));
+  setSelectOptions(statusSelect, remediationActions.map((a) => a.status));
+  setSelectOptions(tierSelect, remediationActions.map((a) => a.tier));
+  setSelectOptions(ownerSelect, remediationActions.map((a) => a.owner));
+  setSelectOptions(ownerTypeSelect, remediationActions.map((a) => a.owner_type));
+  setSelectOptions(slaStatusSelect, ["Met", "At Risk", "Breached"]);
+  setSelectOptions(dueDateWindowSelect, ["Overdue", "0-15 Days", "16-30 Days", "31+ Days"]);
+  setSelectOptions(remediationTypeSelect, remediationActions.map((a) => a.remediation_type));
 
   function applyFromUi() {
     applyFilters({
       severity: severitySelect.value,
-      slaStatus: slaStatusSelect.value,
+      status: statusSelect.value,
+      tier: tierSelect.value,
       owner: ownerSelect.value,
-      supplier: supplierSelect.value,
-      ageBucket: ageBucketSelect.value
+      ownerType: ownerTypeSelect.value,
+      slaStatus: slaStatusSelect.value,
+      dueDateWindow: dueDateWindowSelect.value,
+      remediationType: remediationTypeSelect.value
     });
   }
 
   severitySelect.addEventListener("change", applyFromUi);
-  slaStatusSelect.addEventListener("change", applyFromUi);
+  statusSelect.addEventListener("change", applyFromUi);
+  tierSelect.addEventListener("change", applyFromUi);
   ownerSelect.addEventListener("change", applyFromUi);
-  supplierSelect.addEventListener("change", applyFromUi);
-  ageBucketSelect.addEventListener("change", applyFromUi);
+  ownerTypeSelect.addEventListener("change", applyFromUi);
+  slaStatusSelect.addEventListener("change", applyFromUi);
+  dueDateWindowSelect.addEventListener("change", applyFromUi);
+  remediationTypeSelect.addEventListener("change", applyFromUi);
 
   clearButton.addEventListener("click", () => {
     severitySelect.value = "All";
-    slaStatusSelect.value = "All";
+    statusSelect.value = "All";
+    tierSelect.value = "All";
     ownerSelect.value = "All";
-    supplierSelect.value = "All";
-    ageBucketSelect.value = "All";
+    ownerTypeSelect.value = "All";
+    slaStatusSelect.value = "All";
+    dueDateWindowSelect.value = "All";
+    remediationTypeSelect.value = "All";
     applyFromUi();
   });
 
   applyFromUi();
 }
 
+addCardHoverEffect();
 initRemediationFilters();

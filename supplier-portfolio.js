@@ -1,57 +1,228 @@
-const portfolioSummary = {
-  inventoryCompleteness: 92,
-  classifiedVendors: 88,
-  concentrationIndex: "High",
-  fourthParties: 248,
-  singleSupplierServices: 11
-};
-
 const portfolioSuppliers = [
-  { supplier: "CloudOps Partner A", tier: "Tier 1", segment: "Cloud & Infrastructure", business_area: "Tech", geography: "North America", service_category: "Cloud", cyber_rating: 612, risk_level: "High", criticality: "Very High", exposure_m: 3.4 },
-  { supplier: "Clinical Data Vendor B", tier: "Tier 1", segment: "Clinical / R&D Data", business_area: "R&D", geography: "Europe", service_category: "Data", cyber_rating: 640, risk_level: "High", criticality: "Very High", exposure_m: 2.8 },
-  { supplier: "Logistics Provider C", tier: "Tier 2", segment: "Manufacturing & Supply Chain", business_area: "Supply Chain", geography: "Asia Pacific", service_category: "Logistics", cyber_rating: 681, risk_level: "High", criticality: "High", exposure_m: 1.6 },
-  { supplier: "Manufacturing SaaS D", tier: "Tier 1", segment: "Manufacturing & Supply Chain", business_area: "Supply Chain", geography: "North America", service_category: "Cloud", cyber_rating: 702, risk_level: "Medium", criticality: "High", exposure_m: 1.2 },
-  { supplier: "Procurement Platform E", tier: "Tier 2", segment: "Corporate Services", business_area: "Supply Chain", geography: "Europe", service_category: "Data", cyber_rating: 728, risk_level: "Medium", criticality: "Medium", exposure_m: 0.9 },
-  { supplier: "Identity Services F", tier: "Tier 1", segment: "Cloud & Infrastructure", business_area: "Tech", geography: "North America", service_category: "Cloud", cyber_rating: 655, risk_level: "High", criticality: "Very High", exposure_m: 2.1 },
-  { supplier: "Marketing Platform G", tier: "Tier 3", segment: "Corporate Services", business_area: "R&D", geography: "Europe", service_category: "Data", cyber_rating: 781, risk_level: "Low", criticality: "Medium", exposure_m: 0.4 },
-  { supplier: "Data Processing H", tier: "Tier 1", segment: "Clinical / R&D Data", business_area: "R&D", geography: "North America", service_category: "Data", cyber_rating: 698, risk_level: "Medium", criticality: "Very High", exposure_m: 1.5 }
-];
-
-const concentrationHotspots = [
-  { type: "Cloud Provider", dependency: "Azure", critical_suppliers: 18, risk_level: "High", exposure_m: 5.8 },
-  { type: "Cloud Provider", dependency: "AWS", critical_suppliers: 14, risk_level: "Medium", exposure_m: 3.1 },
-  { type: "Service Provider", dependency: "Managed Identity Provider", critical_suppliers: 9, risk_level: "High", exposure_m: 4.4 },
-  { type: "Geography", dependency: "EU Data Processing Cluster", critical_suppliers: 11, risk_level: "Medium", exposure_m: 2.7 },
-  { type: "Fourth Party", dependency: "Shared Hosting Provider", critical_suppliers: 7, risk_level: "High", exposure_m: 3.6 }
-];
-
-const portfolioAiAlerts = [
   {
-    value: "12 vendors",
-    detail: "Recommended for Tier 1 reclassification based on access and data sensitivity"
+    supplier_id: "SUP-001",
+    supplier_name: "CloudOps Partner A",
+    tier: "Tier 1",
+    business_area: "Technology",
+    geography: "North America",
+    service_category: "Cloud Infrastructure",
+    business_service: "Core Cloud Hosting",
+    supplier_owner: "Technology Risk",
+    profile_complete: true,
+    previous_profile_complete: true,
+    criticality_score: 95,
+    previous_criticality_score: 94,
+    criticality_level: "Very High",
+    risk_score: 91,
+    previous_risk_score: 94,
+    residual_risk: "High",
+    cyber_rating: 612,
+    previous_cyber_rating: 602,
+    annual_loss_exposure_m: 3.4,
+    previous_annual_loss_exposure_m: 3.8,
+    subcontractor_visibility: "Full",
+    previous_subcontractor_visibility: "Partial",
+    fourth_party: "Managed Identity Provider X",
+    alternate_supplier_available: false,
+    previous_alternate_supplier_available: false
   },
   {
-    value: "Azure cluster",
-    detail: "Highest concentration exposure across critical suppliers"
+    supplier_id: "SUP-002",
+    supplier_name: "Clinical Data Vendor B",
+    tier: "Tier 1",
+    business_area: "R&D",
+    geography: "Europe",
+    service_category: "Clinical Data",
+    business_service: "Trial Data Processing",
+    supplier_owner: "Clinical Operations",
+    profile_complete: true,
+    previous_profile_complete: true,
+    criticality_score: 93,
+    previous_criticality_score: 92,
+    criticality_level: "Very High",
+    risk_score: 88,
+    previous_risk_score: 90,
+    residual_risk: "High",
+    cyber_rating: 640,
+    previous_cyber_rating: 631,
+    annual_loss_exposure_m: 2.8,
+    previous_annual_loss_exposure_m: 3.1,
+    subcontractor_visibility: "Partial",
+    previous_subcontractor_visibility: "Partial",
+    fourth_party: "EU Data Processing Cluster",
+    alternate_supplier_available: false,
+    previous_alternate_supplier_available: false
   },
   {
-    value: "3 supplier groups",
-    detail: "Clustered for targeted assurance campaigns"
+    supplier_id: "SUP-003",
+    supplier_name: "Logistics Provider C",
+    tier: "Tier 2",
+    business_area: "Supply Chain",
+    geography: "Asia Pacific",
+    service_category: "Logistics",
+    business_service: "Inbound Logistics",
+    supplier_owner: "Procurement Risk",
+    profile_complete: true,
+    previous_profile_complete: false,
+    criticality_score: 84,
+    previous_criticality_score: 82,
+    criticality_level: "High",
+    risk_score: 79,
+    previous_risk_score: 82,
+    residual_risk: "High",
+    cyber_rating: 681,
+    previous_cyber_rating: 668,
+    annual_loss_exposure_m: 1.6,
+    previous_annual_loss_exposure_m: 1.9,
+    subcontractor_visibility: "Partial",
+    previous_subcontractor_visibility: "None",
+    fourth_party: "Regional Freight Consolidator",
+    alternate_supplier_available: true,
+    previous_alternate_supplier_available: true
+  },
+  {
+    supplier_id: "SUP-004",
+    supplier_name: "Manufacturing SaaS D",
+    tier: "Tier 1",
+    business_area: "Manufacturing",
+    geography: "North America",
+    service_category: "Manufacturing Systems",
+    business_service: "Plant Operations Platform",
+    supplier_owner: "Manufacturing IT",
+    profile_complete: true,
+    previous_profile_complete: true,
+    criticality_score: 89,
+    previous_criticality_score: 88,
+    criticality_level: "High",
+    risk_score: 76,
+    previous_risk_score: 75,
+    residual_risk: "Medium",
+    cyber_rating: 702,
+    previous_cyber_rating: 695,
+    annual_loss_exposure_m: 1.2,
+    previous_annual_loss_exposure_m: 1.1,
+    subcontractor_visibility: "Full",
+    previous_subcontractor_visibility: "Full",
+    fourth_party: "Shared Hosting Provider Y",
+    alternate_supplier_available: false,
+    previous_alternate_supplier_available: false
+  },
+  {
+    supplier_id: "SUP-005",
+    supplier_name: "Procurement Platform E",
+    tier: "Tier 2",
+    business_area: "Procurement",
+    geography: "Europe",
+    service_category: "Procurement SaaS",
+    business_service: "Sourcing Platform",
+    supplier_owner: "Procurement Excellence",
+    profile_complete: false,
+    previous_profile_complete: false,
+    criticality_score: 74,
+    previous_criticality_score: 74,
+    criticality_level: "Medium",
+    risk_score: 68,
+    previous_risk_score: 70,
+    residual_risk: "Medium",
+    cyber_rating: 728,
+    previous_cyber_rating: 716,
+    annual_loss_exposure_m: 0.9,
+    previous_annual_loss_exposure_m: 1.0,
+    subcontractor_visibility: "None",
+    previous_subcontractor_visibility: "None",
+    fourth_party: "Offshore Support Center Z",
+    alternate_supplier_available: true,
+    previous_alternate_supplier_available: true
+  },
+  {
+    supplier_id: "SUP-006",
+    supplier_name: "Identity Services F",
+    tier: "Tier 1",
+    business_area: "Technology",
+    geography: "North America",
+    service_category: "Identity Services",
+    business_service: "Privileged Access Management",
+    supplier_owner: "Cyber Assurance",
+    profile_complete: true,
+    previous_profile_complete: true,
+    criticality_score: 96,
+    previous_criticality_score: 95,
+    criticality_level: "Very High",
+    risk_score: 86,
+    previous_risk_score: 88,
+    residual_risk: "High",
+    cyber_rating: 655,
+    previous_cyber_rating: 648,
+    annual_loss_exposure_m: 2.1,
+    previous_annual_loss_exposure_m: 2.4,
+    subcontractor_visibility: "Full",
+    previous_subcontractor_visibility: "Partial",
+    fourth_party: "Managed Identity Provider X",
+    alternate_supplier_available: false,
+    previous_alternate_supplier_available: false
+  },
+  {
+    supplier_id: "SUP-007",
+    supplier_name: "Marketing Platform G",
+    tier: "Tier 3",
+    business_area: "Commercial",
+    geography: "Europe",
+    service_category: "Marketing SaaS",
+    business_service: "Campaign Analytics",
+    supplier_owner: "Commercial Operations",
+    profile_complete: true,
+    previous_profile_complete: true,
+    criticality_score: 62,
+    previous_criticality_score: 61,
+    criticality_level: "Medium",
+    risk_score: 51,
+    previous_risk_score: 54,
+    residual_risk: "Low",
+    cyber_rating: 781,
+    previous_cyber_rating: 770,
+    annual_loss_exposure_m: 0.4,
+    previous_annual_loss_exposure_m: 0.5,
+    subcontractor_visibility: "Partial",
+    previous_subcontractor_visibility: "Partial",
+    fourth_party: "Digital Media Processor",
+    alternate_supplier_available: true,
+    previous_alternate_supplier_available: true
+  },
+  {
+    supplier_id: "SUP-008",
+    supplier_name: "Data Processing H",
+    tier: "Tier 1",
+    business_area: "R&D",
+    geography: "North America",
+    service_category: "Data Processing",
+    business_service: "Research Data Lake",
+    supplier_owner: "Data Governance",
+    profile_complete: true,
+    previous_profile_complete: false,
+    criticality_score: 90,
+    previous_criticality_score: 89,
+    criticality_level: "Very High",
+    risk_score: 77,
+    previous_risk_score: 80,
+    residual_risk: "Medium",
+    cyber_rating: 698,
+    previous_cyber_rating: 688,
+    annual_loss_exposure_m: 1.5,
+    previous_annual_loss_exposure_m: 1.7,
+    subcontractor_visibility: "Full",
+    previous_subcontractor_visibility: "Partial",
+    fourth_party: "EU Data Processing Cluster",
+    alternate_supplier_available: false,
+    previous_alternate_supplier_available: false
   }
 ];
 
 let segmentRiskChart = null;
 let criticalityChart = null;
 
-function getRiskPill(risk) {
-  if (risk === "High" || risk === "Very High") return "pill pill-red";
-  if (risk === "Medium") return "pill pill-amber";
-  return "pill pill-green";
-}
-
 function setSelectOptions(select, values) {
   const options = ["All", ...new Set(values)].filter(Boolean);
-  select.innerHTML = options.map(v => `<option value="${v}">${v}</option>`).join("");
+  select.innerHTML = options.map((v) => `<option value="${v}">${v}</option>`).join("");
 }
 
 function groupBy(items, key) {
@@ -63,110 +234,230 @@ function groupBy(items, key) {
   }, {});
 }
 
+function getSegment(supplier) {
+  if (supplier.service_category.includes("Cloud") || supplier.service_category.includes("Identity")) {
+    return "Cloud & Infrastructure";
+  }
+  if (supplier.business_area === "R&D") {
+    return "Clinical / R&D Data";
+  }
+  if (supplier.business_area === "Supply Chain" || supplier.business_area === "Manufacturing") {
+    return "Manufacturing & Supply Chain";
+  }
+  return "Corporate Services";
+}
+
+function getRequiredActionByRiskAndCriticality(item) {
+  if (item.residual_risk === "High" && item.criticality_score >= 90) {
+    return "Escalate: executive mitigation plan";
+  }
+  if (item.residual_risk === "High") {
+    return "Contain: 30-day control uplift";
+  }
+  if (item.residual_risk === "Medium" && item.criticality_score >= 85) {
+    return "Prioritize: assurance deep-dive";
+  }
+  if (item.residual_risk === "Medium") {
+    return "Track: quarterly control closure";
+  }
+  return "Maintain: monitor and reassess";
+}
+
+function getMode(values) {
+  if (!values.length) return "-";
+  const counts = values.reduce((acc, value) => {
+    acc[value] = (acc[value] || 0) + 1;
+    return acc;
+  }, {});
+  return Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+}
+
+function setTrend(id, currentValue, previousValue, preferredDirection, valueSuffix = "") {
+  const node = document.getElementById(id);
+  if (!node || previousValue == null || Number.isNaN(previousValue)) {
+    return;
+  }
+
+  const delta = currentValue - previousValue;
+  if (delta === 0 || preferredDirection === "neutral") {
+    node.className = "kpi-trend trend-warn";
+    node.textContent = `→ ${preferredDirection === "neutral" ? "contextual" : `0${valueSuffix} vs past month`}`;
+    return;
+  }
+
+  const isIncrease = delta > 0;
+  const arrow = isIncrease ? "▲" : "▼";
+  const isGood = preferredDirection === "higher" ? isIncrease : !isIncrease;
+
+  node.className = `kpi-trend ${isGood ? "trend-good" : "trend-bad"}`;
+  node.textContent = `${arrow} ${Math.abs(delta).toFixed(1)}${valueSuffix} vs past month`;
+}
+
 function filterPortfolioSuppliers(state) {
-  return portfolioSuppliers.filter(s => {
+  return portfolioSuppliers.filter((s) => {
     const tierMatch = state.tier === "All" || s.tier === state.tier;
     const businessAreaMatch = state.businessArea === "All" || s.business_area === state.businessArea;
     const geographyMatch = state.geography === "All" || s.geography === state.geography;
     const serviceCategoryMatch = state.serviceCategory === "All" || s.service_category === state.serviceCategory;
-    return tierMatch && businessAreaMatch && geographyMatch && serviceCategoryMatch;
+    const criticalityMatch = state.criticality === "All" || s.criticality_level === state.criticality;
+    const residualRiskMatch = state.residualRisk === "All" || s.residual_risk === state.residualRisk;
+
+    return tierMatch && businessAreaMatch && geographyMatch && serviceCategoryMatch && criticalityMatch && residualRiskMatch;
   });
 }
 
-function renderPortfolioKpis(filteredSuppliers) {
+function calculatePortfolioKpis(filteredSuppliers) {
   const total = filteredSuppliers.length;
 
   if (!total) {
-    document.getElementById("inventoryCompleteness").textContent = "0%";
-    document.getElementById("classifiedVendors").textContent = "0%";
-    document.getElementById("highRiskVendorPercent").textContent = "0%";
-    document.getElementById("avgCyberRating").textContent = "-";
-    document.getElementById("tierOneVendors").textContent = "0";
-    document.getElementById("concentrationIndex").textContent = "-";
-    document.getElementById("fourthParties").textContent = portfolioSummary.fourthParties;
-    document.getElementById("singleSupplierServices").textContent = portfolioSummary.singleSupplierServices;
-    return;
+    return {
+      inventoryCompleteness: 0,
+      previousInventoryCompleteness: 0,
+      classifiedSuppliers: 0,
+      previousClassifiedSuppliers: 0,
+      tierOneSuppliers: 0,
+      previousTierOneSuppliers: 0,
+      highCriticalityHighRisk: 0,
+      previousHighCriticalityHighRisk: 0,
+      avgCyberRating: 0,
+      previousAvgCyberRating: 0,
+      topVendorConcentration: 0,
+      previousTopVendorConcentration: 0,
+      fourthPartyVisibility: 0,
+      previousFourthPartyVisibility: 0,
+      singleSupplierServices: 0,
+      previousSingleSupplierServices: 0
+    };
   }
 
-  const highRisk = filteredSuppliers.filter(s => s.risk_level === "High").length;
+  const inventoryCompleteness = Math.round(
+    (filteredSuppliers.filter((s) => s.profile_complete).length / total) * 100
+  );
 
-  const highRiskPercent = Math.round((highRisk / total) * 100);
+  const previousInventoryCompleteness = Math.round(
+    (filteredSuppliers.filter((s) => s.previous_profile_complete).length / total) * 100
+  );
 
-  const avgRating = Math.round(
+  const classifiedSuppliers = Math.round(
+    (filteredSuppliers.filter((s) => s.profile_complete && s.criticality_level && s.residual_risk).length / total) * 100
+  );
+
+  const previousClassifiedSuppliers = Math.round(
+    (filteredSuppliers.filter((s) => s.previous_profile_complete && s.previous_risk_score != null && s.previous_criticality_score != null).length / total) * 100
+  );
+
+  const tierOneSuppliers = filteredSuppliers.filter((s) => s.tier === "Tier 1").length;
+  const previousTierOneSuppliers = tierOneSuppliers;
+
+  const highCriticalityHighRisk = filteredSuppliers.filter(
+    (s) => (s.criticality_level === "Very High" || s.criticality_level === "High") && s.residual_risk === "High"
+  ).length;
+
+  const previousHighCriticalityHighRisk = filteredSuppliers.filter(
+    (s) => s.previous_criticality_score >= 85 && s.previous_risk_score >= 80
+  ).length;
+
+  const avgCyberRating = Math.round(
     filteredSuppliers.reduce((sum, s) => sum + s.cyber_rating, 0) / total
   );
 
-  const tierOne = filteredSuppliers.filter(s => s.tier === "Tier 1").length;
+  const previousAvgCyberRating = Math.round(
+    filteredSuppliers.reduce((sum, s) => sum + s.previous_cyber_rating, 0) / total
+  );
 
-  document.getElementById("inventoryCompleteness").textContent =
-    `${portfolioSummary.inventoryCompleteness}%`;
+  const totalExposure = filteredSuppliers.reduce((sum, s) => sum + s.annual_loss_exposure_m, 0);
+  const previousTotalExposure = filteredSuppliers.reduce((sum, s) => sum + s.previous_annual_loss_exposure_m, 0);
 
-  document.getElementById("classifiedVendors").textContent =
-    `${portfolioSummary.classifiedVendors}%`;
+  const topExposure = Math.max(...filteredSuppliers.map((s) => s.annual_loss_exposure_m));
+  const previousTopExposure = Math.max(...filteredSuppliers.map((s) => s.previous_annual_loss_exposure_m));
 
-  document.getElementById("highRiskVendorPercent").textContent =
-    `${highRiskPercent}%`;
+  const topVendorConcentration = totalExposure ? (topExposure / totalExposure) * 100 : 0;
+  const previousTopVendorConcentration = previousTotalExposure ? (previousTopExposure / previousTotalExposure) * 100 : 0;
 
-  document.getElementById("avgCyberRating").textContent = avgRating;
+  const fourthPartyVisibility = Math.round(
+    (filteredSuppliers.filter((s) => s.subcontractor_visibility === "Full" || s.subcontractor_visibility === "Partial").length / total) * 100
+  );
 
-  document.getElementById("tierOneVendors").textContent = tierOne;
+  const previousFourthPartyVisibility = Math.round(
+    (filteredSuppliers.filter((s) => s.previous_subcontractor_visibility === "Full" || s.previous_subcontractor_visibility === "Partial").length / total) * 100
+  );
 
-  document.getElementById("concentrationIndex").textContent =
-    portfolioSummary.concentrationIndex;
+  const singleSupplierServices = filteredSuppliers.filter((s) => !s.alternate_supplier_available).length;
 
-  document.getElementById("fourthParties").textContent =
-    portfolioSummary.fourthParties;
+  const previousSingleSupplierServices = filteredSuppliers.filter((s) => !s.previous_alternate_supplier_available).length;
 
-  document.getElementById("singleSupplierServices").textContent =
-    portfolioSummary.singleSupplierServices;
+  return {
+    inventoryCompleteness,
+    previousInventoryCompleteness,
+    classifiedSuppliers,
+    previousClassifiedSuppliers,
+    tierOneSuppliers,
+    previousTierOneSuppliers,
+    highCriticalityHighRisk,
+    previousHighCriticalityHighRisk,
+    avgCyberRating,
+    previousAvgCyberRating,
+    topVendorConcentration,
+    previousTopVendorConcentration,
+    fourthPartyVisibility,
+    previousFourthPartyVisibility,
+    singleSupplierServices,
+    previousSingleSupplierServices
+  };
 }
 
-function renderHeatmap() {
-  const ext = calculateMissingKpis();
-  const tbody = document.querySelector("#heatmapTable tbody");
-  tbody.innerHTML = "";
+function renderPortfolioKpis(filteredSuppliers) {
+  const kpis = calculatePortfolioKpis(filteredSuppliers);
 
-  const criticalities = ["High Criticality", "Medium Criticality", "Low Criticality"];
-  const risks = ["High Risk", "Medium Risk", "Low Risk"];
+  document.getElementById("inventoryCompleteness").textContent = `${kpis.inventoryCompleteness}%`;
+  document.getElementById("classifiedSuppliers").textContent = `${kpis.classifiedSuppliers}%`;
+  document.getElementById("tierOneSuppliers").textContent = kpis.tierOneSuppliers;
+  document.getElementById("highCriticalityHighRisk").textContent = kpis.highCriticalityHighRisk;
+  document.getElementById("avgCyberRating").textContent = kpis.avgCyberRating || "-";
+  document.getElementById("topVendorConcentration").textContent = `${kpis.topVendorConcentration.toFixed(1)}%`;
+  document.getElementById("fourthPartyVisibility").textContent = `${kpis.fourthPartyVisibility}%`;
+  document.getElementById("singleSupplierServices").textContent = kpis.singleSupplierServices;
 
-  criticalities.forEach(crit => {
-    const cells = risks.map(risk => {
-      const key = `${crit} / ${risk}`;
-      const count = ext.heatmap[key] || 0;
-      const cellClass = crit === "High Criticality" && risk === "High Risk" ? "style=\"background:rgba(220,38,38,0.15);font-weight:600\"" : "";
-      return `<td ${cellClass}>${count}</td>`;
-    }).join("");
-    tbody.innerHTML += `<tr><td><strong>${crit}</strong></td>${cells}</tr>`;
-  });
-}
-
-function renderExtendedPortfolioKpis() {
-  const ext = calculateMissingKpis();
-  document.getElementById("highCriticalityHighRisk").textContent = ext.highCriticalityHighRisk;
-  document.getElementById("topVendorConcentrationRatio").textContent = ext.topVendorConcentrationRatio;
+  setTrend("inventoryCompletenessTrend", kpis.inventoryCompleteness, kpis.previousInventoryCompleteness, "higher", "%");
+  setTrend("classifiedSuppliersTrend", kpis.classifiedSuppliers, kpis.previousClassifiedSuppliers, "higher", "%");
+  setTrend("tierOneSuppliersTrend", kpis.tierOneSuppliers, kpis.previousTierOneSuppliers, "neutral");
+  setTrend("highCriticalityHighRiskTrend", kpis.highCriticalityHighRisk, kpis.previousHighCriticalityHighRisk, "lower");
+  setTrend("avgCyberRatingTrend", kpis.avgCyberRating, kpis.previousAvgCyberRating, "higher");
+  setTrend("topVendorConcentrationTrend", kpis.topVendorConcentration, kpis.previousTopVendorConcentration, "lower", "%");
+  setTrend("fourthPartyVisibilityTrend", kpis.fourthPartyVisibility, kpis.previousFourthPartyVisibility, "higher", "%");
+  setTrend("singleSupplierServicesTrend", kpis.singleSupplierServices, kpis.previousSingleSupplierServices, "lower");
 }
 
 function renderSegmentTable(filteredSuppliers) {
   const tbody = document.querySelector("#segmentTable tbody");
   tbody.innerHTML = "";
 
-  const grouped = groupBy(filteredSuppliers, "segment");
+  const enriched = filteredSuppliers.map((s) => ({ ...s, segment: getSegment(s) }));
+  const grouped = groupBy(enriched, "segment");
 
-  Object.entries(grouped).forEach(([segment, vendors]) => {
-    const highRisk = vendors.filter(v => v.risk_level === "High").length;
-    const avgRating = Math.round(
-      vendors.reduce((sum, v) => sum + v.cyber_rating, 0) / vendors.length
+  Object.entries(grouped).forEach(([segment, suppliers]) => {
+    const highRisk = suppliers.filter((s) => s.residual_risk === "High").length;
+    const avgCyberRating = Math.round(
+      suppliers.reduce((sum, s) => sum + s.cyber_rating, 0) / suppliers.length
     );
 
-    const riskLevel = highRisk >= 2 ? "High" : highRisk === 1 ? "Medium" : "Low";
+    const criticality = getMode(suppliers.map((s) => s.criticality_level));
+
+    const requiredAction =
+      highRisk >= 2
+        ? "Prioritize: segment risk reduction sprint"
+        : highRisk === 1
+          ? "Targeted: focused assurance review"
+          : "Maintain: routine monitoring";
 
     tbody.innerHTML += `
       <tr>
         <td>${segment}</td>
-        <td>${vendors.length}</td>
+        <td>${suppliers.length}</td>
         <td>${highRisk}</td>
-        <td>${avgRating}</td>
-        <td><span class="${getRiskPill(riskLevel)}">${riskLevel}</span></td>
+        <td>${avgCyberRating}</td>
+        <td>${criticality}</td>
+        <td>${requiredAction}</td>
       </tr>
     `;
   });
@@ -178,81 +469,60 @@ function renderBusinessAreaTable(filteredSuppliers) {
 
   const grouped = groupBy(filteredSuppliers, "business_area");
 
-  Object.entries(grouped).forEach(([area, vendors]) => {
-    const highRisk = vendors.filter(v => v.risk_level === "High").length;
-    const exposure = vendors.reduce((sum, v) => sum + v.exposure_m, 0);
+  Object.entries(grouped).forEach(([businessArea, suppliers]) => {
+    const tierOneSuppliers = suppliers.filter((s) => s.tier === "Tier 1").length;
+    const highRisk = suppliers.filter((s) => s.residual_risk === "High").length;
+    const annualLossExposure = suppliers.reduce((sum, s) => sum + s.annual_loss_exposure_m, 0);
 
-    const criticality = vendors.some(v => v.criticality === "Very High")
-      ? "Very High"
-      : vendors.some(v => v.criticality === "High")
-        ? "High"
-        : "Medium";
+    const requiredAction =
+      annualLossExposure >= 4
+        ? "Escalate: portfolio concentration review"
+        : highRisk >= 2
+          ? "Contain: cross-functional mitigation plan"
+          : "Track: monthly risk governance";
 
     tbody.innerHTML += `
       <tr>
-        <td>${area}</td>
-        <td>${vendors.length}</td>
+        <td>${businessArea}</td>
+        <td>${suppliers.length}</td>
+        <td>${tierOneSuppliers}</td>
         <td>${highRisk}</td>
-        <td><span class="${getRiskPill(criticality)}">${criticality}</span></td>
-        <td>$${exposure.toFixed(1)}M</td>
+        <td>$${annualLossExposure.toFixed(1)}M</td>
+        <td>${requiredAction}</td>
       </tr>
     `;
   });
 }
 
-function renderConcentrationTable(filteredSuppliers) {
-  const tbody = document.querySelector("#concentrationTable tbody");
+function renderHighCriticalityHighRiskTable(filteredSuppliers) {
+  const tbody = document.querySelector("#highCriticalityHighRiskTable tbody");
   tbody.innerHTML = "";
 
-  const suppliersByName = new Set(filteredSuppliers.map(s => s.supplier));
-  const relatedSegments = new Set(filteredSuppliers.map(s => s.segment.toLowerCase()));
-
-  concentrationHotspots
-    .filter(item => {
-      if (!filteredSuppliers.length) return false;
-      if (item.dependency === "Azure" || item.dependency === "Managed Identity Provider") {
-        return [...suppliersByName].some(name => name.includes("CloudOps") || name.includes("Identity"));
-      }
-      if (item.dependency === "EU Data Processing Cluster") {
-        return [...relatedSegments].some(segment => segment.includes("clinical"));
-      }
-      if (item.dependency === "Shared Hosting Provider") {
-        return [...relatedSegments].some(segment => segment.includes("manufacturing") || segment.includes("supply chain"));
-      }
-      return true;
-    })
-    .forEach(item => {
-    tbody.innerHTML += `
-      <tr>
-        <td>${item.type}</td>
-        <td>${item.dependency}</td>
-        <td>${item.critical_suppliers}</td>
-        <td><span class="${getRiskPill(item.risk_level)}">${item.risk_level}</span></td>
-        <td>$${item.exposure_m.toFixed(1)}M</td>
-      </tr>
-    `;
-  });
-}
-
-function renderPortfolioAiAlerts() {
-  const container = document.getElementById("portfolioAiAlerts");
-  container.innerHTML = "";
-
-  portfolioAiAlerts.forEach(alert => {
-    container.innerHTML += `
-      <div class="ai-item">
-        <strong>${alert.value}</strong>
-        <span>${alert.detail}</span>
-      </div>
-    `;
-  });
+  filteredSuppliers
+    .filter((s) => (s.criticality_level === "Very High" || s.criticality_level === "High") && s.residual_risk === "High")
+    .sort((a, b) => b.risk_score - a.risk_score)
+    .forEach((s) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${s.supplier_name}</td>
+          <td>${s.tier}</td>
+          <td>${s.business_area}</td>
+          <td>${s.service_category}</td>
+          <td>${s.criticality_score}</td>
+          <td>${s.risk_score}</td>
+          <td>$${s.annual_loss_exposure_m.toFixed(1)}M</td>
+          <td>${getRequiredActionByRiskAndCriticality(s)}</td>
+        </tr>
+      `;
+    });
 }
 
 function renderPortfolioCharts(filteredSuppliers) {
   if (segmentRiskChart) segmentRiskChart.destroy();
   if (criticalityChart) criticalityChart.destroy();
 
-  const segmentGroups = groupBy(filteredSuppliers, "segment");
+  const enriched = filteredSuppliers.map((s) => ({ ...s, segment: getSegment(s) }));
+  const segmentGroups = groupBy(enriched, "segment");
 
   segmentRiskChart = new Chart(document.getElementById("segmentRiskChart"), {
     type: "bar",
@@ -260,30 +530,30 @@ function renderPortfolioCharts(filteredSuppliers) {
       labels: Object.keys(segmentGroups),
       datasets: [
         {
-          label: "High-Risk Vendors",
-          data: Object.values(segmentGroups).map(group =>
-            group.filter(s => s.risk_level === "High").length
+          label: "High Risk Suppliers",
+          data: Object.values(segmentGroups).map(
+            (group) => group.filter((s) => s.residual_risk === "High").length
           )
         }
       ]
     },
     options: { maintainAspectRatio: false }
-    });
+  });
 
-  const tierGroups = groupBy(filteredSuppliers, "tier");
+  const criticalityGroups = groupBy(filteredSuppliers, "criticality_level");
 
   criticalityChart = new Chart(document.getElementById("criticalityChart"), {
     type: "doughnut",
     data: {
-      labels: Object.keys(tierGroups),
+      labels: Object.keys(criticalityGroups),
       datasets: [
         {
-          data: Object.values(tierGroups).map(group => group.length)
+          data: Object.values(criticalityGroups).map((group) => group.length)
         }
       ]
     },
     options: { maintainAspectRatio: false }
-    });
+  });
 }
 
 function applyFilters(state) {
@@ -292,7 +562,7 @@ function applyFilters(state) {
   renderPortfolioKpis(filteredSuppliers);
   renderSegmentTable(filteredSuppliers);
   renderBusinessAreaTable(filteredSuppliers);
-  renderConcentrationTable(filteredSuppliers);
+  renderHighCriticalityHighRiskTable(filteredSuppliers);
   renderPortfolioCharts(filteredSuppliers);
 
   document.getElementById("filterSummary").textContent =
@@ -300,9 +570,9 @@ function applyFilters(state) {
 }
 
 function addCardHoverEffect() {
-  const cards = document.querySelectorAll(".kpi-card, .card, .ai-item");
+  const cards = document.querySelectorAll(".kpi-card, .card");
 
-  cards.forEach(card => {
+  cards.forEach((card) => {
     card.addEventListener("mouseenter", () => {
       card.style.transform = "translateY(-3px)";
       card.style.transition = "0.2s ease";
@@ -314,29 +584,30 @@ function addCardHoverEffect() {
   });
 }
 
-renderPortfolioAiAlerts();
-addCardHoverEffect();
-renderHeatmap();
-renderExtendedPortfolioKpis();
-
 function initPortfolioFilters() {
   const tierSelect = document.getElementById("filterTier");
   const businessAreaSelect = document.getElementById("filterBusinessArea");
   const geographySelect = document.getElementById("filterGeography");
   const serviceCategorySelect = document.getElementById("filterServiceCategory");
+  const criticalitySelect = document.getElementById("filterCriticality");
+  const residualRiskSelect = document.getElementById("filterResidualRisk");
   const clearButton = document.getElementById("clearFilters");
 
-  setSelectOptions(tierSelect, portfolioSuppliers.map(s => s.tier));
-  setSelectOptions(businessAreaSelect, portfolioSuppliers.map(s => s.business_area));
-  setSelectOptions(geographySelect, portfolioSuppliers.map(s => s.geography));
-  setSelectOptions(serviceCategorySelect, portfolioSuppliers.map(s => s.service_category));
+  setSelectOptions(tierSelect, portfolioSuppliers.map((s) => s.tier));
+  setSelectOptions(businessAreaSelect, portfolioSuppliers.map((s) => s.business_area));
+  setSelectOptions(geographySelect, portfolioSuppliers.map((s) => s.geography));
+  setSelectOptions(serviceCategorySelect, portfolioSuppliers.map((s) => s.service_category));
+  setSelectOptions(criticalitySelect, portfolioSuppliers.map((s) => s.criticality_level));
+  setSelectOptions(residualRiskSelect, portfolioSuppliers.map((s) => s.residual_risk));
 
   function applyFromUi() {
     applyFilters({
       tier: tierSelect.value,
       businessArea: businessAreaSelect.value,
       geography: geographySelect.value,
-      serviceCategory: serviceCategorySelect.value
+      serviceCategory: serviceCategorySelect.value,
+      criticality: criticalitySelect.value,
+      residualRisk: residualRiskSelect.value
     });
   }
 
@@ -344,16 +615,21 @@ function initPortfolioFilters() {
   businessAreaSelect.addEventListener("change", applyFromUi);
   geographySelect.addEventListener("change", applyFromUi);
   serviceCategorySelect.addEventListener("change", applyFromUi);
+  criticalitySelect.addEventListener("change", applyFromUi);
+  residualRiskSelect.addEventListener("change", applyFromUi);
 
   clearButton.addEventListener("click", () => {
     tierSelect.value = "All";
     businessAreaSelect.value = "All";
     geographySelect.value = "All";
     serviceCategorySelect.value = "All";
+    criticalitySelect.value = "All";
+    residualRiskSelect.value = "All";
     applyFromUi();
   });
 
   applyFromUi();
 }
 
+addCardHoverEffect();
 initPortfolioFilters();

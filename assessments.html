@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assessments | Supplier Cyber Risk</title>
+  <title>Supplier Lifecycle & Assessments | Supplier Cyber Risk</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="tooltips.js" defer></script>
@@ -14,7 +14,7 @@
   <div class="app-shell">
     <header class="top-header">
       <div class="brand-block">
-        <h1>Supplier Assessments</h1>
+        <h1>Supplier Lifecycle & Assessments</h1>
         <p>Q1 2026 | Onboarding, reassessment, evidence, and control assurance</p>
       </div>
 
@@ -34,6 +34,10 @@
       <h3>Filters</h3>
       <div class="filter-grid">
         <label class="filter-field">
+          <span>Lifecycle Stage</span>
+          <select id="filterLifecycleStage"></select>
+        </label>
+        <label class="filter-field">
           <span>Assessment Status</span>
           <select id="filterStatus"></select>
         </label>
@@ -42,12 +46,20 @@
           <select id="filterType"></select>
         </label>
         <label class="filter-field">
-          <span>Tier</span>
+          <span>Supplier Tier</span>
           <select id="filterTier"></select>
         </label>
         <label class="filter-field">
           <span>Owner</span>
           <select id="filterOwner"></select>
+        </label>
+        <label class="filter-field">
+          <span>Due Date Window</span>
+          <select id="filterDueDateWindow"></select>
+        </label>
+        <label class="filter-field">
+          <span>Evidence Status</span>
+          <select id="filterEvidenceStatus"></select>
         </label>
         <div class="filter-actions">
           <button id="clearFilters" type="button">Clear Filters</button>
@@ -60,41 +72,49 @@
       <article class="kpi-card">
         <div class="kpi-label">Assessment Completion</div>
         <div class="kpi-value" id="assessmentCompletion"></div>
+        <div class="kpi-trend" id="assessmentCompletionTrend"></div>
       </article>
 
       <article class="kpi-card">
         <div class="kpi-label">Tier 1 Completion</div>
         <div class="kpi-value" id="tierOneCompletion"></div>
+        <div class="kpi-trend" id="tierOneCompletionTrend"></div>
       </article>
 
       <article class="kpi-card">
         <div class="kpi-label">Avg Onboarding Cycle</div>
         <div class="kpi-value" id="avgOnboardingCycle"></div>
+        <div class="kpi-trend" id="avgOnboardingCycleTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Overdue Assessments</div>
-        <div class="kpi-value" id="overdueAssessments"></div>
+        <div class="kpi-label">Due Diligence Completion</div>
+        <div class="kpi-value" id="dueDiligenceCompletion"></div>
+        <div class="kpi-trend" id="dueDiligenceCompletionTrend"></div>
       </article>
 
       <article class="kpi-card">
         <div class="kpi-label">Evidence Completion</div>
         <div class="kpi-value" id="evidenceCompletion"></div>
+        <div class="kpi-trend" id="evidenceCompletionTrend"></div>
       </article>
 
       <article class="kpi-card">
         <div class="kpi-label">Control Pass Rate</div>
         <div class="kpi-value" id="controlPassRate"></div>
+        <div class="kpi-trend" id="controlPassRateTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Conditional Approvals</div>
-        <div class="kpi-value" id="conditionalApprovals"></div>
+        <div class="kpi-label">Overdue Assessments</div>
+        <div class="kpi-value" id="overdueAssessments"></div>
+        <div class="kpi-trend" id="overdueAssessmentsTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Reassessments Due</div>
-        <div class="kpi-value" id="reassessmentsDue"></div>
+        <div class="kpi-label">Offboarding Assurance Gaps</div>
+        <div class="kpi-value" id="offboardingAssuranceGaps"></div>
+        <div class="kpi-trend" id="offboardingAssuranceGapsTrend"></div>
       </article>
     </section>
 
@@ -105,8 +125,8 @@
       </div>
 
       <div class="card">
-        <h3>Completion by Tier</h3>
-        <div class="chart-wrap"><canvas id="completionByTierChart"></canvas></div>
+        <h3>Lifecycle Stage Distribution</h3>
+        <div class="chart-wrap"><canvas id="lifecycleStageChart"></canvas></div>
       </div>
     </section>
 
@@ -119,10 +139,13 @@
               <tr>
                 <th>Supplier</th>
                 <th>Tier</th>
-                <th>Type</th>
+                <th>Lifecycle Stage</th>
+                <th>Assessment Type</th>
                 <th>Status</th>
                 <th>Age</th>
+                <th>Due Date</th>
                 <th>Owner</th>
+                <th>Required Action</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -137,9 +160,12 @@
             <thead>
               <tr>
                 <th>Supplier</th>
+                <th>Tier</th>
                 <th>Missing Evidence</th>
-                <th>Risk</th>
-                <th>Due</th>
+                <th>Control Area</th>
+                <th>Risk Level</th>
+                <th>Due Date</th>
+                <th>Required Action</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -155,20 +181,17 @@
           <thead>
             <tr>
               <th>Control Area</th>
-              <th>Pass</th>
+              <th>Assessed Controls</th>
+              <th>Passed</th>
               <th>Partial</th>
-              <th>Fail</th>
+              <th>Failed</th>
               <th>Priority Gap</th>
+              <th>Required Action</th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
-    </section>
-
-    <section class="ai-panel">
-      <h3>AI Alerts</h3>
-      <div class="ai-grid" id="assessmentAiAlerts"></div>
     </section>
   </div>
 </body>

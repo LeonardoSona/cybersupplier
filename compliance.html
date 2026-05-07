@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Compliance & Contracts | Supplier Cyber Risk</title>
+  <title>Compliance, Contracts & Regulated Assurance | Supplier Cyber Risk</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="tooltips.js" defer></script>
@@ -14,7 +14,7 @@
   <div class="app-shell">
     <header class="top-header">
       <div class="brand-block">
-        <h1>Compliance & Contracts</h1>
+        <h1>Compliance, Contracts & Regulated Assurance</h1>
         <p>Q1 2026 | Security clauses, evidence, frameworks, audit rights, and contractual assurance</p>
       </div>
 
@@ -34,20 +34,32 @@
       <h3>Filters</h3>
       <div class="filter-grid">
         <label class="filter-field">
-          <span>Framework</span>
-          <select id="filterFramework"></select>
+          <span>Compliance Area</span>
+          <select id="filterComplianceArea"></select>
         </label>
         <label class="filter-field">
-          <span>Contract Status</span>
-          <select id="filterContractStatus"></select>
+          <span>Supplier Tier</span>
+          <select id="filterTier"></select>
         </label>
         <label class="filter-field">
-          <span>Missing Clause Type</span>
-          <select id="filterClauseType"></select>
+          <span>GxP Criticality</span>
+          <select id="filterGxpCriticality"></select>
         </label>
         <label class="filter-field">
-          <span>Renewal Window</span>
-          <select id="filterRenewalWindow"></select>
+          <span>Audit Status</span>
+          <select id="filterAuditStatus"></select>
+        </label>
+        <label class="filter-field">
+          <span>CAPA Status</span>
+          <select id="filterCapaStatus"></select>
+        </label>
+        <label class="filter-field">
+          <span>Validation Status</span>
+          <select id="filterValidationStatus"></select>
+        </label>
+        <label class="filter-field">
+          <span>Geography</span>
+          <select id="filterGeography"></select>
         </label>
         <div class="filter-actions">
           <button id="clearFilters" type="button">Clear Filters</button>
@@ -60,68 +72,78 @@
       <article class="kpi-card">
         <div class="kpi-label">Security Clause Coverage</div>
         <div class="kpi-value" id="securityClauseCoverage"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">Breach Notification SLA</div>
-        <div class="kpi-value" id="breachSlaCoverage"></div>
+        <div class="kpi-trend" id="securityClauseCoverageTrend"></div>
       </article>
 
       <article class="kpi-card">
         <div class="kpi-label">Audit Rights Coverage</div>
         <div class="kpi-value" id="auditRightsCoverage"></div>
+        <div class="kpi-trend" id="auditRightsCoverageTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">MFA Requirement</div>
-        <div class="kpi-value" id="mfaCoverage"></div>
+        <div class="kpi-label">Breach Notification Compliance</div>
+        <div class="kpi-value" id="breachNotificationCompliance"></div>
+        <div class="kpi-trend" id="breachNotificationComplianceTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Encryption Requirement</div>
-        <div class="kpi-value" id="encryptionCoverage"></div>
+        <div class="kpi-label">GxP-Critical Suppliers</div>
+        <div class="kpi-value" id="gxpCriticalSuppliers"></div>
+        <div class="kpi-trend" id="gxpCriticalSuppliersTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">SOC 2 / ISO Coverage</div>
-        <div class="kpi-value" id="frameworkCoverage"></div>
+        <div class="kpi-label">Open CAPA Exposure</div>
+        <div class="kpi-value" id="openCapaExposure"></div>
+        <div class="kpi-trend" id="openCapaExposureTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Renewal Reviews</div>
-        <div class="kpi-value" id="renewalReviews"></div>
+        <div class="kpi-label">Validation Evidence Coverage</div>
+        <div class="kpi-value" id="validationEvidenceCoverage"></div>
+        <div class="kpi-trend" id="validationEvidenceCoverageTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Non-Compliant Suppliers</div>
-        <div class="kpi-value" id="nonCompliantSuppliers"></div>
+        <div class="kpi-label">Quality Agreement Coverage</div>
+        <div class="kpi-value" id="qualityAgreementCoverage"></div>
+        <div class="kpi-trend" id="qualityAgreementCoverageTrend"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Audit Findings &gt;90 Days</div>
+        <div class="kpi-value" id="auditFindings90Days"></div>
+        <div class="kpi-trend" id="auditFindings90DaysTrend"></div>
       </article>
     </section>
 
     <section class="content-grid">
       <div class="card">
-        <h3>Contract Control Coverage</h3>
-        <div class="chart-wrap"><canvas id="contractCoverageChart"></canvas></div>
+        <h3>Compliance Coverage by Area</h3>
+        <div class="chart-wrap"><canvas id="complianceCoverageChart"></canvas></div>
       </div>
 
       <div class="card">
-        <h3>Framework Alignment</h3>
-        <div class="chart-wrap"><canvas id="frameworkAlignmentChart"></canvas></div>
+        <h3>Audit Findings Aging</h3>
+        <div class="chart-wrap"><canvas id="auditFindingsAgingChart"></canvas></div>
       </div>
     </section>
 
     <section class="content-grid">
       <div class="card">
-        <h3>Compliance Gaps</h3>
+        <h3>Regulated Supplier Assurance Queue</h3>
         <div class="table-wrap">
-          <table id="complianceGapTable">
+          <table id="regulatedAssuranceQueueTable">
             <thead>
               <tr>
                 <th>Supplier</th>
-                <th>Tier</th>
-                <th>Gap</th>
-                <th>Risk</th>
-                <th>Contract Status</th>
+                <th>GxP Critical</th>
+                <th>Validation Evidence</th>
+                <th>Open CAPA</th>
+                <th>Audit Finding Age</th>
+                <th>Quality Agreement</th>
+                <th>Required Action</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -130,16 +152,17 @@
       </div>
 
       <div class="card">
-        <h3>Framework Evidence</h3>
+        <h3>Contractual Compliance Gaps</h3>
         <div class="table-wrap">
-          <table id="frameworkEvidenceTable">
+          <table id="contractualGapsTable">
             <thead>
               <tr>
                 <th>Supplier</th>
-                <th>Framework</th>
-                <th>Evidence</th>
-                <th>Validity</th>
-                <th>Status</th>
+                <th>Missing Requirement</th>
+                <th>Compliance Area</th>
+                <th>Risk Level</th>
+                <th>Contract Expiry</th>
+                <th>Required Action</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -149,26 +172,23 @@
     </section>
 
     <section class="card">
-      <h3>Renewal Risk Queue</h3>
+      <h3>Audit &amp; CAPA Tracking</h3>
       <div class="table-wrap">
-        <table id="renewalRiskTable">
+        <table id="auditCapaTrackingTable">
           <thead>
             <tr>
               <th>Supplier</th>
-              <th>Renewal In</th>
-              <th>Missing Clauses</th>
-              <th>Risk</th>
-              <th>Decision</th>
+              <th>Audit Type</th>
+              <th>Open Findings</th>
+              <th>Oldest Finding</th>
+              <th>CAPA Status</th>
+              <th>Validation Status</th>
+              <th>Required Action</th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
-    </section>
-
-    <section class="ai-panel">
-      <h3>AI Alerts</h3>
-      <div class="ai-grid" id="complianceAiAlerts"></div>
     </section>
   </div>
 </body>

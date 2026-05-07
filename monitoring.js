@@ -1,458 +1,639 @@
-const monitoredSuppliers = [
+const TODAY = new Date("2026-05-07T00:00:00Z");
+
+const suppliers = [
   {
-    supplier: "CloudOps Partner A",
+    supplier_id: "SUP-001",
+    supplier_name: "CloudOps Partner A",
     tier: "Tier 1",
-    owner: "Technology",
-    previous_rating: 654,
-    current_rating: 612,
-    monitored: true,
-    open_signals: 7,
-    risk_level: "High"
+    business_area: "Technology",
+    continuous_monitoring_enabled: true,
+    previous_continuous_monitoring_enabled: true,
+    previous_cyber_rating: 654,
+    current_cyber_rating: 612,
+    rating_change_points: -42,
+    previous_rating_change_points: -35,
+    rating_change_reason: "External attack surface expansion",
+    monitoring_status: "Active",
+    monitoring_gap_reason: ""
   },
   {
-    supplier: "Clinical Data Vendor B",
+    supplier_id: "SUP-002",
+    supplier_name: "Clinical Data Vendor B",
     tier: "Tier 1",
-    owner: "R&D",
-    previous_rating: 671,
-    current_rating: 640,
-    monitored: true,
-    open_signals: 5,
-    risk_level: "High"
+    business_area: "R&D",
+    continuous_monitoring_enabled: true,
+    previous_continuous_monitoring_enabled: true,
+    previous_cyber_rating: 671,
+    current_cyber_rating: 640,
+    rating_change_points: -31,
+    previous_rating_change_points: -18,
+    rating_change_reason: "Credential leakage and exposed hosts",
+    monitoring_status: "Active",
+    monitoring_gap_reason: ""
   },
   {
-    supplier: "Logistics Provider C",
+    supplier_id: "SUP-003",
+    supplier_name: "Logistics Provider C",
     tier: "Tier 2",
-    owner: "Supply Chain",
-    previous_rating: 705,
-    current_rating: 681,
-    monitored: true,
-    open_signals: 4,
-    risk_level: "High"
+    business_area: "Supply Chain",
+    continuous_monitoring_enabled: true,
+    previous_continuous_monitoring_enabled: true,
+    previous_cyber_rating: 705,
+    current_cyber_rating: 681,
+    rating_change_points: -24,
+    previous_rating_change_points: -10,
+    rating_change_reason: "New exposed remote access services",
+    monitoring_status: "Active",
+    monitoring_gap_reason: ""
   },
   {
-    supplier: "Manufacturing SaaS D",
+    supplier_id: "SUP-004",
+    supplier_name: "Manufacturing SaaS D",
     tier: "Tier 1",
-    owner: "Manufacturing",
-    previous_rating: 720,
-    current_rating: 702,
-    monitored: false,
-    open_signals: 3,
-    risk_level: "Medium"
+    business_area: "Manufacturing",
+    continuous_monitoring_enabled: false,
+    previous_continuous_monitoring_enabled: false,
+    previous_cyber_rating: 720,
+    current_cyber_rating: 702,
+    rating_change_points: -18,
+    previous_rating_change_points: -7,
+    rating_change_reason: "Cloud misconfiguration signals",
+    monitoring_status: "Coverage Gap",
+    monitoring_gap_reason: "Connector onboarding pending"
   },
   {
-    supplier: "Procurement Platform E",
+    supplier_id: "SUP-005",
+    supplier_name: "Procurement Platform E",
     tier: "Tier 2",
-    owner: "Procurement",
-    previous_rating: 737,
-    current_rating: 728,
-    monitored: false,
-    open_signals: 2,
-    risk_level: "Medium"
+    business_area: "Procurement",
+    continuous_monitoring_enabled: false,
+    previous_continuous_monitoring_enabled: true,
+    previous_cyber_rating: 737,
+    current_cyber_rating: 728,
+    rating_change_points: -9,
+    previous_rating_change_points: -4,
+    rating_change_reason: "Email security hygiene decline",
+    monitoring_status: "Partial",
+    monitoring_gap_reason: "Limited domain telemetry"
   },
   {
-    supplier: "Identity Services F",
+    supplier_id: "SUP-006",
+    supplier_name: "Identity Services F",
     tier: "Tier 1",
-    owner: "Technology",
-    previous_rating: 702,
-    current_rating: 655,
-    monitored: true,
-    open_signals: 8,
-    risk_level: "High"
+    business_area: "Technology",
+    continuous_monitoring_enabled: true,
+    previous_continuous_monitoring_enabled: true,
+    previous_cyber_rating: 702,
+    current_cyber_rating: 655,
+    rating_change_points: -47,
+    previous_rating_change_points: -29,
+    rating_change_reason: "Critical vulnerability and leaked credentials",
+    monitoring_status: "Active",
+    monitoring_gap_reason: ""
   },
   {
-    supplier: "Marketing Platform G",
+    supplier_id: "SUP-007",
+    supplier_name: "Marketing Platform G",
     tier: "Tier 3",
-    owner: "Commercial",
-    previous_rating: 790,
-    current_rating: 781,
-    monitored: true,
-    open_signals: 1,
-    risk_level: "Low"
+    business_area: "Commercial",
+    continuous_monitoring_enabled: true,
+    previous_continuous_monitoring_enabled: true,
+    previous_cyber_rating: 790,
+    current_cyber_rating: 781,
+    rating_change_points: -9,
+    previous_rating_change_points: -3,
+    rating_change_reason: "Low severity external findings",
+    monitoring_status: "Active",
+    monitoring_gap_reason: ""
   },
   {
-    supplier: "Data Processing H",
+    supplier_id: "SUP-008",
+    supplier_name: "Data Processing H",
     tier: "Tier 1",
-    owner: "R&D",
-    previous_rating: 712,
-    current_rating: 698,
-    monitored: true,
-    open_signals: 3,
-    risk_level: "Medium"
+    business_area: "R&D",
+    continuous_monitoring_enabled: true,
+    previous_continuous_monitoring_enabled: false,
+    previous_cyber_rating: 712,
+    current_cyber_rating: 698,
+    rating_change_points: -14,
+    previous_rating_change_points: -11,
+    rating_change_reason: "Increased threat signal frequency",
+    monitoring_status: "Active",
+    monitoring_gap_reason: ""
   }
 ];
 
-const monitoringSignals = [
+const signals = [
   {
-    supplier: "CloudOps Partner A",
-    signal: "Exposed admin portal",
-    type: "Attack Surface",
+    signal_id: "SIG-001",
+    supplier_id: "SUP-001",
+    supplier_name: "CloudOps Partner A",
+    tier: "Tier 1",
+    business_area: "Technology",
+    signal_type: "External Exposure",
     severity: "Critical",
-    age_days: 4,
-    impact: "Privileged access exposure"
+    first_observed_date: "2026-05-02",
+    detected_date: "2026-05-04",
+    current_period: true,
+    previous_period: false,
+    escalated: true,
+    escalation_status: "Escalated",
+    required_action: "Immediate perimeter closure and retest"
   },
   {
-    supplier: "Clinical Data Vendor B",
-    signal: "Leaked credentials",
-    type: "Credential Leak",
+    signal_id: "SIG-002",
+    supplier_id: "SUP-002",
+    supplier_name: "Clinical Data Vendor B",
+    tier: "Tier 1",
+    business_area: "R&D",
+    signal_type: "Leaked Credentials",
     severity: "Critical",
-    age_days: 2,
-    impact: "Account takeover risk"
+    first_observed_date: "2026-05-05",
+    detected_date: "2026-05-06",
+    current_period: true,
+    previous_period: false,
+    escalated: true,
+    escalation_status: "Escalated",
+    required_action: "Reset credentials and enforce MFA"
   },
   {
-    supplier: "Identity Services F",
-    signal: "Critical vulnerability on identity endpoint",
-    type: "Vulnerability",
+    signal_id: "SIG-003",
+    supplier_id: "SUP-006",
+    supplier_name: "Identity Services F",
+    tier: "Tier 1",
+    business_area: "Technology",
+    signal_type: "Vulnerability",
     severity: "Critical",
-    age_days: 6,
-    impact: "Identity compromise path"
+    first_observed_date: "2026-05-01",
+    detected_date: "2026-05-03",
+    current_period: true,
+    previous_period: false,
+    escalated: true,
+    escalation_status: "Escalated",
+    required_action: "Patch critical endpoint and validate"
   },
   {
-    supplier: "Logistics Provider C",
-    signal: "New exposed remote access service",
-    type: "Attack Surface",
+    signal_id: "SIG-004",
+    supplier_id: "SUP-003",
+    supplier_name: "Logistics Provider C",
+    tier: "Tier 2",
+    business_area: "Supply Chain",
+    signal_type: "External Exposure",
     severity: "High",
-    age_days: 8,
-    impact: "Operational disruption risk"
+    first_observed_date: "2026-04-28",
+    detected_date: "2026-05-01",
+    current_period: true,
+    previous_period: false,
+    escalated: true,
+    escalation_status: "Escalated",
+    required_action: "Close exposed service and monitor"
   },
   {
-    supplier: "Manufacturing SaaS D",
-    signal: "Cloud storage misconfiguration",
-    type: "Cloud Exposure",
+    signal_id: "SIG-005",
+    supplier_id: "SUP-004",
+    supplier_name: "Manufacturing SaaS D",
+    tier: "Tier 1",
+    business_area: "Manufacturing",
+    signal_type: "Cloud Misconfiguration",
     severity: "High",
-    age_days: 11,
-    impact: "Sensitive data exposure"
+    first_observed_date: "2026-04-26",
+    detected_date: "2026-04-30",
+    current_period: true,
+    previous_period: false,
+    escalated: false,
+    escalation_status: "At Risk",
+    required_action: "Harden cloud controls and rescan"
   },
   {
-    supplier: "Procurement Platform E",
-    signal: "Weak DMARC policy",
-    type: "DNS / Email",
+    signal_id: "SIG-006",
+    supplier_id: "SUP-005",
+    supplier_name: "Procurement Platform E",
+    tier: "Tier 2",
+    business_area: "Procurement",
+    signal_type: "Email Security",
     severity: "Medium",
-    age_days: 14,
-    impact: "Phishing impersonation risk"
+    first_observed_date: "2026-04-22",
+    detected_date: "2026-04-27",
+    current_period: true,
+    previous_period: false,
+    escalated: false,
+    escalation_status: "Open",
+    required_action: "Update DMARC policy to enforce"
   },
   {
-    supplier: "CloudOps Partner A",
-    signal: "Expired TLS certificate",
-    type: "DNS / Email",
+    signal_id: "SIG-007",
+    supplier_id: "SUP-001",
+    supplier_name: "CloudOps Partner A",
+    tier: "Tier 1",
+    business_area: "Technology",
+    signal_type: "Email Security",
     severity: "Medium",
-    age_days: 10,
-    impact: "Service trust issue"
+    first_observed_date: "2026-04-24",
+    detected_date: "2026-04-29",
+    current_period: true,
+    previous_period: false,
+    escalated: false,
+    escalation_status: "Open",
+    required_action: "Renew certificate and verify trust path"
   },
   {
-    supplier: "Clinical Data Vendor B",
-    signal: "Malware chatter linked to domain",
-    type: "Threat Signal",
+    signal_id: "SIG-008",
+    supplier_id: "SUP-002",
+    supplier_name: "Clinical Data Vendor B",
+    tier: "Tier 1",
+    business_area: "R&D",
+    signal_type: "Threat Signal",
     severity: "High",
-    age_days: 3,
-    impact: "Potential compromise indicator"
+    first_observed_date: "2026-05-03",
+    detected_date: "2026-05-04",
+    current_period: true,
+    previous_period: false,
+    escalated: true,
+    escalation_status: "Escalated",
+    required_action: "Run compromise assessment with supplier"
+  },
+  {
+    signal_id: "SIG-009",
+    supplier_id: "SUP-006",
+    supplier_name: "Identity Services F",
+    tier: "Tier 1",
+    business_area: "Technology",
+    signal_type: "Leaked Credentials",
+    severity: "High",
+    first_observed_date: "2026-04-15",
+    detected_date: "2026-04-20",
+    current_period: false,
+    previous_period: true,
+    escalated: true,
+    escalation_status: "Closed",
+    required_action: "Maintain enhanced credential monitoring"
+  },
+  {
+    signal_id: "SIG-010",
+    supplier_id: "SUP-003",
+    supplier_name: "Logistics Provider C",
+    tier: "Tier 2",
+    business_area: "Supply Chain",
+    signal_type: "Vulnerability",
+    severity: "High",
+    first_observed_date: "2026-04-10",
+    detected_date: "2026-04-14",
+    current_period: false,
+    previous_period: true,
+    escalated: false,
+    escalation_status: "Closed",
+    required_action: "Continue monthly patch evidence checks"
+  },
+  {
+    signal_id: "SIG-011",
+    supplier_id: "SUP-008",
+    supplier_name: "Data Processing H",
+    tier: "Tier 1",
+    business_area: "R&D",
+    signal_type: "Threat Signal",
+    severity: "Medium",
+    first_observed_date: "2026-04-12",
+    detected_date: "2026-04-16",
+    current_period: false,
+    previous_period: true,
+    escalated: false,
+    escalation_status: "Open",
+    required_action: "Expand IOC monitoring coverage"
+  },
+  {
+    signal_id: "SIG-012",
+    supplier_id: "SUP-004",
+    supplier_name: "Manufacturing SaaS D",
+    tier: "Tier 1",
+    business_area: "Manufacturing",
+    signal_type: "External Exposure",
+    severity: "High",
+    first_observed_date: "2026-04-08",
+    detected_date: "2026-04-12",
+    current_period: false,
+    previous_period: true,
+    escalated: true,
+    escalation_status: "Closed",
+    required_action: "Maintain attack-surface hardening cadence"
   }
 ];
 
-const signalTrend = [
-  { week: "W1", attack_surface: 7, vulnerabilities: 5, credentials: 2, cloud: 3 },
-  { week: "W2", attack_surface: 9, vulnerabilities: 7, credentials: 3, cloud: 4 },
-  { week: "W3", attack_surface: 12, vulnerabilities: 9, credentials: 5, cloud: 6 },
-  { week: "W4", attack_surface: 10, vulnerabilities: 8, credentials: 4, cloud: 5 }
-];
-
-const monitoringAiAlerts = [
-  {
-    value: "4 vendors",
-    detail: "Predicted to experience rating deterioration in the next 30 days"
-  },
-  {
-    value: "Vendor F",
-    detail: "Highest likelihood of critical exposure escalation"
-  },
-  {
-    value: "Credential leaks",
-    detail: "Fastest-growing signal category across Tier 1 suppliers"
-  }
-];
-
-let signalTrendChart = null;
-let signalDistributionChart = null;
+let signalsByTypeChart = null;
+let severityTrendChart = null;
 
 function setSelectOptions(select, values) {
   const options = ["All", ...new Set(values)].filter(Boolean);
-  select.innerHTML = options.map(value => `<option value="${value}">${value}</option>`).join("");
+  select.innerHTML = options.map((value) => `<option value="${value}">${value}</option>`).join("");
 }
 
-function normalizeSignalType(type) {
-  if (type === "Vulnerability" || type === "Attack Surface" || type === "Threat Signal") {
-    return "Vulnerability";
-  }
-
-  if (type === "Credential Leak") {
-    return "Credentials";
-  }
-
-  if (type === "Cloud Exposure") {
-    return "Cloud";
-  }
-
-  if (type === "DNS / Email") {
-    return "DNS";
-  }
-
-  return type;
+function parseDate(dateString) {
+  if (!dateString) return null;
+  return new Date(`${dateString}T00:00:00Z`);
 }
 
-function getTimeWindowDays(windowValue) {
-  if (windowValue === "7d") return 7;
-  if (windowValue === "30d") return 30;
-  return 90;
+function detectionDelayDays(signal) {
+  const observed = parseDate(signal.first_observed_date);
+  const detected = parseDate(signal.detected_date);
+  if (!observed || !detected) return 0;
+  return Math.max(0, Math.round((detected - observed) / 86400000));
+}
+
+function signalDateFilter(signal, period) {
+  if (period === "Current Period") return signal.current_period;
+  if (period === "Previous Period") return signal.previous_period;
+  if (period === "Last 30 Days") {
+    const observed = parseDate(signal.first_observed_date);
+    if (!observed) return false;
+    const days = Math.round((TODAY - observed) / 86400000);
+    return days <= 30;
+  }
+  return true;
 }
 
 function getPillClass(value) {
-  if (["Critical", "High"].includes(value)) return "pill pill-red";
-  if (["Medium", "At Risk"].includes(value)) return "pill pill-amber";
+  if (["Critical", "High", "Escalated", "Coverage Gap"].includes(value)) return "pill pill-red";
+  if (["Medium", "At Risk", "Partial"].includes(value)) return "pill pill-amber";
   return "pill pill-green";
 }
 
-function filterMonitoringData(state) {
-  const maxAgeDays = getTimeWindowDays(state.timeWindow);
-
-  const filteredSignals = monitoringSignals.filter(item => {
-    const signalTypeMatch = state.signalType === "All" || normalizeSignalType(item.type) === state.signalType;
-    const severityMatch = state.severity === "All" || item.severity === state.severity;
-    const timeWindowMatch = item.age_days <= maxAgeDays;
-    const supplierMatch = state.supplier === "All" || item.supplier === state.supplier;
-    return signalTypeMatch && severityMatch && timeWindowMatch && supplierMatch;
-  });
-
-  const names = new Set(filteredSignals.map(item => item.supplier));
-  const filteredSuppliers = monitoredSuppliers.filter(item => names.has(item.supplier));
-
-  return { filteredSuppliers, filteredSignals };
-}
-
-function renderMonitoringKpis(filteredSuppliers, filteredSignals) {
-  const total = filteredSuppliers.length;
-
-  if (!total) {
-    document.getElementById("monitoredVendors").textContent = "0%";
-    document.getElementById("scoreDrops").textContent = "0";
-    document.getElementById("criticalVulnerabilities").textContent = "0";
-    document.getElementById("leakedCredentials").textContent = "0";
-    document.getElementById("newExposedAssets").textContent = "0";
-    document.getElementById("cloudExposure").textContent = "0";
-    document.getElementById("dnsEmailIssues").textContent = "0";
-    document.getElementById("criticalAlerts").textContent = "0";
+function setTrend(id, currentValue, previousValue, preferredDirection, valueSuffix = "") {
+  const node = document.getElementById(id);
+  if (!node || previousValue == null || Number.isNaN(previousValue)) {
     return;
   }
 
-  const monitoredCount = filteredSuppliers.filter(s => s.monitored).length;
-  const monitoredPercent = Math.round((monitoredCount / total) * 100);
+  const delta = currentValue - previousValue;
 
-  const scoreDrops = filteredSuppliers.filter(
-    s => s.current_rating < s.previous_rating
-  ).length;
+  if (preferredDirection === "contextual") {
+    const arrow = delta > 0 ? "▲" : delta < 0 ? "▼" : "→";
+    node.className = "kpi-trend trend-warn";
+    node.textContent = `${arrow} ${Math.abs(delta).toFixed(1)}${valueSuffix} trend`;
+    return;
+  }
 
-  const criticalVulnerabilities = filteredSignals.filter(
-    s => s.type === "Vulnerability" && s.severity === "Critical"
-  ).length;
+  if (delta === 0) {
+    node.className = "kpi-trend trend-warn";
+    node.textContent = `→ 0${valueSuffix} vs prior period`;
+    return;
+  }
 
-  const leakedCredentials = filteredSignals.filter(
-    s => s.type === "Credential Leak"
-  ).length;
+  const isIncrease = delta > 0;
+  const arrow = isIncrease ? "▲" : "▼";
+  const isGood = preferredDirection === "higher" ? isIncrease : !isIncrease;
 
-  const newExposedAssets = filteredSignals.filter(
-    s => s.type === "Attack Surface"
-  ).length;
-
-  const cloudExposure = filteredSignals.filter(
-    s => s.type === "Cloud Exposure"
-  ).length;
-
-  const dnsEmailIssues = filteredSignals.filter(
-    s => s.type === "DNS / Email"
-  ).length;
-
-  const criticalAlerts = filteredSignals.filter(
-    s => s.severity === "Critical"
-  ).length;
-
-  document.getElementById("monitoredVendors").textContent = `${monitoredPercent}%`;
-  document.getElementById("scoreDrops").textContent = scoreDrops;
-  document.getElementById("criticalVulnerabilities").textContent = criticalVulnerabilities;
-  document.getElementById("leakedCredentials").textContent = leakedCredentials;
-  document.getElementById("newExposedAssets").textContent = newExposedAssets;
-  document.getElementById("cloudExposure").textContent = cloudExposure;
-  document.getElementById("dnsEmailIssues").textContent = dnsEmailIssues;
-  document.getElementById("criticalAlerts").textContent = criticalAlerts;
+  node.className = `kpi-trend ${isGood ? "trend-good" : "trend-bad"}`;
+  node.textContent = `${arrow} ${Math.abs(delta).toFixed(1)}${valueSuffix} vs prior period`;
 }
 
-function renderCriticalSignals(filteredSignals) {
-  const tbody = document.querySelector("#criticalSignalsTable tbody");
+function getSupplierById(supplierId) {
+  return suppliers.find((s) => s.supplier_id === supplierId);
+}
+
+function filterMonitoringData(state) {
+  const filteredSuppliers = suppliers.filter((supplier) => {
+    const tierMatch = state.tier === "All" || supplier.tier === state.tier;
+    const businessAreaMatch = state.businessArea === "All" || supplier.business_area === state.businessArea;
+    const monitoringStatusMatch = state.monitoringStatus === "All" || supplier.monitoring_status === state.monitoringStatus;
+    return tierMatch && businessAreaMatch && monitoringStatusMatch;
+  });
+
+  const supplierIds = new Set(filteredSuppliers.map((supplier) => supplier.supplier_id));
+
+  const filteredSignals = signals.filter((signal) => {
+    const signalTypeMatch = state.signalType === "All" || signal.signal_type === state.signalType;
+    const severityMatch = state.severity === "All" || signal.severity === state.severity;
+    const tierMatch = state.tier === "All" || signal.tier === state.tier;
+    const businessAreaMatch = state.businessArea === "All" || signal.business_area === state.businessArea;
+    const escalationMatch = state.escalationStatus === "All" || signal.escalation_status === state.escalationStatus;
+    const periodMatch = signalDateFilter(signal, state.period);
+
+    return signalTypeMatch && severityMatch && tierMatch && businessAreaMatch && escalationMatch && periodMatch && supplierIds.has(signal.supplier_id);
+  });
+
+  return { filteredSignals, filteredSuppliers };
+}
+
+function renderMonitoringKpis(filteredSuppliers, filteredSignals) {
+  const totalSuppliers = filteredSuppliers.length;
+  const tierOneSuppliers = filteredSuppliers.filter((s) => s.tier === "Tier 1");
+
+  const monitoringCoverage = totalSuppliers
+    ? Math.round((filteredSuppliers.filter((s) => s.continuous_monitoring_enabled).length / totalSuppliers) * 100)
+    : 0;
+  const previousMonitoringCoverage = totalSuppliers
+    ? Math.round((filteredSuppliers.filter((s) => s.previous_continuous_monitoring_enabled).length / totalSuppliers) * 100)
+    : 0;
+
+  const tierOneMonitoringCoverage = tierOneSuppliers.length
+    ? Math.round((tierOneSuppliers.filter((s) => s.continuous_monitoring_enabled).length / tierOneSuppliers.length) * 100)
+    : 0;
+  const previousTierOneMonitoringCoverage = tierOneSuppliers.length
+    ? Math.round((tierOneSuppliers.filter((s) => s.previous_continuous_monitoring_enabled).length / tierOneSuppliers.length) * 100)
+    : 0;
+
+  const criticalExternalExposures = filteredSignals.filter(
+    (s) => s.signal_type === "External Exposure" && s.severity === "Critical"
+  ).length;
+  const previousCriticalExternalExposures = signals.filter(
+    (s) => s.previous_period && s.signal_type === "External Exposure" && s.severity === "Critical"
+  ).length;
+
+  const leakedCredentials = filteredSignals.filter((s) => s.signal_type === "Leaked Credentials").length;
+  const previousLeakedCredentials = signals.filter(
+    (s) => s.previous_period && s.signal_type === "Leaked Credentials"
+  ).length;
+
+  const suppliersWithRatingDrop = filteredSuppliers.filter((s) => s.rating_change_points < 0).length;
+  const previousSuppliersWithRatingDrop = filteredSuppliers.filter((s) => s.previous_rating_change_points < 0).length;
+
+  const newHighRiskSignals = filteredSignals.filter(
+    (s) => s.current_period && ["Critical", "High"].includes(s.severity)
+  ).length;
+  const previousHighRiskSignals = signals.filter(
+    (s) => s.previous_period && ["Critical", "High"].includes(s.severity)
+  ).length;
+
+  const escalatedSignals = filteredSignals.filter((s) => s.escalated).length;
+  const previousEscalatedSignals = signals.filter((s) => s.previous_period && s.escalated).length;
+
+  const avgDetectionDelay = filteredSignals.length
+    ? Number(
+        (
+          filteredSignals.reduce((sum, s) => sum + detectionDelayDays(s), 0) /
+          filteredSignals.length
+        ).toFixed(1)
+      )
+    : 0;
+
+  const previousPeriodSignals = signals.filter((s) => s.previous_period);
+  const previousAvgDetectionDelay = previousPeriodSignals.length
+    ? Number(
+        (
+          previousPeriodSignals.reduce((sum, s) => sum + detectionDelayDays(s), 0) /
+          previousPeriodSignals.length
+        ).toFixed(1)
+      )
+    : 0;
+
+  document.getElementById("monitoringCoverage").textContent = `${monitoringCoverage}%`;
+  document.getElementById("tierOneMonitoringCoverage").textContent = `${tierOneMonitoringCoverage}%`;
+  document.getElementById("criticalExternalExposures").textContent = criticalExternalExposures;
+  document.getElementById("leakedCredentials").textContent = leakedCredentials;
+  document.getElementById("suppliersWithRatingDrop").textContent = suppliersWithRatingDrop;
+  document.getElementById("newHighRiskSignals").textContent = newHighRiskSignals;
+  document.getElementById("escalatedSignals").textContent = escalatedSignals;
+  document.getElementById("avgDetectionDelay").textContent = `${avgDetectionDelay}d`;
+
+  setTrend("monitoringCoverageTrend", monitoringCoverage, previousMonitoringCoverage, "higher", "%");
+  setTrend("tierOneMonitoringCoverageTrend", tierOneMonitoringCoverage, previousTierOneMonitoringCoverage, "higher", "%");
+  setTrend("criticalExternalExposuresTrend", criticalExternalExposures, previousCriticalExternalExposures, "lower");
+  setTrend("leakedCredentialsTrend", leakedCredentials, previousLeakedCredentials, "lower");
+  setTrend("suppliersWithRatingDropTrend", suppliersWithRatingDrop, previousSuppliersWithRatingDrop, "lower");
+  setTrend("newHighRiskSignalsTrend", newHighRiskSignals, previousHighRiskSignals, "lower");
+  setTrend("escalatedSignalsTrend", escalatedSignals, previousEscalatedSignals, "contextual");
+  setTrend("avgDetectionDelayTrend", avgDetectionDelay, previousAvgDetectionDelay, "lower", "d");
+}
+
+function renderActiveSignalsTable(filteredSignals) {
+  const tbody = document.querySelector("#activeSignalsTable tbody");
   tbody.innerHTML = "";
 
   filteredSignals
-    .filter(s => ["Critical", "High"].includes(s.severity))
-    .sort((a, b) => a.age_days - b.age_days)
-    .forEach(signal => {
+    .filter((s) => s.escalation_status !== "Closed")
+    .sort((a, b) => parseDate(b.first_observed_date) - parseDate(a.first_observed_date))
+    .forEach((signal) => {
+      const delay = detectionDelayDays(signal);
       tbody.innerHTML += `
         <tr>
-          <td>${signal.supplier}</td>
-          <td>${signal.signal}</td>
+          <td>${signal.supplier_name}</td>
+          <td>${signal.tier}</td>
+          <td>${signal.business_area}</td>
+          <td>${signal.signal_type}</td>
           <td><span class="${getPillClass(signal.severity)}">${signal.severity}</span></td>
-          <td>${signal.age_days}d</td>
-          <td>${signal.impact}</td>
+          <td>${signal.first_observed_date}</td>
+          <td>${delay}d</td>
+          <td><span class="${getPillClass(signal.escalation_status)}">${signal.escalation_status}</span></td>
+          <td>${signal.required_action}</td>
         </tr>
       `;
     });
 }
 
-function renderScoreDrops(filteredSuppliers) {
-  const tbody = document.querySelector("#scoreDropTable tbody");
+function renderRatingDeteriorationTable(filteredSuppliers) {
+  const tbody = document.querySelector("#ratingDeteriorationTable tbody");
   tbody.innerHTML = "";
 
   filteredSuppliers
-    .map(s => ({
-      ...s,
-      change: s.current_rating - s.previous_rating
-    }))
-    .sort((a, b) => a.change - b.change)
-    .forEach(s => {
+    .filter((s) => s.rating_change_points < 0)
+    .sort((a, b) => a.rating_change_points - b.rating_change_points)
+    .forEach((supplier) => {
+      const requiredAction = supplier.rating_change_points <= -30
+        ? "Escalate to supplier risk operations"
+        : "Increase monitoring cadence";
+
       tbody.innerHTML += `
         <tr>
-          <td>${s.supplier}</td>
-          <td>${s.previous_rating}</td>
-          <td>${s.current_rating}</td>
-          <td>${s.change}</td>
-          <td>${s.tier}</td>
+          <td>${supplier.supplier_name}</td>
+          <td>${supplier.tier}</td>
+          <td>${supplier.previous_cyber_rating}</td>
+          <td>${supplier.current_cyber_rating}</td>
+          <td>${supplier.rating_change_points}</td>
+          <td>${supplier.rating_change_reason}</td>
+          <td>${requiredAction}</td>
         </tr>
       `;
     });
 }
 
-function renderWatchlist(filteredSuppliers) {
-  const tbody = document.querySelector("#watchlistTable tbody");
+function renderBlindSpotsTable(filteredSuppliers) {
+  const tbody = document.querySelector("#blindSpotsTable tbody");
   tbody.innerHTML = "";
 
   filteredSuppliers
-    .filter(s => s.open_signals >= 3)
-    .sort((a, b) => b.open_signals - a.open_signals)
-    .forEach(s => {
-      const exposureType =
-        s.owner === "Technology"
-          ? "Identity / Cloud"
-          : s.owner === "R&D"
-            ? "Sensitive Data"
-            : s.owner === "Supply Chain"
-              ? "Operational Continuity"
-              : "SaaS Exposure";
+    .filter((s) => s.monitoring_status !== "Active")
+    .forEach((supplier) => {
+      const riskLevel = supplier.tier === "Tier 1" ? "High" : "Medium";
+      const requiredAction = supplier.monitoring_status === "Coverage Gap"
+        ? "Close telemetry gap in 10 days"
+        : "Expand monitoring scope";
 
       tbody.innerHTML += `
         <tr>
-          <td>${s.supplier}</td>
-          <td>${s.tier}</td>
-          <td>${exposureType}</td>
-          <td>${s.open_signals}</td>
-          <td><span class="${getPillClass(s.risk_level)}">${s.risk_level}</span></td>
-          <td>${s.owner}</td>
+          <td>${supplier.supplier_name}</td>
+          <td>${supplier.tier}</td>
+          <td>${supplier.business_area}</td>
+          <td><span class="${getPillClass(supplier.monitoring_status)}">${supplier.monitoring_status}</span></td>
+          <td>${supplier.monitoring_gap_reason || "Limited visibility"}</td>
+          <td><span class="${getPillClass(riskLevel)}">${riskLevel}</span></td>
+          <td>${requiredAction}</td>
         </tr>
       `;
     });
-}
-
-function renderMonitoringAiAlerts() {
-  const container = document.getElementById("monitoringAiAlerts");
-  container.innerHTML = "";
-
-  monitoringAiAlerts.forEach(alert => {
-    container.innerHTML += `
-      <div class="ai-item">
-        <strong>${alert.value}</strong>
-        <span>${alert.detail}</span>
-      </div>
-    `;
-  });
 }
 
 function renderMonitoringCharts(filteredSignals) {
-  if (signalTrendChart) signalTrendChart.destroy();
-  if (signalDistributionChart) signalDistributionChart.destroy();
+  if (signalsByTypeChart) signalsByTypeChart.destroy();
+  if (severityTrendChart) severityTrendChart.destroy();
 
-  const buckets = ["W1", "W2", "W3", "W4"];
-  const trend = {
-    Vulnerability: [0, 0, 0, 0],
-    Credentials: [0, 0, 0, 0],
-    Cloud: [0, 0, 0, 0],
-    DNS: [0, 0, 0, 0]
-  };
-
-  filteredSignals.forEach(item => {
-    const bucket = item.age_days <= 3 ? 0 : item.age_days <= 7 ? 1 : item.age_days <= 12 ? 2 : 3;
-    const normalizedType = normalizeSignalType(item.type);
-    if (trend[normalizedType]) trend[normalizedType][bucket] += 1;
-  });
-
-  signalTrendChart = new Chart(document.getElementById("signalTrendChart"), {
-    type: "line",
-    data: {
-      labels: buckets,
-      datasets: [
-        {
-          label: "Vulnerability",
-          data: trend.Vulnerability,
-          tension: 0.35
-        },
-        {
-          label: "Credentials",
-          data: trend.Credentials,
-          tension: 0.35
-        },
-        {
-          label: "Cloud",
-          data: trend.Cloud,
-          tension: 0.35
-        },
-        {
-          label: "DNS",
-          data: trend.DNS,
-          tension: 0.35
-        }
-      ]
-    },
-    options: { maintainAspectRatio: false }
-    });
-
-  const signalTypes = [...new Set(filteredSignals.map(s => normalizeSignalType(s.type)))];
-
-  signalDistributionChart = new Chart(document.getElementById("signalDistributionChart"), {
-    type: "doughnut",
+  const signalTypes = [...new Set(filteredSignals.map((s) => s.signal_type))];
+  signalsByTypeChart = new Chart(document.getElementById("signalsByTypeChart"), {
+    type: "bar",
     data: {
       labels: signalTypes,
       datasets: [
         {
-          data: signalTypes.map(type =>
-            filteredSignals.filter(s => normalizeSignalType(s.type) === type).length
-          )
+          label: "Signals",
+          data: signalTypes.map((type) => filteredSignals.filter((s) => s.signal_type === type).length)
         }
       ]
     },
     options: { maintainAspectRatio: false }
-    });
+  });
+
+  const trendBuckets = ["Previous", "Current"];
+  const criticalCounts = [
+    signals.filter((s) => s.previous_period && s.severity === "Critical").length,
+    filteredSignals.filter((s) => s.current_period && s.severity === "Critical").length
+  ];
+  const highCounts = [
+    signals.filter((s) => s.previous_period && s.severity === "High").length,
+    filteredSignals.filter((s) => s.current_period && s.severity === "High").length
+  ];
+  const mediumCounts = [
+    signals.filter((s) => s.previous_period && s.severity === "Medium").length,
+    filteredSignals.filter((s) => s.current_period && s.severity === "Medium").length
+  ];
+
+  severityTrendChart = new Chart(document.getElementById("severityTrendChart"), {
+    type: "line",
+    data: {
+      labels: trendBuckets,
+      datasets: [
+        { label: "Critical", data: criticalCounts, tension: 0.3 },
+        { label: "High", data: highCounts, tension: 0.3 },
+        { label: "Medium", data: mediumCounts, tension: 0.3 }
+      ]
+    },
+    options: { maintainAspectRatio: false }
+  });
 }
 
 function applyFilters(state) {
-  const { filteredSuppliers, filteredSignals } = filterMonitoringData(state);
+  const { filteredSignals, filteredSuppliers } = filterMonitoringData(state);
 
   renderMonitoringKpis(filteredSuppliers, filteredSignals);
-  renderCriticalSignals(filteredSignals);
-  renderScoreDrops(filteredSuppliers);
-  renderWatchlist(filteredSuppliers);
+  renderActiveSignalsTable(filteredSignals);
+  renderRatingDeteriorationTable(filteredSuppliers);
+  renderBlindSpotsTable(filteredSuppliers);
   renderMonitoringCharts(filteredSignals);
 
   document.getElementById("filterSummary").textContent =
-    `Showing ${filteredSignals.length} of ${monitoringSignals.length} signals`;
+    `Showing ${filteredSignals.length} of ${signals.length} signals`;
 }
 
 function addCardHoverEffect() {
-  const cards = document.querySelectorAll(".kpi-card, .card, .ai-item");
-
-  cards.forEach(card => {
+  const cards = document.querySelectorAll(".kpi-card, .card");
+  cards.forEach((card) => {
     card.addEventListener("mouseenter", () => {
       card.style.transform = "translateY(-3px)";
       card.style.transition = "0.2s ease";
@@ -464,57 +645,59 @@ function addCardHoverEffect() {
   });
 }
 
-renderMonitoringAiAlerts();
-addCardHoverEffect();
-
-function renderExtendedMonitoringKpis() {
-  const ext = calculateMissingKpis();
-  document.getElementById("newVulnerabilityTrend").textContent = ext.newVulnerabilityTrend;
-  document.getElementById("breachSignalCount").textContent = ext.breachSignalCount;
-}
-
-renderExtendedMonitoringKpis();
-
 function initMonitoringFilters() {
   const signalTypeSelect = document.getElementById("filterSignalType");
   const severitySelect = document.getElementById("filterSeverity");
-  const timeWindowSelect = document.getElementById("filterTimeWindow");
-  const supplierSelect = document.getElementById("filterSupplier");
+  const tierSelect = document.getElementById("filterTier");
+  const businessAreaSelect = document.getElementById("filterBusinessArea");
+  const monitoringStatusSelect = document.getElementById("filterMonitoringStatus");
+  const escalationStatusSelect = document.getElementById("filterEscalationStatus");
+  const periodSelect = document.getElementById("filterPeriod");
   const clearButton = document.getElementById("clearFilters");
 
-  setSelectOptions(signalTypeSelect, ["Vulnerability", "Credentials", "Cloud", "DNS"]);
-  setSelectOptions(severitySelect, ["Critical", "High"]);
-  timeWindowSelect.innerHTML = ["7d", "30d", "90d"].map(value => `<option value="${value}">${value}</option>`).join("");
-  supplierSelect.innerHTML = ["All", ...monitoredSuppliers.map(item => item.supplier)]
-    .filter((value, index, array) => array.indexOf(value) === index)
-    .map(value => `<option value="${value}">${value}</option>`)
-    .join("");
+  setSelectOptions(signalTypeSelect, signals.map((s) => s.signal_type));
+  setSelectOptions(severitySelect, signals.map((s) => s.severity));
+  setSelectOptions(tierSelect, suppliers.map((s) => s.tier));
+  setSelectOptions(businessAreaSelect, suppliers.map((s) => s.business_area));
+  setSelectOptions(monitoringStatusSelect, suppliers.map((s) => s.monitoring_status));
+  setSelectOptions(escalationStatusSelect, signals.map((s) => s.escalation_status));
+  setSelectOptions(periodSelect, ["Current Period", "Previous Period", "Last 30 Days"]);
 
-  timeWindowSelect.value = "30d";
+  periodSelect.value = "Current Period";
 
   function applyFromUi() {
     applyFilters({
       signalType: signalTypeSelect.value,
       severity: severitySelect.value,
-      timeWindow: timeWindowSelect.value,
-      supplier: supplierSelect.value
+      tier: tierSelect.value,
+      businessArea: businessAreaSelect.value,
+      monitoringStatus: monitoringStatusSelect.value,
+      escalationStatus: escalationStatusSelect.value,
+      period: periodSelect.value
     });
   }
 
   signalTypeSelect.addEventListener("change", applyFromUi);
   severitySelect.addEventListener("change", applyFromUi);
-  timeWindowSelect.addEventListener("change", applyFromUi);
-  supplierSelect.addEventListener("change", applyFromUi);
+  tierSelect.addEventListener("change", applyFromUi);
+  businessAreaSelect.addEventListener("change", applyFromUi);
+  monitoringStatusSelect.addEventListener("change", applyFromUi);
+  escalationStatusSelect.addEventListener("change", applyFromUi);
+  periodSelect.addEventListener("change", applyFromUi);
 
   clearButton.addEventListener("click", () => {
     signalTypeSelect.value = "All";
     severitySelect.value = "All";
-    timeWindowSelect.value = "30d";
-    supplierSelect.value = "All";
+    tierSelect.value = "All";
+    businessAreaSelect.value = "All";
+    monitoringStatusSelect.value = "All";
+    escalationStatusSelect.value = "All";
+    periodSelect.value = "Current Period";
     applyFromUi();
   });
 
   applyFromUi();
 }
 
+addCardHoverEffect();
 initMonitoringFilters();

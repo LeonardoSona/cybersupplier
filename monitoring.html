@@ -6,7 +6,6 @@
   <title>Continuous Monitoring | Supplier Cyber Risk</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="extended-kpis.js" defer></script>
   <script src="tooltips.js" defer></script>
   <script src="monitoring.js" defer></script>
 </head>
@@ -43,12 +42,24 @@
           <select id="filterSeverity"></select>
         </label>
         <label class="filter-field">
-          <span>Time Window</span>
-          <select id="filterTimeWindow"></select>
+          <span>Supplier Tier</span>
+          <select id="filterTier"></select>
         </label>
         <label class="filter-field">
-          <span>Supplier</span>
-          <select id="filterSupplier"></select>
+          <span>Business Area</span>
+          <select id="filterBusinessArea"></select>
+        </label>
+        <label class="filter-field">
+          <span>Monitoring Status</span>
+          <select id="filterMonitoringStatus"></select>
+        </label>
+        <label class="filter-field">
+          <span>Escalation Status</span>
+          <select id="filterEscalationStatus"></select>
+        </label>
+        <label class="filter-field">
+          <span>Date / Period</span>
+          <select id="filterPeriod"></select>
         </label>
         <div class="filter-actions">
           <button id="clearFilters" type="button">Clear Filters</button>
@@ -59,80 +70,82 @@
 
     <section class="kpi-grid">
       <article class="kpi-card">
-        <div class="kpi-label">Monitored Vendors</div>
-        <div class="kpi-value" id="monitoredVendors"></div>
+        <div class="kpi-label">Monitoring Coverage</div>
+        <div class="kpi-value" id="monitoringCoverage"></div>
+        <div class="kpi-trend" id="monitoringCoverageTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Score Drops</div>
-        <div class="kpi-value" id="scoreDrops"></div>
+        <div class="kpi-label">Tier 1 Monitoring Coverage</div>
+        <div class="kpi-value" id="tierOneMonitoringCoverage"></div>
+        <div class="kpi-trend" id="tierOneMonitoringCoverageTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Critical Vulnerabilities</div>
-        <div class="kpi-value" id="criticalVulnerabilities"></div>
+        <div class="kpi-label">Critical External Exposures</div>
+        <div class="kpi-value" id="criticalExternalExposures"></div>
+        <div class="kpi-trend" id="criticalExternalExposuresTrend"></div>
       </article>
 
       <article class="kpi-card">
         <div class="kpi-label">Leaked Credentials</div>
         <div class="kpi-value" id="leakedCredentials"></div>
+        <div class="kpi-trend" id="leakedCredentialsTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">New Exposed Assets</div>
-        <div class="kpi-value" id="newExposedAssets"></div>
+        <div class="kpi-label">Suppliers with Rating Drop</div>
+        <div class="kpi-value" id="suppliersWithRatingDrop"></div>
+        <div class="kpi-trend" id="suppliersWithRatingDropTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Cloud Exposure</div>
-        <div class="kpi-value" id="cloudExposure"></div>
+        <div class="kpi-label">New High-Risk Signals</div>
+        <div class="kpi-value" id="newHighRiskSignals"></div>
+        <div class="kpi-trend" id="newHighRiskSignalsTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">DNS / Email Issues</div>
-        <div class="kpi-value" id="dnsEmailIssues"></div>
+        <div class="kpi-label">Escalated Signals</div>
+        <div class="kpi-value" id="escalatedSignals"></div>
+        <div class="kpi-trend" id="escalatedSignalsTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Critical Alerts</div>
-        <div class="kpi-value" id="criticalAlerts"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">New Vulnerability Trend</div>
-        <div class="kpi-value" id="newVulnerabilityTrend"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">Breach Signal Count</div>
-        <div class="kpi-value" id="breachSignalCount"></div>
+        <div class="kpi-label">Avg Detection Delay</div>
+        <div class="kpi-value" id="avgDetectionDelay"></div>
+        <div class="kpi-trend" id="avgDetectionDelayTrend"></div>
       </article>
     </section>
 
     <section class="content-grid">
       <div class="card">
-        <h3>Signal Trend</h3>
-        <div class="chart-wrap"><canvas id="signalTrendChart"></canvas></div>
+        <h3>Monitoring Signals by Type</h3>
+        <div class="chart-wrap"><canvas id="signalsByTypeChart"></canvas></div>
       </div>
 
       <div class="card">
-        <h3>Signal Distribution</h3>
-        <div class="chart-wrap"><canvas id="signalDistributionChart"></canvas></div>
+        <h3>Signal Severity Trend</h3>
+        <div class="chart-wrap"><canvas id="severityTrendChart"></canvas></div>
       </div>
     </section>
 
     <section class="content-grid">
       <div class="card">
-        <h3>Latest Critical Signals</h3>
+        <h3>Active Monitoring Signals</h3>
         <div class="table-wrap">
-          <table id="criticalSignalsTable">
+          <table id="activeSignalsTable">
             <thead>
               <tr>
                 <th>Supplier</th>
-                <th>Signal</th>
+                <th>Tier</th>
+                <th>Business Area</th>
+                <th>Signal Type</th>
                 <th>Severity</th>
-                <th>Age</th>
-                <th>Impact</th>
+                <th>First Observed</th>
+                <th>Detection Delay</th>
+                <th>Escalation Status</th>
+                <th>Required Action</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -141,16 +154,18 @@
       </div>
 
       <div class="card">
-        <h3>Score Deterioration</h3>
+        <h3>Supplier Rating Deterioration</h3>
         <div class="table-wrap">
-          <table id="scoreDropTable">
+          <table id="ratingDeteriorationTable">
             <thead>
               <tr>
                 <th>Supplier</th>
-                <th>Previous</th>
-                <th>Current</th>
-                <th>Change</th>
                 <th>Tier</th>
+                <th>Previous Rating</th>
+                <th>Current Rating</th>
+                <th>Change</th>
+                <th>Reason</th>
+                <th>Required Action</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -160,27 +175,23 @@
     </section>
 
     <section class="card">
-      <h3>Exposure Watchlist</h3>
+      <h3>Monitoring Blind Spots</h3>
       <div class="table-wrap">
-        <table id="watchlistTable">
+        <table id="blindSpotsTable">
           <thead>
             <tr>
               <th>Supplier</th>
               <th>Tier</th>
-              <th>Exposure Type</th>
-              <th>Open Signals</th>
+              <th>Business Area</th>
+              <th>Monitoring Status</th>
+              <th>Reason</th>
               <th>Risk Level</th>
-              <th>Owner</th>
+              <th>Required Action</th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
-    </section>
-
-    <section class="ai-panel">
-      <h3>AI Alerts</h3>
-      <div class="ai-grid" id="monitoringAiAlerts"></div>
     </section>
   </div>
 </body>

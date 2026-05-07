@@ -6,7 +6,6 @@
   <title>Dependencies | Supplier Cyber Risk</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="extended-kpis.js" defer></script>
   <script src="tooltips.js" defer></script>
   <script src="dependencies.js" defer></script>
 </head>
@@ -39,19 +38,28 @@
           <select id="filterDependencyType"></select>
         </label>
         <label class="filter-field">
-          <span>Tier</span>
+          <span>Cloud Provider</span>
+          <select id="filterCloudProvider"></select>
+        </label>
+        <label class="filter-field">
+          <span>Fourth Party</span>
+          <select id="filterFourthParty"></select>
+        </label>
+        <label class="filter-field">
+          <span>Business Service</span>
+          <select id="filterBusinessService"></select>
+        </label>
+        <label class="filter-field">
+          <span>Supplier Tier</span>
           <select id="filterTier"></select>
         </label>
         <label class="filter-field">
-          <span>Risk Level</span>
-          <select id="filterRisk"></select>
+          <span>Criticality</span>
+          <select id="filterCriticality"></select>
         </label>
         <label class="filter-field">
-          <span>Critical Suppliers Only</span>
-          <select id="filterCriticalOnly">
-            <option value="All">All</option>
-            <option value="Critical Only">Critical Only</option>
-          </select>
+          <span>Resilience Status</span>
+          <select id="filterResilienceStatus"></select>
         </label>
         <div class="filter-actions">
           <button id="clearFilters" type="button">Clear Filters</button>
@@ -62,80 +70,80 @@
 
     <section class="kpi-grid">
       <article class="kpi-card">
-        <div class="kpi-label">Fourth Parties Identified</div>
-        <div class="kpi-value" id="fourthPartiesIdentified"></div>
+        <div class="kpi-label">Fourth-Party Visibility</div>
+        <div class="kpi-value" id="fourthPartyVisibility"></div>
+        <div class="kpi-trend" id="fourthPartyVisibilityTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Tier 1 Dependencies Mapped</div>
-        <div class="kpi-value" id="tierOneMapped"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">High-Risk Dependencies</div>
-        <div class="kpi-value" id="highRiskDependencies"></div>
+        <div class="kpi-label">Fourth-Party Concentration</div>
+        <div class="kpi-value" id="fourthPartyConcentration"></div>
+        <div class="kpi-trend" id="fourthPartyConcentrationTrend"></div>
       </article>
 
       <article class="kpi-card">
         <div class="kpi-label">Cloud Concentration</div>
         <div class="kpi-value" id="cloudConcentration"></div>
+        <div class="kpi-trend" id="cloudConcentrationTrend"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Shared Critical Providers</div>
+        <div class="kpi-value" id="sharedCriticalProviders"></div>
+        <div class="kpi-trend" id="sharedCriticalProvidersTrend"></div>
       </article>
 
       <article class="kpi-card">
         <div class="kpi-label">Single Points of Failure</div>
-        <div class="kpi-value" id="singlePointsFailure"></div>
+        <div class="kpi-value" id="singlePointsOfFailure"></div>
+        <div class="kpi-trend" id="singlePointsOfFailureTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Country Concentration</div>
-        <div class="kpi-value" id="countryConcentration"></div>
+        <div class="kpi-label">Shared Identity Dependency</div>
+        <div class="kpi-value" id="sharedIdentityDependency"></div>
+        <div class="kpi-trend" id="sharedIdentityDependencyTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Cascading Exposure</div>
-        <div class="kpi-value" id="cascadingExposure"></div>
+        <div class="kpi-label">Downstream High-Risk Links</div>
+        <div class="kpi-value" id="downstreamHighRiskLinks"></div>
+        <div class="kpi-trend" id="downstreamHighRiskLinksTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Dependency Change Events</div>
-        <div class="kpi-value" id="dependencyChanges"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">Cloud Concentration Ratio</div>
-        <div class="kpi-value" id="cloudConcentrationRatio"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">Fourth-Party Concentration Ratio</div>
-        <div class="kpi-value" id="fourthPartyConcentrationRatio"></div>
+        <div class="kpi-label">Resilience Coverage</div>
+        <div class="kpi-value" id="resilienceCoverage"></div>
+        <div class="kpi-trend" id="resilienceCoverageTrend"></div>
       </article>
     </section>
 
     <section class="content-grid">
       <div class="card">
-        <h3>Dependency Concentration</h3>
-        <div class="chart-wrap"><canvas id="dependencyConcentrationChart"></canvas></div>
+        <h3>Exposure by Dependency Type</h3>
+        <div class="chart-wrap"><canvas id="dependencyTypeExposureChart"></canvas></div>
       </div>
 
       <div class="card">
-        <h3>Fourth-Party Risk Mix</h3>
-        <div class="chart-wrap"><canvas id="fourthPartyRiskChart"></canvas></div>
+        <h3>Critical Services by Resilience Status</h3>
+        <div class="chart-wrap"><canvas id="criticalResilienceChart"></canvas></div>
       </div>
     </section>
 
     <section class="content-grid">
       <div class="card">
-        <h3>Top Dependency Concentrations</h3>
+        <h3>Dependency Hotspots</h3>
         <div class="table-wrap">
-          <table id="dependencyConcentrationTable">
+          <table id="dependencyHotspotsTable">
             <thead>
               <tr>
                 <th>Dependency</th>
-                <th>Type</th>
-                <th>Critical Suppliers</th>
-                <th>Risk</th>
-                <th>Exposure</th>
+                <th>Dependency Type</th>
+                <th>Suppliers Affected</th>
+                <th>Critical Suppliers Affected</th>
+                <th>Modeled Exposure</th>
+                <th>Concentration Level</th>
+                <th>Required Action</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -144,16 +152,19 @@
       </div>
 
       <div class="card">
-        <h3>Critical Supplier Dependency Map</h3>
+        <h3>Single Points of Failure</h3>
         <div class="table-wrap">
-          <table id="supplierDependencyTable">
+          <table id="singlePointsOfFailureTable">
             <thead>
               <tr>
+                <th>Business Service</th>
                 <th>Supplier</th>
-                <th>Tier</th>
                 <th>Dependency</th>
-                <th>Dependency Risk</th>
-                <th>Service Impact</th>
+                <th>Tier</th>
+                <th>Criticality</th>
+                <th>Alternate Available</th>
+                <th>Resilience Status</th>
+                <th>Required Action</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -163,16 +174,18 @@
     </section>
 
     <section class="card">
-      <h3>Cascading Risk Scenarios</h3>
+      <h3>Downstream High-Risk Links</h3>
       <div class="table-wrap">
-        <table id="cascadingScenarioTable">
+        <table id="downstreamHighRiskLinksTable">
           <thead>
             <tr>
-              <th>Scenario</th>
-              <th>Affected Suppliers</th>
+              <th>Supplier</th>
+              <th>Fourth Party</th>
+              <th>Dependency Type</th>
+              <th>Downstream Risk</th>
+              <th>Visibility Level</th>
               <th>Business Area</th>
-              <th>Estimated Exposure</th>
-              <th>Priority</th>
+              <th>Required Action</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -180,9 +193,21 @@
       </div>
     </section>
 
-    <section class="ai-panel">
-      <h3>AI Alerts</h3>
-      <div class="ai-grid" id="dependencyAiAlerts"></div>
+    <section class="card">
+      <h3>Systemic Dependency Map</h3>
+      <div class="table-wrap">
+        <table id="systemicDependencyMapTable">
+          <thead>
+            <tr>
+              <th>Chain</th>
+              <th>Business Service</th>
+              <th>Systemic Risk</th>
+              <th>Required Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </section>
   </div>
 </body>

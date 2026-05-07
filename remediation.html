@@ -6,7 +6,6 @@
   <title>Remediation | Supplier Cyber Risk</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="extended-kpis.js" defer></script>
   <script src="tooltips.js" defer></script>
   <script src="remediation.js" defer></script>
 </head>
@@ -39,20 +38,32 @@
           <select id="filterSeverity"></select>
         </label>
         <label class="filter-field">
-          <span>SLA Status</span>
-          <select id="filterSlaStatus"></select>
+          <span>Status</span>
+          <select id="filterStatus"></select>
+        </label>
+        <label class="filter-field">
+          <span>Supplier Tier</span>
+          <select id="filterTier"></select>
         </label>
         <label class="filter-field">
           <span>Owner</span>
           <select id="filterOwner"></select>
         </label>
         <label class="filter-field">
-          <span>Supplier</span>
-          <select id="filterSupplier"></select>
+          <span>Owner Type</span>
+          <select id="filterOwnerType"></select>
         </label>
         <label class="filter-field">
-          <span>Age Bucket</span>
-          <select id="filterAgeBucket"></select>
+          <span>SLA Status</span>
+          <select id="filterSlaStatus"></select>
+        </label>
+        <label class="filter-field">
+          <span>Due Date Window</span>
+          <select id="filterDueDateWindow"></select>
+        </label>
+        <label class="filter-field">
+          <span>Remediation Type</span>
+          <select id="filterRemediationType"></select>
         </label>
         <div class="filter-actions">
           <button id="clearFilters" type="button">Clear Filters</button>
@@ -63,81 +74,82 @@
 
     <section class="kpi-grid">
       <article class="kpi-card">
-        <div class="kpi-label">Open Findings</div>
-        <div class="kpi-value" id="openFindings"></div>
+        <div class="kpi-label">Open Remediation Actions</div>
+        <div class="kpi-value" id="openRemediationActions"></div>
+        <div class="kpi-trend" id="openRemediationActionsTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Critical Findings</div>
-        <div class="kpi-value" id="criticalFindings"></div>
+        <div class="kpi-label">Critical Actions Overdue</div>
+        <div class="kpi-value" id="criticalActionsOverdue"></div>
+        <div class="kpi-trend" id="criticalActionsOverdueTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">SLA Breaches</div>
-        <div class="kpi-value" id="slaBreaches"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">MTTA</div>
-        <div class="kpi-value" id="mtta"></div>
+        <div class="kpi-label">SLA Compliance</div>
+        <div class="kpi-value" id="slaCompliance"></div>
+        <div class="kpi-trend" id="slaComplianceTrend"></div>
       </article>
 
       <article class="kpi-card">
         <div class="kpi-label">MTTR</div>
         <div class="kpi-value" id="mttr"></div>
+        <div class="kpi-trend" id="mttrTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Closure Rate</div>
-        <div class="kpi-value" id="closureRate"></div>
+        <div class="kpi-label">Risk Reduction Delivered</div>
+        <div class="kpi-value" id="riskReductionDelivered"></div>
+        <div class="kpi-trend" id="riskReductionDeliveredTrend"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Backlog Growth</div>
+        <div class="kpi-value" id="backlogGrowth"></div>
+        <div class="kpi-trend" id="backlogGrowthTrend"></div>
       </article>
 
       <article class="kpi-card">
         <div class="kpi-label">Reopened Findings</div>
         <div class="kpi-value" id="reopenedFindings"></div>
+        <div class="kpi-trend" id="reopenedFindingsTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Accepted Risks</div>
-        <div class="kpi-value" id="acceptedRisks"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">Backlog Growth</div>
-        <div class="kpi-value" id="backlogGrowthPercent"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">Findings per Analyst</div>
-        <div class="kpi-value" id="findingsPerAnalyst"></div>
+        <div class="kpi-label">Supplier Owner Overdue Actions</div>
+        <div class="kpi-value" id="supplierOwnerOverdueActions"></div>
+        <div class="kpi-trend" id="supplierOwnerOverdueActionsTrend"></div>
       </article>
     </section>
 
     <section class="content-grid">
       <div class="card">
-        <h3>Remediation Trend</h3>
-        <div class="chart-wrap"><canvas id="remediationTrendChart"></canvas></div>
+        <h3>Remediation Status by Severity</h3>
+        <div class="chart-wrap"><canvas id="statusBySeverityChart"></canvas></div>
       </div>
 
       <div class="card">
-        <h3>Findings by Severity</h3>
-        <div class="chart-wrap"><canvas id="findingsSeverityChart"></canvas></div>
+        <h3>Remediation SLA Trend</h3>
+        <div class="chart-wrap"><canvas id="slaTrendChart"></canvas></div>
       </div>
     </section>
 
     <section class="content-grid">
       <div class="card">
-        <h3>Open Remediation Backlog</h3>
+        <h3>Active Remediation Queue</h3>
         <div class="table-wrap">
-          <table id="remediationBacklogTable">
+          <table id="activeRemediationQueueTable">
             <thead>
               <tr>
-                <th>Finding</th>
                 <th>Supplier</th>
+                <th>Tier</th>
+                <th>Finding</th>
                 <th>Severity</th>
+                <th>Status</th>
                 <th>Age</th>
-                <th>SLA</th>
+                <th>Due Date</th>
                 <th>Owner</th>
+                <th>Required Action</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -146,16 +158,18 @@
       </div>
 
       <div class="card">
-        <h3>Owner Workload</h3>
+        <h3>Overdue Critical Actions</h3>
         <div class="table-wrap">
-          <table id="ownerWorkloadTable">
+          <table id="overdueCriticalActionsTable">
             <thead>
               <tr>
-                <th>Owner</th>
-                <th>Open</th>
-                <th>Breached</th>
-                <th>Critical</th>
-                <th>Oldest</th>
+                <th>Supplier</th>
+                <th>Business Area</th>
+                <th>Finding</th>
+                <th>Days Overdue</th>
+                <th>Exposure Reduction Potential</th>
+                <th>Escalation Owner</th>
+                <th>Required Action</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -165,27 +179,22 @@
     </section>
 
     <section class="card">
-      <h3>Decision Queue</h3>
+      <h3>Validation / Reopened Findings</h3>
       <div class="table-wrap">
-        <table id="decisionQueueTable">
+        <table id="validationReopenedTable">
           <thead>
             <tr>
               <th>Supplier</th>
-              <th>Decision Type</th>
-              <th>Risk</th>
-              <th>Exposure</th>
-              <th>Due</th>
-              <th>Recommended Action</th>
+              <th>Finding</th>
+              <th>Closure Date</th>
+              <th>Validation Result</th>
+              <th>Reopen Reason</th>
+              <th>Required Action</th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
-    </section>
-
-    <section class="ai-panel">
-      <h3>AI Alerts</h3>
-      <div class="ai-grid" id="remediationAiAlerts"></div>
     </section>
   </div>
 </body>

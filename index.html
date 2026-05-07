@@ -6,7 +6,6 @@
 	<title>Executive Overview | Supplier Cyber Risk & Assurance</title>
 	<link rel="stylesheet" href="style.css" />
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<script src="extended-kpis.js" defer></script>
 	<script src="tooltips.js" defer></script>
 	<script src="script.js" defer></script>
 </head>
@@ -55,58 +54,51 @@
 
 		<section class="kpi-grid">
 			<article class="kpi-card">
-				<div class="kpi-label">Average Supplier Risk Score</div>
+				<div class="kpi-label">Overall Supplier Cyber Risk Score</div>
 				<div class="kpi-value" id="riskScore"></div>
+				<div class="kpi-trend" id="riskScoreTrend"></div>
 			</article>
 
 			<article class="kpi-card">
 				<div class="kpi-label">High-Risk Suppliers</div>
 				<div class="kpi-value" id="highRiskSuppliers"></div>
-			</article>
-
-			<article class="kpi-card">
-				<div class="kpi-label">Annual Loss Exposure</div>
-				<div class="kpi-value" id="lossExposure"></div>
-			</article>
-
-			<article class="kpi-card">
-				<div class="kpi-label">Suppliers Assessed</div>
-				<div class="kpi-value" id="assessedPercent"></div>
-			</article>
-
-			<article class="kpi-card">
-				<div class="kpi-label">Continuously Monitored</div>
-				<div class="kpi-value" id="monitoredPercent"></div>
-			</article>
-
-			<article class="kpi-card">
-				<div class="kpi-label">Critical Findings</div>
-				<div class="kpi-value" id="criticalFindings"></div>
+				<div class="kpi-trend" id="highRiskSuppliersTrend"></div>
 			</article>
 
 			<article class="kpi-card">
 				<div class="kpi-label">Critical Suppliers at Risk</div>
 				<div class="kpi-value" id="criticalSuppliersAtRisk"></div>
+				<div class="kpi-trend" id="criticalSuppliersAtRiskTrend"></div>
+			</article>
+
+			<article class="kpi-card">
+				<div class="kpi-label">Annual Loss Exposure</div>
+				<div class="kpi-value" id="lossExposure"></div>
+				<div class="kpi-trend" id="lossExposureTrend"></div>
 			</article>
 
 			<article class="kpi-card">
 				<div class="kpi-label">Exposure Trend</div>
 				<div class="kpi-value" id="exposureTrendPercent"></div>
+				<div class="kpi-trend" id="exposureTrendPercentTrend"></div>
 			</article>
 
 			<article class="kpi-card">
-				<div class="kpi-label">Top Business Impact Area</div>
-				<div class="kpi-value" id="topBusinessImpactArea"></div>
+				<div class="kpi-label">Suppliers Assessed</div>
+				<div class="kpi-value" id="assessedPercent"></div>
+				<div class="kpi-trend" id="assessedPercentTrend"></div>
 			</article>
 
 			<article class="kpi-card">
-				<div class="kpi-label">Predicted Risk Breaches</div>
-				<div class="kpi-value" id="predictedRiskBreaches"></div>
+				<div class="kpi-label">Continuously Monitored</div>
+				<div class="kpi-value" id="monitoredPercent"></div>
+				<div class="kpi-trend" id="monitoredPercentTrend"></div>
 			</article>
 
 			<article class="kpi-card">
-				<div class="kpi-label">Forecasted Exposure</div>
-				<div class="kpi-value" id="forecastedExposure"></div>
+				<div class="kpi-label">Critical Findings</div>
+				<div class="kpi-value" id="criticalFindings"></div>
+				<div class="kpi-trend" id="criticalFindingsTrend"></div>
 			</article>
 		</section>
 
@@ -119,10 +111,11 @@
 							<tr>
 								<th>Supplier</th>
 								<th>Tier</th>
-								<th>Risk Score</th>
-								<th>Cyber Rating</th>
-								<th>Exposure</th>
 								<th>Business Unit</th>
+								<th>Risk Score</th>
+								<th>Residual Risk</th>
+								<th>Annual Loss Exposure</th>
+								<th>Required Action</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -141,6 +134,7 @@
 								<th>Severity</th>
 								<th>Age</th>
 								<th>SLA</th>
+								<th>Required Action</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -161,10 +155,6 @@
 			</article>
 		</section>
 
-		<section class="ai-panel">
-			<h3>AI Alerts</h3>
-			<div class="ai-grid" id="aiAlerts"></div>
-		</section>
 	</div>
 </body>
 </html>

@@ -1,0 +1,151 @@
+{
+  "pages": [
+    {
+      "pageName": "Summary",
+      "primaryAudience": [
+        "CISO",
+        "Cyber Risk Leadership",
+        "Executive Leadership",
+        "Enterprise Risk",
+        "Board / Governance Forums"
+      ],
+      "thisPageShouldAnswer": "What is the overall supplier cyber risk exposure, where are the biggest concerns, and what decisions require executive attention?",
+      "thisPageShouldFocusOnlyOn": [
+        "Executive risk visibility",
+        "Exposure trends",
+        "Critical suppliers",
+        "Financial exposure",
+        "Prioritization",
+        "Board-level decision support"
+      ]
+    },
+    {
+      "pageName": "Supplier Portfolio",
+      "primaryAudience": [
+        "TPRM Leadership",
+        "Procurement Risk",
+        "Supplier Governance",
+        "Cyber Risk Operations"
+      ],
+      "thisPageShouldAnswer": "What does the supplier population look like, which suppliers are most critical, and where is risk concentrated?",
+      "thisPageShouldFocusOnlyOn": [
+        "Supplier inventory",
+        "Tiering",
+        "Portfolio segmentation",
+        "Concentration risk",
+        "Critical suppliers",
+        "Portfolio-level visibility"
+      ]
+    },
+    {
+      "pageName": "Supplier Lifecycle & Assessments",
+      "primaryAudience": [
+        "TPRM Operations",
+        "Supplier Cyber Assurance",
+        "Procurement Risk",
+        "Compliance / Audit"
+      ],
+      "thisPageShouldAnswer": "Are suppliers moving through the risk lifecycle with enough assurance before approval, renewal, or continued use?",
+      "thisPageShouldFocusOnlyOn": [
+        "Onboarding assurance",
+        "Due diligence",
+        "Assessments",
+        "Evidence quality",
+        "Reassessment discipline",
+        "Offboarding assurance"
+      ]
+    },
+    {
+      "pageName": "Monitoring",
+      "primaryAudience": [
+        "Cyber Assurance Team",
+        "TPRM Monitoring Team",
+        "SOC / Exposure Management",
+        "Supplier Risk Operations"
+      ],
+      "thisPageShouldAnswer": "Which supplier risks are emerging between formal assessments, and which suppliers need escalation now?",
+      "thisPageShouldFocusOnlyOn": [
+        "Continuous monitoring",
+        "External exposure signals",
+        "Rating deterioration",
+        "Credential leaks",
+        "Emerging threats",
+        "Escalation readiness"
+      ]
+    },
+    {
+      "pageName": "Remediation",
+      "primaryAudience": [
+        "Supplier Cyber Assurance",
+        "TPRM Remediation Lead",
+        "Risk Owners",
+        "Cyber Governance Forums"
+      ],
+      "thisPageShouldAnswer": "Are supplier cyber issues being fixed fast enough, and which remediation actions need escalation?",
+      "thisPageShouldFocusOnlyOn": [
+        "Remediation execution",
+        "SLA compliance",
+        "Overdue actions",
+        "Remediation speed",
+        "Risk reduction delivery",
+        "Escalation management"
+      ]
+    },
+    {
+      "pageName": "Dependencies",
+      "primaryAudience": [
+        "Supplier Cyber Risk Director",
+        "Enterprise Risk",
+        "Resilience / Continuity Teams",
+        "Architecture / Platform Risk"
+      ],
+      "thisPageShouldAnswer": "Where do supplier dependencies create systemic risk, concentration risk, or single points of failure?",
+      "thisPageShouldFocusOnlyOn": [
+        "Fourth-party visibility",
+        "Concentration risk",
+        "Cloud dependency exposure",
+        "Shared providers",
+        "Resilience gaps",
+        "Downstream dependency risk"
+      ]
+    },
+    {
+      "pageName": "Compliance, Contracts & Regulated Assurance",
+      "primaryAudience": [
+        "Compliance",
+        "Audit",
+        "Supplier Assurance",
+        "Procurement Risk",
+        "GxP Operations"
+      ],
+      "thisPageShouldAnswer": "Are suppliers contractually, operationally, and regulatorily compliant to support secure and compliant operations?",
+      "thisPageShouldFocusOnlyOn": [
+        "Contractual security requirements",
+        "Audit readiness",
+        "GxP assurance",
+        "CAPA exposure",
+        "Validation evidence",
+        "Policy and control compliance"
+      ]
+    },
+    {
+      "pageName": "Risk Quantification & Prioritization",
+      "primaryAudience": [
+        "CISO Leadership",
+        "Enterprise Risk",
+        "Finance Stakeholders",
+        "Executive Leadership",
+        "Cyber Governance Forums"
+      ],
+      "thisPageShouldAnswer": "Which supplier cyber risks create the largest business exposure, and where should investment or remediation be prioritized?",
+      "thisPageShouldFocusOnlyOn": [
+        "Financial exposure",
+        "FAIR-style quantification",
+        "Scenario modeling",
+        "Mitigation prioritization",
+        "Investment optimization",
+        "Residual exposure"
+      ]
+    }
+  ]
+}

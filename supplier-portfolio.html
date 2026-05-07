@@ -6,7 +6,6 @@
   <title>Supplier Portfolio Risk | Supplier Cyber Risk</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="extended-kpis.js" defer></script>
   <script src="tooltips.js" defer></script>
   <script src="supplier-portfolio.js" defer></script>
 </head>
@@ -50,6 +49,14 @@
           <span>Service Category</span>
           <select id="filterServiceCategory"></select>
         </label>
+        <label class="filter-field">
+          <span>Criticality</span>
+          <select id="filterCriticality"></select>
+        </label>
+        <label class="filter-field">
+          <span>Residual Risk</span>
+          <select id="filterResidualRisk"></select>
+        </label>
         <div class="filter-actions">
           <button id="clearFilters" type="button">Clear Filters</button>
         </div>
@@ -61,62 +68,60 @@
       <article class="kpi-card">
         <div class="kpi-label">Inventory Completeness</div>
         <div class="kpi-value" id="inventoryCompleteness"></div>
+        <div class="kpi-trend" id="inventoryCompletenessTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">Classified Vendors</div>
-        <div class="kpi-value" id="classifiedVendors"></div>
+        <div class="kpi-label">Classified Suppliers</div>
+        <div class="kpi-value" id="classifiedSuppliers"></div>
+        <div class="kpi-trend" id="classifiedSuppliersTrend"></div>
       </article>
 
       <article class="kpi-card">
-        <div class="kpi-label">High-Risk Vendors</div>
-        <div class="kpi-value" id="highRiskVendorPercent"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">Avg Cyber Rating</div>
-        <div class="kpi-value" id="avgCyberRating"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">Tier 1 Vendors</div>
-        <div class="kpi-value" id="tierOneVendors"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">Concentration Index</div>
-        <div class="kpi-value" id="concentrationIndex"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">Fourth Parties</div>
-        <div class="kpi-value" id="fourthParties"></div>
-      </article>
-
-      <article class="kpi-card">
-        <div class="kpi-label">Single-Supplier Services</div>
-        <div class="kpi-value" id="singleSupplierServices"></div>
+        <div class="kpi-label">Tier 1 Suppliers</div>
+        <div class="kpi-value" id="tierOneSuppliers"></div>
+        <div class="kpi-trend" id="tierOneSuppliersTrend"></div>
       </article>
 
       <article class="kpi-card">
         <div class="kpi-label">High Criticality / High Risk</div>
         <div class="kpi-value" id="highCriticalityHighRisk"></div>
+        <div class="kpi-trend" id="highCriticalityHighRiskTrend"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Average Cyber Rating</div>
+        <div class="kpi-value" id="avgCyberRating"></div>
+        <div class="kpi-trend" id="avgCyberRatingTrend"></div>
       </article>
 
       <article class="kpi-card">
         <div class="kpi-label">Top Vendor Concentration</div>
-        <div class="kpi-value" id="topVendorConcentrationRatio"></div>
+        <div class="kpi-value" id="topVendorConcentration"></div>
+        <div class="kpi-trend" id="topVendorConcentrationTrend"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Fourth-Party Visibility</div>
+        <div class="kpi-value" id="fourthPartyVisibility"></div>
+        <div class="kpi-trend" id="fourthPartyVisibilityTrend"></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-label">Single-Supplier Services</div>
+        <div class="kpi-value" id="singleSupplierServices"></div>
+        <div class="kpi-trend" id="singleSupplierServicesTrend"></div>
       </article>
     </section>
 
     <section class="content-grid">
       <div class="card">
-        <h3>Risk by Segment</h3>
+        <h3>Risk by Supplier Segment</h3>
         <div class="chart-wrap"><canvas id="segmentRiskChart"></canvas></div>
       </div>
 
       <div class="card">
-        <h3>Vendor Criticality Mix</h3>
+        <h3>Supplier Criticality Mix</h3>
         <div class="chart-wrap"><canvas id="criticalityChart"></canvas></div>
       </div>
     </section>
@@ -129,10 +134,11 @@
             <thead>
               <tr>
                 <th>Segment</th>
-                <th>Vendors</th>
+                <th>Suppliers</th>
                 <th>High Risk</th>
-                <th>Avg Rating</th>
-                <th>Risk Level</th>
+                <th>Avg Cyber Rating</th>
+                <th>Criticality</th>
+                <th>Required Action</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -148,9 +154,10 @@
               <tr>
                 <th>Business Area</th>
                 <th>Suppliers</th>
+                <th>Tier 1 Suppliers</th>
                 <th>High Risk</th>
-                <th>Criticality</th>
-                <th>Exposure</th>
+                <th>Annual Loss Exposure</th>
+                <th>Required Action</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -160,43 +167,24 @@
     </section>
 
     <section class="card">
-      <h3>Criticality vs Risk Heatmap</h3>
+      <h3>High Criticality / High Risk Suppliers</h3>
       <div class="table-wrap">
-        <table id="heatmapTable">
+        <table id="highCriticalityHighRiskTable">
           <thead>
             <tr>
-              <th>Criticality / Risk</th>
-              <th>High Risk</th>
-              <th>Medium Risk</th>
-              <th>Low Risk</th>
+              <th>Supplier</th>
+              <th>Tier</th>
+              <th>Business Area</th>
+              <th>Service Category</th>
+              <th>Criticality Score</th>
+              <th>Risk Score</th>
+              <th>Annual Loss Exposure</th>
+              <th>Required Action</th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
-    </section>
-
-    <section class="card">
-      <h3>Concentration Hotspots</h3>
-      <div class="table-wrap">
-        <table id="concentrationTable">
-          <thead>
-            <tr>
-              <th>Concentration Type</th>
-              <th>Dependency</th>
-              <th>Critical Suppliers</th>
-              <th>Risk Level</th>
-              <th>Exposure</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="ai-panel">
-      <h3>AI Alerts</h3>
-      <div class="ai-grid" id="portfolioAiAlerts"></div>
     </section>
   </div>
 </body>
